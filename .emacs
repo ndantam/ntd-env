@@ -4,12 +4,15 @@
       do-bigloo-bee nil
       )
 
+(add-to-list 'load-path "~/.emacs.d")
+
 (require 'cl)
+(require 'w3m-load)
 
 
 (add-to-list 'vc-handled-backends 'Git)
 
-(add-to-list 'load-path "~/.emacs.d")
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -123,8 +126,12 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 (when do-slime
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (slime-setup))
+  (eval-after-load "slime"
+    '(progn
+       (setq inferior-lisp-program "/usr/bin/sbcl")
+       (setq browse-url-browser-function 'w3m-browse-url)
+       (slime-setup))))
+
 
 
 ;;;;;;;;;;;;
