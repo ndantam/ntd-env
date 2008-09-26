@@ -13,6 +13,7 @@
 (add-to-list 'vc-handled-backends 'Git)
 
 
+(global-set-key "\C-c\k" 'compile)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
