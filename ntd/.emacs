@@ -12,23 +12,12 @@
 
 (add-to-list 'vc-handled-backends 'Git)
 
-
+;;;;;;;;;;;;;;;;;;;
+;;  GLOBAL KEYS  ;;
+;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-c\k" 'compile)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(case-fold-search t)
- '(current-language-environment "English")
- '(default-input-method "rfc1345")
- '(global-font-lock-mode t nil (font-lock))
- '(js2-basic-offset 2)
- '(js2-bounce-indent-flag nil)
- '(js2-mirror-mode nil)
- '(show-paren-mode t nil (paren))
- '(transient-mark-mode t))
+(global-set-key "\C-c\C-c" 'comment-region)
+(global-set-key "\C-c\M-c" 'uncomment-region)
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
@@ -275,8 +264,8 @@
 (add-hook 'octave-mode-hook
           'viper-mode)
 
-;;setq auto-mode-alist
-                                        ;(cons '("\\.m$" . octave-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.m$" . octave-mode) auto-mode-alist))
 
 ;;define-key octave-mode-map "\C-m"
                                         ;'octave-reindent-then-newline-and-indent)
@@ -312,8 +301,9 @@
 ;;add-hook 'emaxima-mode-hook 'emaxima-mark-file-as-emaxima)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;
+;; CUSTOM ;;
+;;;;;;;;;;;;
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -323,4 +313,23 @@
  '(slime-highlight-edits-face ((((class color) (background dark)) (:background "#333")))))
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(case-fold-search t)
+ '(current-language-environment "English")
+ '(default-input-method "rfc1345")
+ '(global-font-lock-mode t nil (font-lock))
+ '(js2-basic-offset 2)
+ '(js2-bounce-indent-flag nil)
+ '(js2-mirror-mode nil)
+ '(show-paren-mode t nil (paren))
+ '(transient-mark-mode t))
+
+
+;;;;;;;;;;;;;;;;
+;; RUN ESHELL ;;
+;;;;;;;;;;;;;;;;
 (eshell)
