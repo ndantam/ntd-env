@@ -11,8 +11,9 @@ fi
 
 if [ `hostname` = daneel ]; then
     alias kermit-sparky="kermit -l /dev/ttyUSB0 -b 115200 -8"
-    TEXINPUTS=$HOME/src/ntd-latex:$TEXINPUTS
+    export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     alias cu-sparky="cu -lttyUSB0"
+    alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
 fi
 
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
