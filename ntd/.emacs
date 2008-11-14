@@ -12,6 +12,18 @@
 
 (add-to-list 'vc-handled-backends 'Git)
 
+;;;;;;;;;;;;;;;;
+;;  SEMANTIC  ;;
+;;;;;;;;;;;;;;;;
+(setq semantic-load-turn-everything-on t)
+(require 'semantic-load)
+(require semantic-is)
+
+;;semantic-load-enable-code-helpers)
+
+;;setq semantic-load-turn-useful-things-on t)
+
+
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
