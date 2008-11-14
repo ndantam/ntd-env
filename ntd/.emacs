@@ -17,7 +17,13 @@
 ;;;;;;;;;;;;;;;;
 (setq semantic-load-turn-everything-on t)
 (require 'semantic-load)
-(require semantic-is)
+(require 'semantic-ia)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (define-key c-mode-base-map (kbd "\C-c TAB")
+              'semantic-complete-analyze-inline)
+            (define-key c-mode-base-map (kbd "\C-c m")
+              'semantic-ia-complete-symbol-menu)))
 
 ;;semantic-load-enable-code-helpers)
 
