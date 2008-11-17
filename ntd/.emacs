@@ -12,6 +12,17 @@
 
 (add-to-list 'vc-handled-backends 'Git)
 
+
+;;;;;;;;;;;;
+;;  DEFS  ;;
+;;;;;;;;;;;;
+
+(defmacro when-host (name &rest forms)
+  (declare (indent 1))
+  `(when (string= (system-name) ,name)
+     ,@forms))
+
+
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
@@ -24,6 +35,13 @@
               'semantic-complete-analyze-inline)
             (define-key c-mode-base-map (kbd "\C-c m")
               'semantic-ia-complete-symbol-menu)))
+
+;; Semantic projects
+
+(when-host "daneel"
+           (setq semanticdb-project-roots
+                 (list "~/cc/sparky/src")))
+
 
 ;;semantic-load-enable-code-helpers)
 
