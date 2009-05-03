@@ -4,6 +4,7 @@
       do-bigloo-bee nil
       )
 
+
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
@@ -22,25 +23,25 @@
   `(when (string= (system-name) ,name)
      ,@forms))
 
-
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
-(setq semantic-load-turn-everything-on t)
-(require 'semantic-load)
-(require 'semantic-ia)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (define-key c-mode-base-map (kbd "\C-c TAB")
-              'semantic-complete-analyze-inline)
-            (define-key c-mode-base-map (kbd "\C-c m")
-              'semantic-ia-complete-symbol-menu)))
+;;setq semantic-load-turn-everything-on t)
+;;require 'semantic-load)
+;;require 'semantic-ia)
+;;add-hook 'c-mode-common-hook
+                                        ;(lambda ()
+                                        ;(define-key c-mode-base-map (kbd "\C-c TAB")
+                                        ;'semantic-complete-analyze-inline)
+                                        ;(define-key c-mode-base-map (kbd "\C-c m")
+                                        ;'semantic-ia-complete-symbol-menu)))
 
 ;; Semantic projects
 
-(when-host "daneel"
-           (setq semanticdb-project-roots
-                 (list "~/cc/sparky/src")))
+;;when-host "daneel"
+                                        ;(setq semanticdb-project-roots
+                                        ;(list "~/src/kalman"
+                                        ;"~/res/sparky/src")))
 
 
 ;;semantic-load-enable-code-helpers)
@@ -74,6 +75,7 @@
 
 (set-scroll-bar-mode nil)
 
+(setq confirm-kill-emacs 'yes-or-no-p)
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -142,11 +144,15 @@
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
 ;;;;;;;;;;;;;
-;;load "auctex.el" nil t t)
+(load "auctex.el" nil t t)
+
 (setq TeX-auto-save t)
+(setq TeX-pdf-mode t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-
+(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
+;;push '("^pdf$" "." "evince %o") TeX-output-view-style)
+;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -158,6 +164,8 @@
        (setq browse-url-browser-function 'w3m-browse-url)
        (slime-setup))))
 
+(when-host "daneel"
+           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
 ;;;;;;;;;;;;
@@ -248,13 +256,16 @@
 ;;  TABS  ;;
 ;;;;;;;;;;;;
 (setq-default indent-tabs-mode nil)
-;;setq-default tab-width 4)
+(setq-default tab-width 4)
 
 
 
 ;;;;;;;;;;;
 ;; UTF-8 ;;
 ;;;;;;;;;;;
+
+(prefer-coding-system 'utf-8)
+
 (set-language-environment "UTF-8")
 (set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
@@ -368,4 +379,11 @@
 ;;;;;;;;;;;;;;;;
 ;; RUN ESHELL ;;
 ;;;;;;;;;;;;;;;;
+(setq eshell-save-history-on-exit t)
 (eshell)
+
+
+
+
+;; do this again, i guess
+(prefer-coding-system 'utf-8)
