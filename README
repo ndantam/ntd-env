@@ -1,0 +1,10 @@
+* README FOR NTD-DOTFILES *
+
+This directory contains various dotfiles used by Neil Dantam.  The actual files
+live under ./ntd.
+
+To install the files on a new machine, the ./install.sh
+script will create hard links from ~ to the files here.
+
+To do a git update, you should first run the ./relink.sh script to fix links
+that have somehow gotten screwed up.
