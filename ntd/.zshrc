@@ -44,12 +44,19 @@ function precmd {
     local TOP_LEFT='%{\033[H%}'
 
 
+    if [ `hostname` = "hesh" ]; then
+        local battery=`acpi -b | sed -e 's/.*\(..\)%,.*/\1/'`
+    fi
     case $TERM in
         dumb*)
 ;;
 xterm*)
 print -Pn "\e]0;%n@%m://%~\a"
-local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+if [ `hostname` = "hesh" ]; then
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+else
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+fi
 local ST_RET=${(%):-%?}
 echo ${ST_HOST};
 ;;

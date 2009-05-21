@@ -8,7 +8,7 @@
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
-(require 'w3m-load)
+;;require 'w3m-load)
 
 
 (add-to-list 'vc-handled-backends 'Git)
