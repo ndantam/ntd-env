@@ -4,6 +4,7 @@
       do-bigloo-bee nil
       )
 
+
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
@@ -26,21 +27,21 @@
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
-(setq semantic-load-turn-everything-on t)
-(require 'semantic-load)
-(require 'semantic-ia)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (define-key c-mode-base-map (kbd "\C-c TAB")
-              'semantic-complete-analyze-inline)
-            (define-key c-mode-base-map (kbd "\C-c m")
-              'semantic-ia-complete-symbol-menu)))
+;;setq semantic-load-turn-everything-on t)
+;;require 'semantic-load)
+;;require 'semantic-ia)
+;;add-hook 'c-mode-common-hook
+;;         (lambda ()
+;;           (define-key c-mode-base-map (kbd "\C-c TAB")
+;;                       'semantic-complete-analyze-inline)
+;;           (define-key c-mode-base-map (kbd "\C-c m")
+;;                       'semantic-ia-complete-symbol-menu)))
 
 ;; Semantic projects
 
-(when-host "daneel"
-           (setq semanticdb-project-roots
-                 (list "~/cc/sparky/src")))
+;;when-host "daneel"
+;; (setq semanticdb-project-roots
+;;       (list "~/cc/sparky/src")))
 
 
 ;;semantic-load-enable-code-helpers)
@@ -110,7 +111,13 @@
 (setq font-lock-maximum-decoration t)
 
 
+;;;;;;;;;
+;;  C  ;;
+;;;;;;;;;
 
+;; Other people are annoyed by emacs 2-space default
+(setq c-basic-offset 4) ; I've written to much java,
+                                        ; but then so have many other people...
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
