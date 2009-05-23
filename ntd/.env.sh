@@ -16,5 +16,16 @@ if [ `hostname` = daneel  ]; then
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
 fi
 
+# Setup tmp
+if [ -f ~/tmp/.ntd-tmp-flag ]; then
+    ;
+else
+    # I should somehow randomize this...
+    TMPNAM=ntd-tmpdir
+    mkdir /tmp/$TMPNAM
+    ln -s /tmp/$TMPNAM ~/tmp
+    touch ~/tmp/.ntd-tmp-flag
+fi
+
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
