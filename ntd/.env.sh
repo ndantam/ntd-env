@@ -27,5 +27,15 @@ if [ `hostname` = olivaw ]; then
     export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct/octave
 fi
 
-export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
+# Setup tmp
+if [ -f ~/tmp/.ntd-tmp-flag ]; then
+    true
+else
+    # I should somehow randomize this...
+    TMPNAM=ntd-tmpdir
+    mkdir /tmp/$TMPNAM
+    ln -s /tmp/$TMPNAM ~/tmp
+    touch ~/tmp/.ntd-tmp-flag
+fi
 
+export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
