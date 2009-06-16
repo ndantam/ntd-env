@@ -17,11 +17,27 @@
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
 
+(defun all (args)
+  (cond
+   ((null args) t)
+   ((car args) (all (cdr args)))
+   (t nil)))
+
+(defun any (args)
+  (cond
+   ((null args) nil)
+   ((car args) t)
+   (t (all (cdr args)))))
+
+
 (defmacro when-host (name &rest forms)
   (declare (indent 1))
-  `(when (string= (system-name) ,name)
+  `(when ,(if (atom name)
+              `(string= (system-name) ,name)
+            `(any (mapcar (lambda (name)
+                            (string= (system-name) name))
+                          (quote ,name))))
      ,@forms))
-
 
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
@@ -157,6 +173,10 @@
        (setq inferior-lisp-program "/usr/bin/sbcl")
        (setq browse-url-browser-function 'w3m-browse-url)
        (slime-setup))))
+
+
+(when-host ("daneel" "hesh")
+           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
 
