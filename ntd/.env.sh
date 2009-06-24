@@ -10,7 +10,7 @@ if [ `uname` = Linux ]; then
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 fi
 
-if [ `hostname` = daneel  ]; then
+if [ $HOST = daneel  ]; then
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     alias cu-sparky="cu -lttyS0 --parity=none -s115200 --nostop"
@@ -38,4 +38,21 @@ else
     touch ~/tmp/.ntd-tmp-flag
 fi
 
+function ntd_ros_load_shell {
+    case $SHELL in
+        /bin/zsh)
+source $ROS_ROOT/tools/rosbash/roszsh
+;;
+esac
+}
+
+if [ $HOST = "SuperSloth" -o $HOST = "babel"  ]; then
+    export ROS_ROOT=~/src/ros
+    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot/software/src/:~/src/indoor-packbot/software/python
+    export ROS_MASTER_URI=http://localhost:11311/
+    export PATH=$PATH:$ROS_ROOT/bin
+    export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src
+    export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct
+    ntd_ros_load_shell
+fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
