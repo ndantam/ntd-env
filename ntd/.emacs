@@ -71,6 +71,9 @@
 (global-set-key "\C-c\k" 'compile)
 (global-set-key "\C-c\C-c" 'comment-region)
 (global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-c#" 'server-start)
+(global-set-key "\C-cbe" (lambda () (interactive)
+                           (switch-to-buffer "*eshell*")))
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
