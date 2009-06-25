@@ -4,6 +4,8 @@
 ## This file hereby release into the public domain
 ## NO WARRANTY EXPRESSED OR IMPLIED
 
+export EDITOR=vim
+
 if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
     alias ec=emacsclient
