@@ -80,6 +80,9 @@
 (global-set-key "\C-c\k" 'compile)
 (global-set-key "\C-c\C-c" 'comment-region)
 (global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-c#" 'server-start)
+(global-set-key "\C-cbe" (lambda () (interactive)
+                           (switch-to-buffer "*eshell*")))
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
@@ -122,12 +125,11 @@
 (if (eq window-system 'x)
     (progn
       (set-face-background 'region                   "#555555")
-                                        ;(set-face-foreground 'modeline             "white")
+      (set-face-foreground 'modeline             "white")
       (set-face-background 'modeline             "#333333"))
   (progn
     (set-face-background 'region                   "gray")
     (set-face-foreground 'region                   "black")))
-
 
 
 (mouse-wheel-mode t)
