@@ -4,6 +4,7 @@
       do-bigloo-bee nil
       )
 
+
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
@@ -54,9 +55,9 @@
 
 ;; Semantic projects
 
-(when-host "daneel"
-           (setq semanticdb-project-roots
-                 (list "~/cc/sparky/src")))
+;;when-host "daneel"
+;; (setq semanticdb-project-roots
+;;       (list "~/cc/sparky/src")))
 
 
 ;;semantic-load-enable-code-helpers)
@@ -70,6 +71,9 @@
 (global-set-key "\C-c\k" 'compile)
 (global-set-key "\C-c\C-c" 'comment-region)
 (global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-c#" 'server-start)
+(global-set-key "\C-cbe" (lambda () (interactive)
+                           (switch-to-buffer "*eshell*")))
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
@@ -125,7 +129,13 @@
 (setq font-lock-maximum-decoration t)
 
 
+;;;;;;;;;
+;;  C  ;;
+;;;;;;;;;
 
+;; Other people are annoyed by emacs 2-space default
+(setq c-basic-offset 4) ; I've written to much java,
+                                        ; but then so have many other people...
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -267,7 +277,7 @@
 ;;  TABS  ;;
 ;;;;;;;;;;;;
 (setq-default indent-tabs-mode nil)
-;;setq-default tab-width 4)
+(setq-default tab-width 4)
 
 
 
@@ -292,7 +302,16 @@
 ;;load "net-doctor")
 
 
+;;;;;;;;;;;;;
+;; FORTRAN ;;
+;;;;;;;;;;;;;
+(defun f90-return( ) (interactive) (f90-indent-line) (newline-and-indent))
 
+(add-hook 'f90-mode-hook
+          '(lambda()
+             (local-set-key [13] 'f90-return)    ; RET with automatic indent
+             (imenu-add-to-menubar "Program-Units") ; Add index of func. to menu bar
+             ))
 
 ;;;;;;;;;;;;;
 ;; OCTAVE  ;;
