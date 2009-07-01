@@ -193,7 +193,7 @@
        (slime-setup))))
 
 
-(when-host ("daneel" "hesh" "olivaw")
+(when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
