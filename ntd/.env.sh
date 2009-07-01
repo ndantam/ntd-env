@@ -51,4 +51,9 @@ if [ $HOST = "SuperSloth" -o $HOST = "babel" -o $HOST = "olivaw"  ]; then
     export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct
     ntd_ros_load_shell
 fi
+
+if [ $HOST = "babel" ]; then
+    alias wifion="sudo ifdown eth0 && sudo ifup wlan0"
+    alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
+fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
