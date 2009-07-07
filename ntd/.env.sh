@@ -10,6 +10,8 @@ if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
+  # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
+    ulimit -v 1024000
 fi
 
 if [ $HOST = daneel  ]; then
