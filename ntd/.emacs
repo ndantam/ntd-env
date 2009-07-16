@@ -1,12 +1,3 @@
-;; -*- Emacs-Lisp -*-
-
-;;|=============================|;;
-;;| FILE:    .emacs             |;;
-;;| AUTHOR:  Neil T. Dantam     |;;
-;;| Emacs Initialization File   |;;
-;;|=============================|;;
-
-
 (setq gentoo nil      ; running on gentoo
       do-slime t
       do-viper t
@@ -193,7 +184,7 @@
        (slime-setup))))
 
 
-(when-host ("daneel" "hesh" "olivaw")
+(when-host ("daneel" "hesh")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
