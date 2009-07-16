@@ -10,6 +10,8 @@ if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
+  # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
+    ulimit -v 1024000
 fi
 
 if [ $HOST = daneel  ]; then
@@ -56,6 +58,11 @@ if [ $HOST = "SuperSloth" -o $HOST = "babel"  ]; then
     export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src
     export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct
     ntd_ros_load_shell
+fi
+
+if [ $HOST = "babel" ]; then
+    alias wifion="sudo ifdown eth0 && sudo ifup wlan0"
+    alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
 fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
