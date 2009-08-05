@@ -46,8 +46,9 @@ esac
 
 if [ $HOST = "SuperSloth" -o $HOST = "babel" -o $HOST = "olivaw"  ]; then
     export ROS_ROOT=~/src/ros
-    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot/software/src/:~/src/indoor-packbot/software/python
-    export ROS_MASTER_URI=http://localhost:11311/
+    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot
+    export ROS_MASTER_URI=http://192.168.1.2:11311/
+    export ROS_IP=192.168.1.2
     export PATH=$PATH:$ROS_ROOT/bin
     export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src
     export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct
