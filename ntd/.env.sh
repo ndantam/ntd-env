@@ -21,6 +21,15 @@ if [ $HOST = daneel  ]; then
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
 fi
 
+## LL WS env vars
+if [ `hostname` = olivaw ]; then
+    export ROS_ROOT=~/src/ros
+    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src:~/src/indoor-packbot/software/python:
+    export PATH=$ROS_ROOT/bin:$PATH
+    export ROS_MASTER_URI=http://localhost:11311
+    export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src:$ROS_ROOT/core/rospy/src
+    export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct/octave
+fi
 
 # Setup tmp
 if [ -f ~/tmp/.ntd-tmp-flag ]; then
@@ -41,10 +50,7 @@ source $ROS_ROOT/tools/rosbash/roszsh
 esac
 }
 
-
-## LL WS env vars
-
-if [ $HOST = "SuperSloth" -o $HOST = "babel" -o $HOST = "olivaw"  ]; then
+if [ $HOST = "SuperSloth" -o $HOST = "babel"  ]; then
     export ROS_ROOT=~/src/ros
     export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot
     export ROS_MASTER_URI=http://192.168.1.2:11311/
@@ -60,3 +66,5 @@ if [ $HOST = "babel" ]; then
     alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
 fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
+
+PATH=~/bin:$PATH

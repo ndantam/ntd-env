@@ -1,12 +1,3 @@
-;; -*- Emacs-Lisp -*-
-
-;;|=============================|;;
-;;| FILE:    .emacs             |;;
-;;| AUTHOR:  Neil T. Dantam     |;;
-;;| Emacs Initialization File   |;;
-;;|=============================|;;
-
-
 (setq gentoo nil      ; running on gentoo
       do-slime t
       do-viper t
