@@ -83,6 +83,7 @@
 (global-set-key "\C-c#" 'server-start)
 (global-set-key "\C-cbe" (lambda () (interactive)
                            (switch-to-buffer "*eshell*")))
+(global-set-key "\C-xvp" 'vc-update)
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
