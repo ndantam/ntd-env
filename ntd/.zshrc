@@ -120,6 +120,9 @@ unsetopt promptcr
 ## emacs bindings
 bindkey -e
 
+## enable correction
+setopt correct
+
 ## enable history
 HISTSIZE=1000
 HISTFILE=~/.zsh_history
