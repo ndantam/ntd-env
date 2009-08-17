@@ -6,15 +6,17 @@
 
 export EDITOR=vim
 
+
 if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
     ulimit -v 1024000
+    alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
 fi
 
-if [ $HOST = daneel  ]; then
+if [ `hostname` = "daneel"  ]; then
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/dox
     export DISTSCPPATH=acme:tarballs
@@ -56,7 +58,7 @@ source $ROS_ROOT/tools/rosbash/roszsh
 esac
 }
 
-if [ $HOST = "SuperSloth" -o $HOST = "babel"  ]; then
+if [ `hostname` = "SuperSloth" -o `hostname` = "babel"  ]; then
     export ROS_ROOT=~/src/ros
     export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot
     export ROS_MASTER_URI=http://192.168.1.2:11311/
@@ -67,7 +69,7 @@ if [ $HOST = "SuperSloth" -o $HOST = "babel"  ]; then
     ntd_ros_load_shell
 fi
 
-if [ $HOST = "babel" ]; then
+if [ `hostname` = "babel" ]; then
     alias wifion="sudo ifdown eth0 && sudo ifup wlan0"
     alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
 fi
