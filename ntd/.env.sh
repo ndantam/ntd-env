@@ -16,6 +16,10 @@ if [ `uname` = Linux ]; then
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
 fi
 
+function make-common-dist {
+    make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
+}
+
 if [ `hostname` = "daneel"  ]; then
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/dox
