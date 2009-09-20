@@ -103,6 +103,17 @@ esac
 
 
 
+function hcomplete {
+    reply=(`ls $HOME/src/humanoids/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+}
+
+## Inspired by roscd
+function hcd {
+    cd  $(dirname $(ls ~/src/humanoids/**/Makefile | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
+}
+
+compctl -K hcomplete hcd
+
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
@@ -119,6 +130,9 @@ unsetopt promptcr
 
 ## emacs bindings
 bindkey -e
+
+## enable correction
+setopt correct
 
 ## enable history
 HISTSIZE=1000
