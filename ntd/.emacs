@@ -182,7 +182,9 @@
     '(progn
        (setq inferior-lisp-program "/usr/bin/sbcl")
        (setq browse-url-browser-function 'w3m-browse-url)
+       (global-set-key "\C-cs" 'slime-selector)
        (slime-setup))))
+
 
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
