@@ -51,7 +51,7 @@ function precmd {
         dumb*)
 ;;
 xterm|linux*)
-                        #print -Pn "\e]0;%n@%m://%~\a"
+print -Pn "\e]0;%n@%m://%~\a"
 if [ `hostname` = "hesh" ]; then
     local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
 else
