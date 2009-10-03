@@ -410,6 +410,46 @@
  '(transient-mark-mode t))
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Display greek characters ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Courtesy of BenignoUria
+
+(defun pretty-greek ()
+  (let ((greek '("alpha" "beta" "gamma" "delta"
+                 "epsilon" "zeta" "eta" "theta"
+                 "iota" "kappa" "lambda" "mu" "nu"
+                 "xi" "omicron" "pi" "rho" "sigma_final"
+                 "sigma" "tau" "upsilon" "phi" "chi" "psi"
+                 "omega")))
+    (loop for word in greek
+          for code = 97 then (+ 1 code)
+          do  (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                (font-lock-add-keywords
+                 nil
+                 `((,(concatenate 'string
+                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                                  word "\\)[a-zA-Z]")
+                    (0 (progn (decompose-region (match-beginning 2)
+                                                (match-end 2))
+                              nil)))))
+                (font-lock-add-keywords
+                 nil
+                 `((,(concatenate 'string
+                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                                  word "\\)[^a-zA-Z]")
+                    (0 (progn (compose-region (match-beginning 2)
+                                              (match-end 2)
+                                              ,greek-char)
+                              nil)))))))))
+
+
+(add-hook 'lisp-mode-hook 'pretty-greek)
+;;add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+
+
 ;;;;;;;;;;;;;;;;
 ;; RUN ESHELL ;;
 ;;;;;;;;;;;;;;;;
