@@ -1,18 +1,17 @@
-(setq gentoo nil      ; running on gentoo
-      do-slime t
-      do-viper t
-      do-bigloo-bee nil
-      )
-
+;; .emacs
+;; Emacs initialization file
+;; Author: Neil Dantam
+;;
+;; This file is released into the public domain.  There is absolutely
+;; no warranty expressed or implied.
 
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
+
 ;;require 'w3m-load)
 
-
 (add-to-list 'vc-handled-backends 'Git)
-
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
@@ -39,6 +38,7 @@
                             (string= (system-name) name))
                           (quote ,name))))
      ,@forms))
+
 
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
@@ -80,8 +80,8 @@
 ;;  GENTOO  ;;
 ;;;;;;;;;;;;;;
 ;;load "/usr/share/emacs/site-lisp/site-gentoo.el")
-(if gentoo
-    (require 'site-gentoo))
+(when nil
+  (require 'site-gentoo))
 
 ;;;;;;;;;;
 ;; MISC ;;
@@ -112,6 +112,10 @@
 (add-to-list 'default-frame-alist '(background-color . "black"))
 
 (set-foreground-color "green")
+(add-to-list 'default-frame-alist '(foreground-color . "green"))
+
+
+
 (add-to-list 'default-frame-alist '(foreground-color . "green"))
 
 (if (eq window-system 'x)
@@ -154,10 +158,10 @@
 ;;;;;;;;;;;;;
 ;;  VIPER  ;;
 ;;;;;;;;;;;;;
-(when do-viper
-  (setq viper-mode t)
-  (setq viper-always t)
-  (require 'viper))
+(setq viper-mode t)
+(setq viper-always t)
+(setq viper-vi-state-cursor-color "green")
+(require 'viper)
 
 ;;;;;;;;;;;;
 ;;  TEXT  ;;
@@ -177,13 +181,12 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-(when do-slime
-  (eval-after-load "slime"
-    '(progn
-       (setq inferior-lisp-program "/usr/bin/sbcl")
-       (setq browse-url-browser-function 'w3m-browse-url)
-       (global-set-key "\C-cs" 'slime-selector)
-       (slime-setup))))
+(eval-after-load "slime"
+  '(progn
+     (setq inferior-lisp-program "/usr/bin/sbcl")
+     (setq browse-url-browser-function 'w3m-browse-url)
+     (global-set-key "\C-cs" 'slime-selector)
+     (slime-setup)))
 
 
 
@@ -248,7 +251,7 @@
 ;;;;;;;;;;;;;;
 ;;  SCHEME  ;;
 ;;;;;;;;;;;;;;
-(when do-bigloo-bee
+(when nil
   (autoload 'bdb "bdb" "bdb mode" t)
   (autoload 'bee-mode "bee-mode" "bee mode" t)
 
@@ -267,7 +270,7 @@
 (push  '("\\.eml$" . mail-mode) auto-mode-alist )
 (push  '("\\.tsj$" . mail-mode) auto-mode-alist )
 (push  '("\\.tse$" . mail-mode) auto-mode-alist )
-
+(setq mail-self-blind t)
 
 ;;;;;;;;;;;;
 ;;  HTML  ;;
@@ -280,7 +283,7 @@
 ;;  TABS  ;;
 ;;;;;;;;;;;;
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default tab-width 8)
 
 
 
@@ -395,6 +398,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^a5\\(?:comb\\|paper\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^a5\\(?:comb\\|paper\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "evince %o %(outpage)") ("^html?$" "." "netscape %o"))))
  '(case-fold-search t)
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
