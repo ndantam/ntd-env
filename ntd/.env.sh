@@ -22,7 +22,7 @@ function make-common-dist {
 
 if [ `hostname` = "daneel"  ]; then
   #export DOXPATH=~/mnt/prism/public_html/dox
-    export DOXRSYNCSSH=acme:public_html/dox
+    export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
@@ -35,6 +35,7 @@ if [ `hostname` = "daneel"  ]; then
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+    alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     export PATH=$PATH:~/src/other/depot_tools
 fi
 

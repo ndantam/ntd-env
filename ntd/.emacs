@@ -447,7 +447,14 @@
 
 
 (add-hook 'lisp-mode-hook 'pretty-greek)
+(add-hook 'f90-mode-hook 'pretty-greek)
+
 ;;add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+
+
+;; erc
+
+(require 'erc)
 
 
 ;;;;;;;;;;;;;;;;
