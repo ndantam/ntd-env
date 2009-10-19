@@ -104,7 +104,7 @@ esac
 
 
 
-if[ `hostname` = vasilia ] ; then
+if [ `hostname` = vasilia ] ; then
     export HUMROOT=/mnt/scratch-ntd/src/humanoids
 else
     export HUMROOT=$HOME/src/humanoids
