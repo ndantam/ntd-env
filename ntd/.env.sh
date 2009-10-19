@@ -86,4 +86,10 @@ if [ `hostname` = "babel" ]; then
 fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
+
+if [ `hostname` = "vasilia" ]; then
+    if [ -f "/mnt/scratch-ntd/.ntd-thebrain" ] ; then ; else
+        sshfs thebrain:/scratch/ntd /mnt/scratch-ntd
+    fi
+fi
 PATH=~/bin:$PATH
