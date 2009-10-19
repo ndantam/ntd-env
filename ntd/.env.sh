@@ -27,6 +27,8 @@ if [ `hostname` = "daneel"  ]; then
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     alias cu-sparky="cu -lttyS0 --parity=none -s115200 --nostop"
+    alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
+    alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias mount-cc="sshfs gaia: ~/mnt/cc"
     alias mount-acme="sshfs acme: ~/mnt/prism"
@@ -53,7 +55,9 @@ if [ -f ~/tmp/.ntd-tmp-flag ]; then
 else
     # I should somehow randomize this...
     TMPNAM=ntd-tmpdir
-    mkdir /tmp/$TMPNAM
+    if [ ! -d /tmp/$TMPNAM ]; then
+        mkdir /tmp/$TMPNAM
+    fi
     ln -s /tmp/$TMPNAM ~/tmp
     touch ~/tmp/.ntd-tmp-flag
 fi

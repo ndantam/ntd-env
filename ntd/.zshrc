@@ -103,13 +103,21 @@ esac
 
 
 
+
+if [ `hostname` = vasilia ] ; then
+    export HUMROOT=/mnt/scratch-ntd/src/humanoids
+else
+    export HUMROOT=$HOME/src/humanoids
+fi
+
+
 function hcomplete {
-    reply=(`ls $HOME/src/humanoids/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+    reply=(`ls $HUMROOT/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
 }
 
 ## Inspired by roscd
 function hcd {
-    cd  $(dirname $(ls ~/src/humanoids/**/Makefile | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
+    cd  $(dirname $(ls $HUMROOT/**/Makefile | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
 }
 
 compctl -K hcomplete hcd
