@@ -31,8 +31,11 @@ if [ `hostname` = "daneel"  ]; then
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias mount-cc="sshfs gaia: ~/mnt/cc"
-    alias mount-acme="sshfs gaia: ~/mnt/prism"
+    alias mount-acme="sshfs acme: ~/mnt/prism"
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
+    alias mount-virjay="sshfs virjay: ~/mnt/virjay"
+    alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+    export PATH=$PATH:~/src/other/depot_tools
 fi
 
 ## LL WS env vars

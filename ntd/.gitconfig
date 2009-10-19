@@ -1,3 +1,6 @@
+[core]
+        excludesfile = /home/ntd/.gitignore
+
 [user]
         name = Neil T. Dantam
-        email = {first,middle,last-initial}@gatech.edu
+        email = ntd@gatech.edu

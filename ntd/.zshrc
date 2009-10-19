@@ -50,7 +50,7 @@ function precmd {
     case $TERM in
         dumb*)
 ;;
-xterm*)
+xterm|linux*)
 print -Pn "\e]0;%n@%m://%~\a"
 if [ `hostname` = "hesh" ]; then
     local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
@@ -92,7 +92,7 @@ case $TERM in
     dumb*)
     PS1="$(print '%n@%m://%~ %# ')"
     ;;
-    xterm*)
+    xterm|linux*)
                 #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
     PS1="$(print '%?,%{\e[1;32m%}%!%#%{\e[0m%} ')"
     ;;
