@@ -6,6 +6,7 @@
 
 export EDITOR=vim
 
+export CDPATH="$CDPATH:$HOME/src:$HOME/class"
 
 if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
@@ -14,6 +15,7 @@ if [ `uname` = Linux ]; then
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
     ulimit -v 1024000
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
+    alias lp-duplex='lp -o sides=two-sided-long-edge'
 fi
 
 function make-common-dist {
@@ -34,7 +36,8 @@ if [ `hostname` = "daneel"  ]; then
     alias mount-acme="sshfs acme: ~/mnt/prism"
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
-    alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+  #alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+    alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     export PATH=$PATH:~/src/other/depot_tools
 fi
