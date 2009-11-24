@@ -16,6 +16,9 @@ if [ `uname` = Linux ]; then
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
 fi
 
+
+alias rscp="rsync --inplace --partial --progress --times"
+
 function make-common-dist {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }
