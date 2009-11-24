@@ -6,6 +6,7 @@
 
 export EDITOR=vim
 
+export CDPATH="$CDPATH:$HOME/src:$HOME/class"
 
 if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
@@ -14,6 +15,7 @@ if [ `uname` = Linux ]; then
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
     ulimit -v 1024000
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
+    alias lp-duplex='lp -o sides=two-sided-long-edge'
 fi
 
 
@@ -25,17 +27,21 @@ function make-common-dist {
 
 if [ `hostname` = "daneel"  ]; then
   #export DOXPATH=~/mnt/prism/public_html/dox
-    export DOXRSYNCSSH=acme:public_html/dox
+    export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     alias cu-sparky="cu -lttyS0 --parity=none -s115200 --nostop"
+    alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
+    alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias mount-cc="sshfs gaia: ~/mnt/cc"
     alias mount-acme="sshfs acme: ~/mnt/prism"
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
-    alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+  #alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
+    alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
+    alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
@@ -55,7 +61,9 @@ if [ -f ~/tmp/.ntd-tmp-flag ]; then
 else
     # I should somehow randomize this...
     TMPNAM=ntd-tmpdir
-    mkdir /tmp/$TMPNAM
+    if [ ! -d /tmp/$TMPNAM ]; then
+        mkdir /tmp/$TMPNAM
+    fi
     ln -s /tmp/$TMPNAM ~/tmp
     touch ~/tmp/.ntd-tmp-flag
 fi
@@ -85,4 +93,10 @@ if [ `hostname` = "babel" ]; then
 fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
+
+if [ `hostname` = "vasilia" ]; then
+    if [ -f "/mnt/scratch-ntd/.ntd-thebrain" ] ; then ; else
+        sshfs thebrain:/scratch/ntd /mnt/scratch-ntd
+    fi
+fi
 PATH=~/bin:$PATH
