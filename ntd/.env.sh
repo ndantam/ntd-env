@@ -39,6 +39,10 @@ if [ `hostname` = "daneel"  ]; then
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
+if [ `hostname` = "virjay"  ]; then
+    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
+fi
+
 ## LL WS env vars
 if [ `hostname` = olivaw ]; then
     export ROS_ROOT=~/src/ros
