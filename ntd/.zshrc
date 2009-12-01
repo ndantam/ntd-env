@@ -112,7 +112,8 @@ fi
 
 
 function hcomplete {
-    reply=(`ls $HUMROOT/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+    reply=(`find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+    #reply=(`ls $HUMROOT/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
 }
 
 ## Inspired by roscd
