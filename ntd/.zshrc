@@ -129,6 +129,9 @@ compctl -K hcomplete hcd
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
+
+#ignore hosts file for completion
+zstyle '*' hosts $hosts
 #promptinit;
 
 ## set keymapt

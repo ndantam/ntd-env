@@ -18,6 +18,9 @@ if [ `uname` = Linux ]; then
     alias lp-duplex='lp -o sides=two-sided-long-edge'
 fi
 
+
+alias rscp="rsync --inplace --partial --progress --times"
+
 function make-common-dist {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }
@@ -40,6 +43,10 @@ if [ `hostname` = "daneel"  ]; then
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     export PATH=$PATH:~/src/other/depot_tools
+fi
+
+if [ `hostname` = "virjay"  ]; then
+    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 fi
 
 ## LL WS env vars
