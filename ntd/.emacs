@@ -69,6 +69,8 @@
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-c\k" 'compile)
+(global-set-key "\C-ctk" 'tramp-compile)
+
 (global-set-key "\C-c\C-c" 'comment-region)
 (global-set-key "\C-c\M-c" 'uncomment-region)
 (global-set-key "\C-c#" 'server-start)
@@ -101,6 +103,8 @@
 ;;  Remote File  ;;
 ;;;;;;;;;;;;;;;;;;;
 (setq tramp-default-method "ssh")
+(require 'tramp-util)
+
 ;;add-to-list 'tramp-remote-path "~/bin")
 ;;pushnew "/opt/csw/bin" tramp-remote-path) ;niagara path to cvs
 
@@ -181,14 +185,29 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
+;;add-to-list 'load-path "~/src/other/slime/")
+
 (eval-after-load "slime"
   '(progn
-     (setq inferior-lisp-program "/usr/bin/sbcl")
+     (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
      (setq browse-url-browser-function 'w3m-browse-url)
      (global-set-key "\C-cs" 'slime-selector)
      (slime-setup)))
 
+(require 'slime)
+(require 'slime-tramp)
 
+
+(push (slime-create-filename-translator :machine-instance "daneel"
+                                        :remote-host "daneel"
+                                        :username "ntd")
+      slime-filename-translations)
+
+
+;;push (slime-create-filename-translator :machine-instance "hesh"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+slime-filename-translations)
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
@@ -445,11 +464,16 @@
                                               ,greek-char)
                               nil)))))))))
 
+(define-minor-mode pretty-greek-mode
+  "Displays greek characters")
 
-(add-hook 'lisp-mode-hook 'pretty-greek)
-(add-hook 'f90-mode-hook 'pretty-greek)
+(add-hook 'pretty-greek-mode-hook 'pretty-greek)
 
-;;add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+
+(add-hook 'lisp-mode-hook 'pretty-greek-mode)
+(add-hook 'f90-mode-hook 'pretty-greek-mode)
+
+;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
 
 
 ;; erc
