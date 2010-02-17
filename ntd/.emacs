@@ -40,7 +40,8 @@
 
 (when-host "daneel"
            (setq semanticdb-project-roots
-                 (list "~/cc/sparky/src")))
+                 (list "~/src/kalman"
+                       "~/res/sparky/src")))
 
 
 ;;semantic-load-enable-code-helpers)
@@ -138,6 +139,7 @@
 ;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
+;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
@@ -146,7 +148,7 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-
+(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -154,7 +156,7 @@
 (when do-slime
   (eval-after-load "slime"
     '(progn
-       (setq inferior-lisp-program "/usr/bin/sbcl")
+       (setq inferior-lisp-program "/usr/bin/clisp")
        (setq browse-url-browser-function 'w3m-browse-url)
        (slime-setup))))
 
