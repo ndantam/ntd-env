@@ -44,12 +44,19 @@ function precmd {
     local TOP_LEFT='%{\033[H%}'
 
 
+    if [ `hostname` = "hesh" ]; then
+        local battery=`acpi -b | sed -e 's/.*\(..\)%,.*/\1/'`
+    fi
     case $TERM in
         dumb*)
 ;;
-xterm*)
+xterm|linux*)
 print -Pn "\e]0;%n@%m://%~\a"
-local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+if [ `hostname` = "hesh" ]; then
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+else
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+fi
 local ST_RET=${(%):-%?}
 echo ${ST_HOST};
 ;;
@@ -85,7 +92,7 @@ case $TERM in
     dumb*)
     PS1="$(print '%n@%m://%~ %# ')"
     ;;
-    xterm*)
+    xterm|linux*)
                 #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
     PS1="$(print '%?,%{\e[1;32m%}%!%#%{\e[0m%} ')"
     ;;
@@ -96,9 +103,35 @@ esac
 
 
 
+
+if [ `hostname` = vasilia ] ; then
+    export HUMROOT=~/mnt/daneel-src/humanoids
+else
+    export HUMROOT=$HOME/src/humanoids
+fi
+
+function hls {
+    find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile
+}
+
+function hcomplete {
+    reply=(`hls | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+    #reply=(`ls $HUMROOT/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+}
+
+## Inspired by roscd
+function hcd {
+    cd  $(dirname $(hls | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
+}
+
+compctl -K hcomplete hcd
+
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
+
+#ignore hosts file for completion
+zstyle '*' hosts $hosts
 #promptinit;
 
 ## set keymapt
@@ -112,6 +145,9 @@ unsetopt promptcr
 
 ## emacs bindings
 bindkey -e
+
+## enable correction
+setopt correct
 
 ## enable history
 HISTSIZE=1000

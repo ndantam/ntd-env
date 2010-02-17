@@ -1,47 +1,63 @@
-(setq gentoo nil      ; running on gentoo
-      do-slime t
-      do-viper t
-      do-bigloo-bee nil
-      )
+;; .emacs
+;; Emacs initialization file
+;; Author: Neil Dantam
+;;
+;; This file is released into the public domain.  There is absolutely
+;; no warranty expressed or implied.
 
 (add-to-list 'load-path "~/.emacs.d")
 
 (require 'cl)
-(require 'w3m-load)
 
+;;require 'w3m-load)
 
 (add-to-list 'vc-handled-backends 'Git)
-
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
 
+(defun all (args)
+  (cond
+   ((null args) t)
+   ((car args) (all (cdr args)))
+   (t nil)))
+
+(defun any (args)
+  (cond
+   ((null args) nil)
+   ((car args) t)
+   (t (all (cdr args)))))
+
+
 (defmacro when-host (name &rest forms)
   (declare (indent 1))
-  `(when (string= (system-name) ,name)
+  `(when ,(if (atom name)
+              `(string= (system-name) ,name)
+            `(any (mapcar (lambda (name)
+                            (string= (system-name) name))
+                          (quote ,name))))
      ,@forms))
 
 
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
-(setq semantic-load-turn-everything-on t)
-(require 'semantic-load)
-(require 'semantic-ia)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (define-key c-mode-base-map (kbd "\C-c TAB")
-              'semantic-complete-analyze-inline)
-            (define-key c-mode-base-map (kbd "\C-c m")
-              'semantic-ia-complete-symbol-menu)))
+;;setq semantic-load-turn-everything-on t)
+;;require 'semantic-load)
+;;require 'semantic-ia)
+;;add-hook 'c-mode-common-hook
+;;         (lambda ()
+;;           (define-key c-mode-base-map (kbd "\C-c TAB")
+;;                       'semantic-complete-analyze-inline)
+;;           (define-key c-mode-base-map (kbd "\C-c m")
+;;                       'semantic-ia-complete-symbol-menu)))
 
 ;; Semantic projects
 
-(when-host "daneel"
-           (setq semanticdb-project-roots
-                 (list "~/src/kalman"
-                       "~/res/sparky/src")))
+;;when-host "daneel"
+;; (setq semanticdb-project-roots
+;;       (list "~/cc/sparky/src")))
 
 
 ;;semantic-load-enable-code-helpers)
@@ -53,15 +69,21 @@
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-c\k" 'compile)
+(global-set-key "\C-ctk" 'tramp-compile)
+
 (global-set-key "\C-c\C-c" 'comment-region)
 (global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-c#" 'server-start)
+(global-set-key "\C-cbe" (lambda () (interactive)
+                           (switch-to-buffer "*eshell*")))
+(global-set-key "\C-xvp" 'vc-update)
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
 ;;;;;;;;;;;;;;
 ;;load "/usr/share/emacs/site-lisp/site-gentoo.el")
-(if gentoo
-    (require 'site-gentoo))
+(when nil
+  (require 'site-gentoo))
 
 ;;;;;;;;;;
 ;; MISC ;;
@@ -81,6 +103,8 @@
 ;;  Remote File  ;;
 ;;;;;;;;;;;;;;;;;;;
 (setq tramp-default-method "ssh")
+(require 'tramp-util)
+
 ;;add-to-list 'tramp-remote-path "~/bin")
 ;;pushnew "/opt/csw/bin" tramp-remote-path) ;niagara path to cvs
 
@@ -94,15 +118,18 @@
 (set-foreground-color "green")
 (add-to-list 'default-frame-alist '(foreground-color . "green"))
 
+
+
+(add-to-list 'default-frame-alist '(foreground-color . "green"))
+
 (if (eq window-system 'x)
     (progn
       (set-face-background 'region                   "#555555")
-                                        ;(set-face-foreground 'modeline             "white")
+      (set-face-foreground 'modeline             "white")
       (set-face-background 'modeline             "#333333"))
   (progn
     (set-face-background 'region                   "gray")
     (set-face-foreground 'region                   "black")))
-
 
 
 (mouse-wheel-mode t)
@@ -111,7 +138,13 @@
 (setq font-lock-maximum-decoration t)
 
 
+;;;;;;;;;
+;;  C  ;;
+;;;;;;;;;
 
+;; Other people are annoyed by emacs 2-space default
+(setq c-basic-offset 4) ; I've written to much java,
+                                        ; but then so have many other people...
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -129,10 +162,10 @@
 ;;;;;;;;;;;;;
 ;;  VIPER  ;;
 ;;;;;;;;;;;;;
-(when do-viper
-  (setq viper-mode t)
-  (setq viper-always t)
-  (require 'viper))
+(setq viper-mode t)
+(setq viper-always t)
+(setq viper-vi-state-cursor-color "green")
+(require 'viper)
 
 ;;;;;;;;;;;;
 ;;  TEXT  ;;
@@ -153,12 +186,31 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-(when do-slime
-  (eval-after-load "slime"
-    '(progn
-       (setq inferior-lisp-program "/usr/bin/clisp")
-       (setq browse-url-browser-function 'w3m-browse-url)
-       (slime-setup))))
+
+(eval-after-load "slime"
+  '(progn
+     (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
+     (setq browse-url-browser-function 'w3m-browse-url)
+     (global-set-key "\C-cs" 'slime-selector)
+     (slime-setup)))
+
+(require 'slime)
+(require 'slime-tramp)
+
+
+;;push (slime-create-filename-translator :machine-instance "daneel"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+                                        ;slime-filename-translations)
+
+
+;;push (slime-create-filename-translator :machine-instance "hesh"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+                                        ;slime-filename-translations)
+
+(when-host ("daneel" "hesh" "olivaw" "babel")
+           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
 
@@ -218,7 +270,7 @@
 ;;;;;;;;;;;;;;
 ;;  SCHEME  ;;
 ;;;;;;;;;;;;;;
-(when do-bigloo-bee
+(when nil
   (autoload 'bdb "bdb" "bdb mode" t)
   (autoload 'bee-mode "bee-mode" "bee mode" t)
 
@@ -237,7 +289,7 @@
 (push  '("\\.eml$" . mail-mode) auto-mode-alist )
 (push  '("\\.tsj$" . mail-mode) auto-mode-alist )
 (push  '("\\.tse$" . mail-mode) auto-mode-alist )
-
+(setq mail-self-blind t)
 
 ;;;;;;;;;;;;
 ;;  HTML  ;;
@@ -250,7 +302,7 @@
 ;;  TABS  ;;
 ;;;;;;;;;;;;
 (setq-default indent-tabs-mode nil)
-;;setq-default tab-width 4)
+(setq-default tab-width 8)
 
 
 
@@ -275,7 +327,16 @@
 ;;load "net-doctor")
 
 
+;;;;;;;;;;;;;
+;; FORTRAN ;;
+;;;;;;;;;;;;;
+(defun f90-return( ) (interactive) (f90-indent-line) (newline-and-indent))
 
+(add-hook 'f90-mode-hook
+          '(lambda()
+             (local-set-key [13] 'f90-return)    ; RET with automatic indent
+             (imenu-add-to-menubar "Program-Units") ; Add index of func. to menu bar
+             ))
 
 ;;;;;;;;;;;;;
 ;; OCTAVE  ;;
@@ -356,6 +417,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^a5\\(?:comb\\|paper\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^a5\\(?:comb\\|paper\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "evince %o %(outpage)") ("^html?$" "." "netscape %o"))))
  '(case-fold-search t)
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
@@ -365,6 +427,58 @@
  '(js2-mirror-mode nil)
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Display greek characters ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Courtesy of BenignoUria
+
+(defun pretty-greek ()
+  (let ((greek '("alpha" "beta" "gamma" "delta"
+                 "epsilon" "zeta" "eta" "theta"
+                 "iota" "kappa" "lambda" "mu" "nu"
+                 "xi" "omicron" "pi" "rho" "sigma_final"
+                 "sigma" "tau" "upsilon" "phi" "chi" "psi"
+                 "omega")))
+    (loop for word in greek
+          for code = 97 then (+ 1 code)
+          do  (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                (font-lock-add-keywords
+                 nil
+                 `((,(concatenate 'string
+                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                                  word "\\)[a-zA-Z]")
+                    (0 (progn (decompose-region (match-beginning 2)
+                                                (match-end 2))
+                              nil)))))
+                (font-lock-add-keywords
+                 nil
+                 `((,(concatenate 'string
+                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                                  word "\\)[^a-zA-Z]")
+                    (0 (progn (compose-region (match-beginning 2)
+                                              (match-end 2)
+                                              ,greek-char)
+                              nil)))))))))
+
+(define-minor-mode pretty-greek-mode
+  "Displays greek characters")
+
+(add-hook 'pretty-greek-mode-hook 'pretty-greek)
+
+
+(add-hook 'lisp-mode-hook 'pretty-greek-mode)
+(add-hook 'f90-mode-hook 'pretty-greek-mode)
+
+;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
+
+
+;; erc
+
+(require 'erc)
 
 
 ;;;;;;;;;;;;;;;;
