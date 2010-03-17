@@ -103,7 +103,7 @@
 ;;  Remote File  ;;
 ;;;;;;;;;;;;;;;;;;;
 (setq tramp-default-method "ssh")
-(require 'tramp-util)
+;;require 'tramp-util)
 
 ;;add-to-list 'tramp-remote-path "~/bin")
 ;;pushnew "/opt/csw/bin" tramp-remote-path) ;niagara path to cvs
@@ -190,24 +190,23 @@
 (eval-after-load "slime"
   '(progn
      (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
+     ;;(setq inferior-lisp-program "ecl")
      (setq browse-url-browser-function 'w3m-browse-url)
      (global-set-key "\C-cs" 'slime-selector)
      (slime-setup)))
 
-(require 'slime)
-(require 'slime-tramp)
 
+(require 'slime)
+(require 'slime-autoloads)
+
+(require 'slime-tramp)
+(slime-setup)
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
                                         ;:username "ntd")
                                         ;slime-filename-translations)
-
-
-;;push (slime-create-filename-translator :machine-instance "hesh"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations)
+(setq slime-filename-translations nil)
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
@@ -255,7 +254,6 @@
 ;;;;;;;;;;;
 ;;autoload 'sgml-mode "psgml" "Major mode to edit SGML files." t)
 ;;autoload 'xml-mode "psgml" "Major mode to edit XML files." t)
-
 (add-to-list 'auto-mode-alist
              (cons (concat "\\." (regexp-opt '( "xml" "xsd"  "rng" "xslt" "svg" "rss") t) "\\'")
                    'nxml-mode))
@@ -265,7 +263,6 @@
 ;;  ADA  ;;
 ;;;;;;;;;;;
 ;;set 'ada-prj-default-project-file "~/src/ada/project.adp")
-
 
 ;;;;;;;;;;;;;;
 ;;  SCHEME  ;;
