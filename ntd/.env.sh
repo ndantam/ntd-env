@@ -45,6 +45,9 @@ if [ `hostname` = "daneel"  ]; then
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
+if [ `hostname` = "chetter"  ]; then
+    alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
+fi
 if [ `hostname` = "virjay"  ]; then
     alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 fi
