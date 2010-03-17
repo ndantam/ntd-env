@@ -71,8 +71,8 @@
 (global-set-key "\C-c\k" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
-(global-set-key "\C-c\C-c" 'comment-region)
-(global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-c#" 'server-start)
 (global-set-key "\C-cbe" (lambda () (interactive)
                            (switch-to-buffer "*eshell*")))
