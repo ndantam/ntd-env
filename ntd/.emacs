@@ -172,6 +172,7 @@
 ;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
+;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
@@ -180,12 +181,11 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-
+(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-;;add-to-list 'load-path "~/src/other/slime/")
 
 (eval-after-load "slime"
   '(progn
@@ -202,16 +202,11 @@
 (require 'slime-tramp)
 (slime-setup)
 
-
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
                                         ;:username "ntd")
                                         ;slime-filename-translations)
 (setq slime-filename-translations nil)
-
-;;push (slime-create-filename-translator :machine-instance "hesh"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
