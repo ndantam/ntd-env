@@ -16,6 +16,7 @@ if [ `uname` = Linux ]; then
     ulimit -v 1024000
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
     alias lp-duplex='lp -o sides=two-sided-long-edge'
+    alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
 fi
 
 
@@ -31,8 +32,7 @@ if [ `hostname` = "daneel"  ]; then
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
-    alias cu-sparky="cu -lttyS0 --parity=none -s115200 --nostop"
-    alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
+  #alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias mount-cc="sshfs gaia: ~/mnt/cc"

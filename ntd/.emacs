@@ -60,6 +60,7 @@
 ;;       (list "~/cc/sparky/src")))
 
 
+
 ;;semantic-load-enable-code-helpers)
 
 ;;setq semantic-load-turn-useful-things-on t)
@@ -77,6 +78,10 @@
 (global-set-key "\C-cbe" (lambda () (interactive)
                            (switch-to-buffer "*eshell*")))
 (global-set-key "\C-xvp" 'vc-update)
+
+
+(global-set-key "\C-ch" 'hippie-expand)
+(global-set-key "\M-\\" 'hippie-expand)
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
