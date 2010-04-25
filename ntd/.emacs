@@ -60,6 +60,7 @@
 ;;       (list "~/cc/sparky/src")))
 
 
+
 ;;semantic-load-enable-code-helpers)
 
 ;;setq semantic-load-turn-useful-things-on t)
@@ -71,12 +72,16 @@
 (global-set-key "\C-c\k" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
-(global-set-key "\C-c\C-c" 'comment-region)
-(global-set-key "\C-c\M-c" 'uncomment-region)
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-c#" 'server-start)
 (global-set-key "\C-cbe" (lambda () (interactive)
                            (switch-to-buffer "*eshell*")))
 (global-set-key "\C-xvp" 'vc-update)
+
+
+(global-set-key "\C-ch" 'hippie-expand)
+(global-set-key "\M-\\" 'hippie-expand)
 
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
@@ -172,6 +177,7 @@
 ;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
+;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
@@ -180,26 +186,27 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-
+(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
+
 (eval-after-load "slime"
   '(progn
-     ;;(setq inferior-lisp-program "/usr/bin/sbcl")
      (setq slime-lisp-implementations
            '((sbcl ("/usr/bin/sbcl"))
              (clisp ("/usr/bin/clisp"))
              (ecl ("/usr/bin/ecl"))))
-
+     ;;(setq inferior-lisp-program "sbcl --dynamic-space-size 512")
      (setq browse-url-browser-function 'w3m-browse-url)
      (global-set-key "\C-cs" 'slime-selector)
      (slime-setup)))
 
-(require 'slime)
-(require 'slime-tramp)
 
+(require 'slime)
+(require 'slime-autoloads)
+(require 'slime-tramp)
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
@@ -207,11 +214,11 @@
                                         ;slime-filename-translations
 ;;
 
-
-;;push (slime-create-filename-translator :machine-instance "hesh"
+;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
                                         ;:username "ntd")
                                         ;slime-filename-translations)
+;;(setq slime-filename-translations nil)
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
@@ -259,7 +266,6 @@
 ;;;;;;;;;;;
 ;;autoload 'sgml-mode "psgml" "Major mode to edit SGML files." t)
 ;;autoload 'xml-mode "psgml" "Major mode to edit XML files." t)
-
 (add-to-list 'auto-mode-alist
              (cons (concat "\\." (regexp-opt '( "xml" "xsd"  "rng" "xslt" "svg" "rss") t) "\\'")
                    'nxml-mode))
@@ -269,7 +275,6 @@
 ;;  ADA  ;;
 ;;;;;;;;;;;
 ;;set 'ada-prj-default-project-file "~/src/ada/project.adp")
-
 
 ;;;;;;;;;;;;;;
 ;;  SCHEME  ;;
@@ -468,11 +473,16 @@
                                               ,greek-char)
                               nil)))))))))
 
+(define-minor-mode pretty-greek-mode
+  "Displays greek characters")
 
-(add-hook 'lisp-mode-hook 'pretty-greek)
-(add-hook 'f90-mode-hook 'pretty-greek)
+(add-hook 'pretty-greek-mode-hook 'pretty-greek)
 
-;;add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+
+(add-hook 'lisp-mode-hook 'pretty-greek-mode)
+(add-hook 'f90-mode-hook 'pretty-greek-mode)
+
+;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
 
 
 ;; erc

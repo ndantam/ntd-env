@@ -105,20 +105,23 @@ esac
 
 
 if [ `hostname` = vasilia ] ; then
-    export HUMROOT=/mnt/scratch-ntd/src/humanoids
+    export HUMROOT=~/mnt/daneel-src/humanoids
 else
     export HUMROOT=$HOME/src/humanoids
 fi
 
+function hls {
+    find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile
+}
 
 function hcomplete {
-    reply=(`find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
+    reply=(`hls | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
     #reply=(`ls $HUMROOT/**/Makefile | egrep "$1[^/]*/(trunk/)?Makefile\$" | sed -e 's@.*/\([^/]\+\)/trunk/Makefile@\1@' -e 's@.*/\([^/]\+\)/Makefile@\1@'`)
 }
 
 ## Inspired by roscd
 function hcd {
-    cd  $(dirname $(ls $HUMROOT/**/Makefile | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
+    cd  $(dirname $(hls | egrep "/$1/(trunk/)?Makefile$" | sort -r | head -n 1))
 }
 
 compctl -K hcomplete hcd
