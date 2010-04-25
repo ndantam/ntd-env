@@ -103,7 +103,7 @@
 ;;  Remote File  ;;
 ;;;;;;;;;;;;;;;;;;;
 (setq tramp-default-method "ssh")
-(require 'tramp-util)
+;;require 'tramp-util)
 
 ;;add-to-list 'tramp-remote-path "~/bin")
 ;;pushnew "/opt/csw/bin" tramp-remote-path) ;niagara path to cvs
@@ -187,7 +187,12 @@
 ;;;;;;;;;;;;
 (eval-after-load "slime"
   '(progn
-     (setq inferior-lisp-program "/usr/bin/sbcl")
+     ;;(setq inferior-lisp-program "/usr/bin/sbcl")
+     (setq slime-lisp-implementations
+           '((sbcl ("/usr/bin/sbcl"))
+             (clisp ("/usr/bin/clisp"))
+             (ecl ("/usr/bin/ecl"))))
+
      (setq browse-url-browser-function 'w3m-browse-url)
      (global-set-key "\C-cs" 'slime-selector)
      (slime-setup)))
@@ -196,16 +201,17 @@
 (require 'slime-tramp)
 
 
-(push (slime-create-filename-translator :machine-instance "daneel"
-                                        :remote-host "daneel"
-                                        :username "ntd")
-      slime-filename-translations)
+;;push (slime-create-filename-translator :machine-instance "daneel"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+                                        ;slime-filename-translations
+;;
 
 
 ;;push (slime-create-filename-translator :machine-instance "hesh"
                                         ;:remote-host "daneel"
                                         ;:username "ntd")
-slime-filename-translations)
+                                        ;slime-filename-translations)
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
