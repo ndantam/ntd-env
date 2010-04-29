@@ -238,6 +238,32 @@
 ;; (when-host ("daneel" "hesh" "olivaw" "babel")
 ;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
+;; (setq slime-lisp-implementations
+;;       '((sbcl ("/usr/bin/sbcl"))
+;;         (clisp ("/usr/bin/clisp"))
+;;         (ecl ("/usr/bin/ecl"))))
+
+
+(require 'slime)
+(require 'slime-autoloads)
+(require 'slime-tramp)
+
+;;push (slime-create-filename-translator :machine-instance "daneel"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+                                        ;slime-filename-translations
+;;
+
+;;push (slime-create-filename-translator :machine-instance "daneel"
+                                        ;:remote-host "daneel"
+                                        ;:username "ntd")
+                                        ;slime-filename-translations)
+;;(setq slime-filename-translations nil)
+
+(when-host ("daneel" "hesh" "olivaw" "babel")
+           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
+>>>>>>> baf37db122618de32a7e82adca6fc48f596beca9:ntd/.emacs
+
 
 
 ;;;;;;;;;;;;

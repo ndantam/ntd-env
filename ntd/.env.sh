@@ -17,6 +17,11 @@ if [ `uname` = Linux ]; then
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
     alias lp-duplex='lp -o sides=two-sided-long-edge'
     alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
+    alias mount-cc="sshfs gaia: ~/mnt/cc"
+    alias mount-acme="sshfs acme: ~/mnt/prism"
+    alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
+    alias mount-virjay="sshfs virjay: ~/mnt/virjay"
+    alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
 fi
 
 
@@ -36,13 +41,8 @@ if [ `hostname` = "daneel"  ]; then
   #alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
-    alias mount-cc="sshfs gaia: ~/mnt/cc"
-    alias mount-acme="sshfs acme: ~/mnt/prism"
-    alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
-    alias mount-virjay="sshfs virjay: ~/mnt/virjay"
   #alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
-    alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
