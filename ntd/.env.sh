@@ -27,6 +27,7 @@ function make-common-dist {
 }
 
 if [ `hostname` = "daneel"  ]; then
+    alias clbuild="~/src/clbuild/clbuild"
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs

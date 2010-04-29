@@ -40,6 +40,16 @@
      ,@forms))
 
 
+(defmacro unless-host (name &rest forms)
+  (declare (indent 1))
+  `(unless ,(if (atom name)
+                `(string= (system-name) ,name)
+              `(any (mapcar (lambda (name)
+                              (string= (system-name) name))
+                            (quote ,name))))
+     ,@forms))
+
+
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
@@ -80,7 +90,6 @@
 (global-set-key "\C-xvp" 'vc-update)
 
 
-(global-set-key "\C-ch" 'hippie-expand)
 (global-set-key "\M-\\" 'hippie-expand)
 
 ;;;;;;;;;;;;;;
@@ -192,29 +201,42 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(eval-after-load "slime"
-  '(progn
-     (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
-     ;;(setq inferior-lisp-program "ecl")
-     (setq browse-url-browser-function 'w3m-browse-url)
-     (global-set-key "\C-cs" 'slime-selector)
-     (slime-setup)))
+(when-host ("daneel")
+           (setq inhibit-splash-screen t)
+           (pushnew "~/src/clbuild/source/slime/" load-path)
+           (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
+           (setq slime-backend "~/src/clbuild/.swank-loader.lisp")
+           (load "~/src/clbuild/source/slime/slime")
 
+           (setq inferior-lisp-program "/usr/local/bin/sbcl")
+           (slime-require :swank-listener-hooks))
 
-(require 'slime)
-(require 'slime-autoloads)
+(unless-host ("daneel")
+             (eval-after-load "slime"
+               '(progn
+                  (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
+                  (require 'slime)
+                  (require 'slime-tramp)
+                  (require 'slime-autoloads))))
 
-(require 'slime-tramp)
-(slime-setup)
+(slime-setup '(slime-fancy slime-asdf))
+(global-set-key "\C-cs" 'slime-selector)
 
-;;push (slime-create-filename-translator :machine-instance "daneel"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations)
-(setq slime-filename-translations nil)
+;;(setq browse-url-browser-function 'w3m-browse-url)
+;;(setq slime-use-autodoc-mode nil)
 
-(when-host ("daneel" "hesh" "olivaw" "babel")
-           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
+;; ;(require 'slime-autoloads)
+;; ;require 'slime-tramp)
+;; (slime-setup '(slime-fancy))
+
+;; ;(push (slime-create-filename-translator :machine-instance "daneel"
+;;                                         ;:remote-host "daneel"
+;;                                         ;:username "ntd")
+;;       ;slime-filename-translations)
+;; ;(setq slime-filename-translations nil)
+
+;; (when-host ("daneel" "hesh" "olivaw" "babel")
+;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
 
@@ -230,7 +252,6 @@
 ;;  js2   ;;
 ;;;;;;;;;;;;
 
-;;push "~/src/elisp/js2/" load-path)
 ;;autoload 'js2-mode "js2" nil t)
 
 ;;add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
