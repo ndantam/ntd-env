@@ -22,6 +22,8 @@ if [ `uname` = Linux ]; then
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
+    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
+    alias KILL="kill -9"
 fi
 
 
@@ -48,9 +50,6 @@ fi
 
 if [ `hostname` = "chetter"  ]; then
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
-fi
-if [ `hostname` = "virjay"  ]; then
-    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 fi
 
 ## LL WS env vars
@@ -107,4 +106,14 @@ if [ `hostname` = "vasilia" ]; then
         sshfs thebrain:/scratch/ntd /mnt/scratch-ntd
     fi
 fi
+
+# iRobot
+if [ `hostname` = "IRBT-2914" ]; then
+    export AWAREPM_LOCAL_CACHE=~/src/irobot/cache
+    export AWAREPM_REMOTE_CACHES="http://prodfiles.hq.irobot.com/software-releases/Aware2|http://prodfiles.hq.irobot.com/software-releases/Research|http://prodfiles.hq.irobot.com/software-releases/PackBot"
+    alias awarepm=/opt/awarepm_280/aware-build/awarepm.py
+    source /opt/irobot/aware-build/aware2Shell.sh
+    ulimit -s 2048
+fi
+
 PATH=~/bin:$PATH

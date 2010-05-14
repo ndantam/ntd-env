@@ -201,7 +201,7 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ("daneel")
+(when-host "daneel"
            (setq inhibit-splash-screen t)
            (pushnew "~/src/clbuild/source/slime/" load-path)
            (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
@@ -262,7 +262,6 @@
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
->>>>>>> baf37db122618de32a7e82adca6fc48f596beca9:ntd/.emacs
 
 
 
@@ -529,6 +528,15 @@
 
 (require 'erc)
 
+
+
+(defun irobot-erc ()
+  (interactive)
+  (erc-tls :server  "leprosy.wardrobe.irobot.com" :port 6667
+           :nick "ndantam" :full-name "Neil Dantam"))
+
+(setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
+                                     "#research")))
 
 ;;;;;;;;;;;;;;;;
 ;; RUN ESHELL ;;
