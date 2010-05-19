@@ -10,13 +10,15 @@ export CDPATH="$CDPATH:$HOME/src:$HOME/class"
 
 if [ `uname` = Linux ]; then
     alias ls="ls -F --color=auto"
+    alias clbuild="~/src/clbuild/clbuild"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
-    ulimit -v 1024000
+    ulimit -m 1024000
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
     alias lp-duplex='lp -o sides=two-sided-long-edge'
     alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
+    alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
     alias mount-cc="sshfs gaia: ~/mnt/cc"
     alias mount-acme="sshfs acme: ~/mnt/prism"
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
@@ -34,7 +36,6 @@ function make-common-dist {
 }
 
 if [ `hostname` = "daneel"  ]; then
-    alias clbuild="~/src/clbuild/clbuild"
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs
@@ -109,11 +110,26 @@ fi
 
 # iRobot
 if [ `hostname` = "IRBT-2914" ]; then
-    export AWAREPM_LOCAL_CACHE=~/src/irobot/cache
-    export AWAREPM_REMOTE_CACHES="http://prodfiles.hq.irobot.com/software-releases/Aware2|http://prodfiles.hq.irobot.com/software-releases/Research|http://prodfiles.hq.irobot.com/software-releases/PackBot"
-    alias awarepm=/opt/awarepm_280/aware-build/awarepm.py
-    source /opt/irobot/aware-build/aware2Shell.sh
     ulimit -s 2048
+    aware_env() {
+        export AWAREPM_LOCAL_CACHE=~/src/irobot/cache
+        export AWAREPM_REMOTE_CACHES="http://prodfiles.hq.irobot.com/software-releases/Aware2|http://prodfiles.hq.irobot.com/software-releases/Research|http://prodfiles.hq.irobot.com/software-releases/PackBot"
+        alias awarepm=/opt/awarepm_280/aware-build/awarepm.py
+        source /opt/irobot/aware-build/aware2Shell.sh > /dev/null
+        ST_FLAG=${ST_FLAG}"\033[1;35m(AWR)\033[0m"
+    }
+
+    ros_env() {
+        export ROS_ROOT=/home/ndantam/src/ros/ros
+        export PATH=$ROS_ROOT/bin:$PATH
+        export PYTHONPATH=$ROS_ROOT/core/roslib/src:$PYTHONPATH
+        if [ ! "$ROS_MASTER_URI" ]; then
+            export ROS_MASTER_URI=http://localhost:11311
+        fi
+        export ROS_PACKAGE_PATH=/home/ndantam/src/ros/stacks
+        source $ROS_ROOT/tools/rosbash/roszsh
+        ST_FLAG=${ST_FLAG}"\033[1;35m(ROS)\033[0m"
+    }
 fi
 
 PATH=~/bin:$PATH
