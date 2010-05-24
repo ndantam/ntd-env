@@ -4,6 +4,9 @@
 ## This work hereby released into the public domain
 ## NO WARRANTY EXPRESSED OR IMPLIED
 
+
+## Print the fancy status line
+ST_FLAG=''
 function precmd {
     local BLACK="%{\033[0;30%}"
     local RED="%{\033[0;31%}"
@@ -51,11 +54,16 @@ function precmd {
         dumb*)
 ;;
 xterm|linux*)
-print -Pn "\e]0;%n@%m://%~\a"
+                # Print titlebar in xterms
+if [ $TERM = linux ]; then
+    true
+else
+    print -Pn "\e]0;%n@%m://%~\a"
+fi
 if [ `hostname` = "hesh" ]; then
     local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
 else
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${ST_FLAG}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
 fi
 local ST_RET=${(%):-%?}
 echo ${ST_HOST};
@@ -72,6 +80,7 @@ esac
 
 }
 
+#print titlebar in xterm
 function preexec {
     case $TERM in
         dumb*)
@@ -88,6 +97,8 @@ esac
 #local GREEN="%{\033[0;32m%}"
 #local LIGHT_GREEN="%{\033[1;32m%}"
 #local NO_COLOR="%{\033[0m%}"
+
+## Set PS1
 case $TERM in
     dumb*)
     PS1="$(print '%n@%m://%~ %# ')"
