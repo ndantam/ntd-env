@@ -22,6 +22,8 @@ if [ `uname` = Linux ]; then
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
+    alias mount-humanoids-ssh="sshfs thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
+    alias clbuild="~/src/clbuild/clbuild"
 fi
 
 
@@ -32,7 +34,6 @@ function make-common-dist {
 }
 
 if [ `hostname` = "daneel"  ]; then
-    alias clbuild="~/src/clbuild/clbuild"
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs
@@ -41,7 +42,6 @@ if [ `hostname` = "daneel"  ]; then
   #alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
-  #alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
     export PATH=$PATH:~/src/other/depot_tools
 fi
