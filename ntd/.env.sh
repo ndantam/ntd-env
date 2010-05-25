@@ -120,13 +120,13 @@ if [ `hostname` = "IRBT-2914" ]; then
     }
 
     ros_env() {
-        export ROS_ROOT=/home/ndantam/src/ros/ros
+        export ROS_ROOT=~/src/ros/ros
         export PATH=$ROS_ROOT/bin:$PATH
         export PYTHONPATH=$ROS_ROOT/core/roslib/src:$PYTHONPATH
         if [ ! "$ROS_MASTER_URI" ]; then
             export ROS_MASTER_URI=http://localhost:11311
         fi
-        export ROS_PACKAGE_PATH=/home/ndantam/src/ros/stacks
+        export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg
         source $ROS_ROOT/tools/rosbash/roszsh
         ST_FLAG=${ST_FLAG}"\033[1;35m(ROS)\033[0m"
     }
