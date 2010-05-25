@@ -11,7 +11,7 @@
 
 ;;require 'w3m-load)
 
-(add-to-list 'vc-handled-backends 'Git)
+;;add-to-list 'vc-handled-backends 'Git)
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
@@ -186,7 +186,6 @@
 ;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
-;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
@@ -196,22 +195,23 @@
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 (setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
+(add-hook 'TeX-mode-hook (lambda () (TeX-PDF-mode 1)))
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host "daneel"
+(when-host ("daneel" "hesh")
            (setq inhibit-splash-screen t)
            (pushnew "~/src/clbuild/source/slime/" load-path)
            (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
-           (setq slime-backend "~/src/clbuild/.swank-loader.lisp")
+           (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
            (load "~/src/clbuild/source/slime/slime")
 
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
            (slime-require :swank-listener-hooks))
 
-(unless-host ("daneel")
+(unless-host ("daneel" "hesh")
              (eval-after-load "slime"
                '(progn
                   (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
