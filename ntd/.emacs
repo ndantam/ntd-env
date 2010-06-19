@@ -6,6 +6,10 @@
 ;; no warranty expressed or implied.
 
 (add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/imaxima")
+
+
+load-path
 
 (require 'cl)
 
@@ -433,6 +437,12 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
+
+(autoload 'imaxima "imaxima" "Frontend of Maxima CAS" t)
+(autoload 'imath "imath" "Interactive Math mode" t)
+(autoload 'imath-mode "imath" "Interactive Math mode" t)
+(setq imaxima-fnt-size "Large")
+
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
 ;;autoload 'maxima "maxima" "Running Maxima interactively" t)

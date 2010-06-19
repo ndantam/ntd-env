@@ -28,6 +28,7 @@ if [ `uname` = Linux ]; then
     alias clbuild="~/src/clbuild/clbuild"
     alias mount-daneel="sshfs daneel: ~/mnt/daneel"
     alias KILL="kill -9"
+    alias sshsock="ssh -v -D1080 daneel"
 fi
 
 
