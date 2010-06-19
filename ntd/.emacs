@@ -31,7 +31,7 @@ load-path
   (cond
    ((null args) nil)
    ((car args) t)
-   (t (all (cdr args)))))
+   (t (any (cdr args)))))
 
 
 (defmacro when-host (name &rest forms)
@@ -205,17 +205,16 @@ load-path
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ("daneel" "hesh")
+(when-host ("daneel" "hesh" "leela")
            (setq inhibit-splash-screen t)
            (pushnew "~/src/clbuild/source/slime/" load-path)
            (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
            (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
            (load "~/src/clbuild/source/slime/slime")
-
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
            (slime-require :swank-listener-hooks))
 
-(unless-host ("daneel" "hesh")
+(unless-host ("daneel" "hesh" "leela")
              (eval-after-load "slime"
                '(progn
                   (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
