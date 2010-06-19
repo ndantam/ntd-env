@@ -114,7 +114,7 @@ load-path
 (menu-bar-mode 1)
 
 (set-scroll-bar-mode nil)
-
+(setq x-select-enable-clipboard t)
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -543,7 +543,8 @@ load-path
 (defun irobot-erc ()
   (interactive)
   (erc-tls :server  "leprosy.wardrobe.irobot.com" :port 6667
-           :nick "ndantam" :full-name "Neil Dantam"))
+           :nick "ndantam" :full-name "Neil Dantam")
+  (erc-join-channel "#research"))
 
 (setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
                                      "#research")))
