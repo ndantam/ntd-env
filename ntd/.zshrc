@@ -47,8 +47,9 @@ function precmd {
     local TOP_LEFT='%{\033[H%}'
 
 
-    if [ `hostname` = "hesh" ]; then
+    if [ $HOST = "hesh" -o $HOST = "leela" ]; then
         local battery=`acpi -b | sed -e 's/.*\(..\)%,.*/\1/'`
+        local battery="[${battery}%%]"
     fi
     case $TERM in
         dumb*)
@@ -60,17 +61,12 @@ if [ $TERM = linux ]; then
 else
     print -Pn "\e]0;%n@%m://%~\a"
 fi
-if [ `hostname` = "hesh" ]; then
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}["${battery}%%"]:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
-else
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${ST_FLAG}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
-fi
-local ST_RET=${(%):-%?}
+local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${ST_FLAG}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
 echo ${ST_HOST};
 ;;
 *)
 local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
-local ST_RET=${(%):-%?}
+            #local ST_RET=${(%):-%?}
 PR_TITLEBAR=''
 echo ${ST_HOST};
 ;;
@@ -93,10 +89,6 @@ PR_TITLEBAR=''
 ;;
 esac
 }
-
-#local GREEN="%{\033[0;32m%}"
-#local LIGHT_GREEN="%{\033[1;32m%}"
-#local NO_COLOR="%{\033[0m%}"
 
 ## Set PS1
 case $TERM in

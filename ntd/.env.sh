@@ -134,4 +134,16 @@ if [ `hostname` = "IRBT-2914" ]; then
     }
 fi
 
+
+if [ `hostname` = "leela"  ]; then
+    fanlevel() {
+        echo level $1 | sudo tee /proc/acpi/ibm/fan
+    }
+    alias ff32="schroot -p iceweasel -- -P 32 -no-remote"
+    alias fanlow='fanlevel 2'
+    alias fanmed='fanlevel 4'
+    alias fanmax='fanlevel 7'
+    alias fanauto='fanlevel auto'
+    alias fandis='fanlevel disengaged'
+fi
 PATH=~/bin:$PATH
