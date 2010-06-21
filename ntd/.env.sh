@@ -9,7 +9,11 @@ export EDITOR=vim
 export CDPATH="$CDPATH:$HOME/src:$HOME/class"
 
 if [ `uname` = Linux ]; then
-    alias ls="ls -F --color=auto"
+    if [ "$TERM" = dumb ] ; then
+        alias ls="ls -F"
+    else
+        alias ls="ls -F --color=auto"
+    fi
     alias clbuild="~/src/clbuild/clbuild"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
