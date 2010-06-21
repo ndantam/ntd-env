@@ -132,6 +132,9 @@ unsetopt promptcr
 ## emacs bindings
 bindkey -e
 
+
+[[ $EMACS = t ]] && unsetopt zle
+
 ## enable correction
 setopt correct
 

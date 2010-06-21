@@ -376,7 +376,7 @@ load-path
 ;;;;;;;;;;;
 ;; SHELL ;;
 ;;;;;;;;;;;
-(setq explicit-shell-file-name "/bin/bash" )
+(setq explicit-shell-file-name "/bin/zsh" )
 
 
 
