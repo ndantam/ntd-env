@@ -6,6 +6,10 @@
 ;; no warranty expressed or implied.
 
 (add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/imaxima")
+
+
+load-path
 
 (require 'cl)
 
@@ -27,7 +31,7 @@
   (cond
    ((null args) nil)
    ((car args) t)
-   (t (all (cdr args)))))
+   (t (any (cdr args)))))
 
 
 (defmacro when-host (name &rest forms)
@@ -206,10 +210,7 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-;;default
-(setq inferior-lisp-program "sbcl")
-
-(when-host ("daneel" "IRBT-2914")
+(when-host ("daneel" "hesh" "leela" "IRBT-2914")
            (setq inhibit-splash-screen t)
            (pushnew "~/src/clbuild/source/slime/" load-path)
            (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
@@ -218,13 +219,13 @@
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
            (slime-require :swank-listener-hooks))
 
-(unless-host ("daneel")
-             (eval-after-load "slime"
-               '(progn
-                  (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
-                  (require 'slime)
-                  (require 'slime-tramp)
-                  (require 'slime-autoloads))))
+(unless-host ("daneel" "hesh" "leela" "IRBT-2914"))
+(eval-after-load "slime"
+  '(progn
+     (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
+     (require 'slime)
+     (require 'slime-tramp)
+     (require 'slime-autoloads))))
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
@@ -447,6 +448,7 @@
 (autoload 'imath "imath" "Interactive Math mode" t)
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-use-maxima-mode-flag nil)
+(setq imaxima-fnt-size "Large")
 (require 'maxima)
 
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
