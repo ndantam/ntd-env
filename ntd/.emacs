@@ -219,13 +219,13 @@ load-path
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
            (slime-require :swank-listener-hooks))
 
-(unless-host ("daneel" "hesh" "leela" "IRBT-2914"))
-(eval-after-load "slime"
-  '(progn
-     (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
-     (require 'slime)
-     (require 'slime-tramp)
-     (require 'slime-autoloads))))
+(unless-host ("daneel" "hesh" "leela" "IRBT-2914")
+             (eval-after-load "slime"
+               '(progn
+                  (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
+                  (require 'slime)
+                  (require 'slime-tramp)
+                  (require 'slime-autoloads))))
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
@@ -449,7 +449,7 @@ load-path
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-use-maxima-mode-flag nil)
 (setq imaxima-fnt-size "Large")
-(require 'maxima)
+;;require 'maxima)
 
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
@@ -559,8 +559,8 @@ load-path
 (setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
                                      "#research")))
 
-;;;;;;;;;;;;;;;;
-;; RUN ESHELL ;;
-;;;;;;;;;;;;;;;;
-(eshell)
+;;;;;;;;;;;;;;;
+;; RUN SHELL ;;
+;;;;;;;;;;;;;;;
+(shell)
 
