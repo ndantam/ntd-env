@@ -122,7 +122,7 @@ if [ `hostname` = "IRBT-2914" ]; then
         export AWAREPM_REMOTE_CACHES="http://prodfiles.hq.irobot.com/software-releases/Aware2|http://prodfiles.hq.irobot.com/software-releases/Research|http://prodfiles.hq.irobot.com/software-releases/PackBot"
         alias awarepm=/opt/awarepm_280/aware-build/awarepm.py
         source /opt/irobot/aware-build/aware2Shell.sh > /dev/null
-        ST_FLAG=${ST_FLAG}"\033[1;35m(AWR)\033[0m"
+        ST_FLAG=${ST_FLAG}"(AWR)"
     }
 
     ros_env() {
@@ -132,9 +132,9 @@ if [ `hostname` = "IRBT-2914" ]; then
         if [ ! "$ROS_MASTER_URI" ]; then
             export ROS_MASTER_URI=http://localhost:11311
         fi
-        export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg
+        export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg:~/src/ros/ros_experimental/tags/boxturtle
         source $ROS_ROOT/tools/rosbash/roszsh
-        ST_FLAG=${ST_FLAG}"\033[1;35m(ROS)\033[0m"
+        ST_FLAG=${ST_FLAG}"(ROS)"
     }
 fi
 
