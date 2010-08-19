@@ -475,7 +475,7 @@
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-use-maxima-mode-flag nil)
 (setq imaxima-fnt-size "Large")
-(require 'maxima)
+;;require 'maxima)
 
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
@@ -588,9 +588,9 @@
 (setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
                                      "#research")))
 
-;;;;;;;;;;;;;;;;
-;; RUN ESHELL ;;
-;;;;;;;;;;;;;;;;
-(eshell)
+;;;;;;;;;;;;;;;
+;; RUN SHELL ;;
+;;;;;;;;;;;;;;;
+(shell)
 
 
