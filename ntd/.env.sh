@@ -7,21 +7,31 @@
 export EDITOR=vim
 
 export CDPATH="$CDPATH:$HOME/src:$HOME/class"
-
 if [ `uname` = Linux ]; then
-    alias ls="ls -F --color=auto"
+    if [ "$TERM" = dumb -o "$EMACS" = t ] ; then
+        alias ls="ls -F"
+    else
+        alias ls="ls -F --color=auto"
+    fi
+    alias clbuild="~/src/clbuild/clbuild"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
-    ulimit -v 1024000
+    ulimit -m 1024000
     alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
     alias lp-duplex='lp -o sides=two-sided-long-edge'
     alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
+    alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
     alias mount-cc="sshfs gaia: ~/mnt/cc"
     alias mount-acme="sshfs acme: ~/mnt/prism"
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
+    alias mount-humanoids-ssh="sshfs thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
+    alias clbuild="~/src/clbuild/clbuild"
+    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
+    alias KILL="kill -9"
+    alias sshsock="ssh -v -D1080 daneel"
 fi
 
 
@@ -32,7 +42,6 @@ function make-common-dist {
 }
 
 if [ `hostname` = "daneel"  ]; then
-    alias clbuild="~/src/clbuild/clbuild"
   #export DOXPATH=~/mnt/prism/public_html/dox
     export DOXRSYNCSSH=acme:public_html/docs
     export DISTSCPPATH=acme:tarballs
@@ -41,16 +50,12 @@ if [ `hostname` = "daneel"  ]; then
   #alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
-  #alias mount-humanoids="sshfs thebrain:/home/humanoids ~/mnt/humanoids"
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
 if [ `hostname` = "chetter"  ]; then
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
-fi
-if [ `hostname` = "virjay"  ]; then
-    alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 fi
 
 ## LL WS env vars
@@ -103,8 +108,45 @@ export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 
 if [ `hostname` = "vasilia" ]; then
-    if [ -f "/mnt/scratch-ntd/.ntd-thebrain" ] ; then ; else
+    if [ -f "/mnt/scratch-ntd/.ntd-thebrain" ] ; then true; else
         sshfs thebrain:/scratch/ntd /mnt/scratch-ntd
     fi
+fi
+
+# iRobot
+if [ `hostname` = "IRBT-2914" ]; then
+    ulimit -s 2048
+    aware_env() {
+        export AWAREPM_LOCAL_CACHE=~/src/irobot/cache
+        export AWAREPM_REMOTE_CACHES="http://prodfiles.hq.irobot.com/software-releases/Aware2|http://prodfiles.hq.irobot.com/software-releases/Research|http://prodfiles.hq.irobot.com/software-releases/PackBot"
+        alias awarepm=/opt/awarepm_280/aware-build/awarepm.py
+        source /opt/irobot/aware-build/aware2Shell.sh > /dev/null
+        ST_FLAG=${ST_FLAG}"(AWR)"
+    }
+
+    ros_env() {
+        export ROS_ROOT=~/src/ros/ros
+        export PATH=$ROS_ROOT/bin:$PATH
+        export PYTHONPATH=$ROS_ROOT/core/roslib/src:$PYTHONPATH
+        if [ ! "$ROS_MASTER_URI" ]; then
+            export ROS_MASTER_URI=http://localhost:11311
+        fi
+        export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg:~/src/ros/ros_experimental/tags/boxturtle
+        source $ROS_ROOT/tools/rosbash/roszsh
+        ST_FLAG=${ST_FLAG}"(ROS)"
+    }
+fi
+
+
+if [ `hostname` = "leela"  ]; then
+    fanlevel() {
+        echo level $1 | sudo tee /proc/acpi/ibm/fan
+    }
+    alias ff32="schroot -p iceweasel -- -P 32 -no-remote"
+    alias fanlow='fanlevel 2'
+    alias fanmed='fanlevel 4'
+    alias fanmax='fanlevel 7'
+    alias fanauto='fanlevel auto'
+    alias fandis='fanlevel disengaged'
 fi
 PATH=~/bin:$PATH

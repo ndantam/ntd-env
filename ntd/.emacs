@@ -6,6 +6,9 @@
 ;; no warranty expressed or implied.
 
 (add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/imaxima")
+
+
 
 (require 'cl)
 
@@ -27,7 +30,7 @@
   (cond
    ((null args) nil)
    ((car args) t)
-   (t (all (cdr args)))))
+   (t (any (cdr args)))))
 
 
 (defmacro when-host (name &rest forms)
@@ -63,7 +66,14 @@
 ;;           (define-key c-mode-base-map (kbd "\C-c m")
 ;;                       'semantic-ia-complete-symbol-menu)))
 
-;; Semantic projects
+
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (local-set-key "\C-c\C-c"
+;;                            (execute-command #'save-buffer)
+;;                            (execute-command #'recompile))))
+
+;; Semantic project;; s
 
 ;;when-host "daneel"
 ;; (setq semanticdb-project-roots
@@ -79,7 +89,12 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
-(global-set-key "\C-c\k" 'compile)
+(global-set-key "\C-c\k" (lambda ()
+                           (interactive)
+                           (command-execute 'save-buffer)
+                           (command-execute 'recompile)))
+
+(global-set-key "\C-c\l" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
 (global-set-key "\C-cc" 'comment-region)
@@ -110,7 +125,7 @@
 (menu-bar-mode 1)
 
 (set-scroll-bar-mode nil)
-
+(setq x-select-enable-clipboard t)
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -159,6 +174,7 @@
 ;; Other people are annoyed by emacs 2-space default
 (setq c-basic-offset 4) ; I've written to much java,
                                         ; but then so have many other people...
+(setq c-default-style "bsd")
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -169,7 +185,10 @@
 ;;setq interpreter-mode-alist (cons '("python" . python-mode)
 ;;                                              interpreter-mode-alist))
 ;;autoload 'python-mode "python-mode" "Python editing mode." t)
+;;add-hook 'python-mode-hook
+;;         (lambda () (setq whitespace-style '(spaces space-mark))))
 
+;;add-hook 'python-mode-hook 'whitespace-mode)
 
 
 
@@ -186,6 +205,8 @@
 ;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+
 ;;TeX-PDF-mode)
 
 ;;;;;;;;;;;;;
@@ -197,21 +218,34 @@
 (setq-default TeX-master nil)
 (setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
+;; make "C-c C-c" save buffer first
+(add-hook 'LaTeX-mode-hook
+          '(lambda()
+             (local-set-key "\C-c\C-c"
+                            (lambda ()
+                              (interactive)
+                              (command-execute 'save-buffer)
+                              (command-execute 'TeX-command-master)
+                              ))))
+
+
+
+
+
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ("daneel")
+(when-host ("daneel" "hesh" "leela" "IRBT-2914")
            (setq inhibit-splash-screen t)
            (pushnew "~/src/clbuild/source/slime/" load-path)
            (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
-           (setq slime-backend "~/src/clbuild/.swank-loader.lisp")
+           (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
            (load "~/src/clbuild/source/slime/slime")
-
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
            (slime-require :swank-listener-hooks))
 
-(unless-host ("daneel")
+(unless-host ("daneel" "hesh" "leela" "IRBT-2914")
              (eval-after-load "slime"
                '(progn
                   (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
@@ -222,7 +256,9 @@
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
 
-;;(setq browse-url-browser-function 'w3m-browse-url)
+
+(setq browse-url-browser-function 'w3m-browse-url)
+
 ;;(setq slime-use-autodoc-mode nil)
 
 ;; ;(require 'slime-autoloads)
@@ -262,7 +298,6 @@
 
 (when-host ("daneel" "hesh" "olivaw" "babel")
            (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
->>>>>>> baf37db122618de32a7e82adca6fc48f596beca9:ntd/.emacs
 
 
 
@@ -367,7 +402,7 @@
 ;;;;;;;;;;;
 ;; SHELL ;;
 ;;;;;;;;;;;
-(setq explicit-shell-file-name "/bin/bash" )
+(setq explicit-shell-file-name "/bin/zsh" )
 
 
 
@@ -434,6 +469,14 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
+
+(autoload 'imaxima "imaxima" "Frontend of Maxima CAS" t)
+(autoload 'imath "imath" "Interactive Math mode" t)
+(autoload 'imath-mode "imath" "Interactive Math mode" t)
+(setq imaxima-use-maxima-mode-flag nil)
+(setq imaxima-fnt-size "Large")
+;;require 'maxima)
+
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
 ;;autoload 'maxima "maxima" "Running Maxima interactively" t)
@@ -471,6 +514,8 @@
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
+ '(imaxima-fnt-size "LARGE")
+ '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
@@ -483,18 +528,19 @@
 ;; Display greek characters ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Courtesy of BenignoUria
-
+;; Based on pretty-greek by of BenignoUria
+;; ΣΤΥΦΧΨΩ
 (defun pretty-greek ()
   (let ((greek '("alpha" "beta" "gamma" "delta"
                  "epsilon" "zeta" "eta" "theta"
                  "iota" "kappa" "lambda" "mu" "nu"
-                 "xi" "omicron" "pi" "rho" "sigma_final"
+                 "xi" "omicron" "pi" "rho" "varsigma"
                  "sigma" "tau" "upsilon" "phi" "chi" "psi"
                  "omega")))
     (loop for word in greek
-          for code = 97 then (+ 1 code)
-          do  (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                                        ;for code = 97 then (+ 1 code)
+          for greek-char across "αβγδεζηθικλμνξοπρςστυφχψω"
+          do  (progn
                 (font-lock-add-keywords
                  nil
                  `((,(concatenate 'string
@@ -508,7 +554,9 @@
                  `((,(concatenate 'string
                                   "\\(^\\|[^a-zA-Z0-9]\\)\\("
                                   word "\\)[^a-zA-Z]")
-                    (0 (progn (compose-region (match-beginning 2)
+                    (0 (progn (princ (buffer-substring (match-beginning 2)
+                                                       (match-end 2)))
+                              (compose-region (match-beginning 2)
                                               (match-end 2)
                                               ,greek-char)
                               nil)))))))))
@@ -530,7 +578,19 @@
 (require 'erc)
 
 
-;;;;;;;;;;;;;;;;
-;; RUN ESHELL ;;
-;;;;;;;;;;;;;;;;
-(eshell)
+
+(defun irobot-erc ()
+  (interactive)
+  (erc-tls :server  "leprosy.wardrobe.irobot.com" :port 6667
+           :nick "ndantam" :full-name "Neil Dantam")
+  (erc-join-channel "#research"))
+
+(setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
+                                     "#research")))
+
+;;;;;;;;;;;;;;;
+;; RUN SHELL ;;
+;;;;;;;;;;;;;;;
+(shell)
+
+
