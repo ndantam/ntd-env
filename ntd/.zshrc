@@ -111,7 +111,7 @@ else
 fi
 
 function hls {
-    find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile
+    find $HUMROOT \( \( -name home -o -name papers -o -name projects -o -name class -o -name OLD -o -name 3rdparty -o -name reviews \) -prune \) -o -name Makefile
 }
 
 function hcomplete {
