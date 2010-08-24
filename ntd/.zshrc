@@ -93,11 +93,11 @@ esac
 if [ `hostname` = vasilia ] ; then
     export HUMROOT=~/mnt/daneel-src/humanoids
 else
-    export HUMROOT=$HOME/src/humanoids
+    export HUMROOT=$HOME/src/humanoids/src/common
 fi
 
 function hls {
-    find $HUMROOT \( \( -name home -o -name papers -o -name projects -o -name class -o -name OLD -o -name 3rdparty -o -name reviews \) -prune \) -o -name Makefile
+    find $HUMROOT -maxdepth 3 \( \( -name 3rdparty \) -prune \) -o -name Makefile
 }
 
 function hcomplete {
