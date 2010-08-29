@@ -145,3 +145,10 @@ if [ `hostname` = "leela"  ]; then
     alias fandis='fanlevel disengaged'
 fi
 PATH=~/bin:$PATH
+
+hmake() {
+    pushd $HUMROOT/$1
+    shift
+    for i in $@; do make $i; done
+    popd
+}
