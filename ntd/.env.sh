@@ -107,11 +107,6 @@ fi
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 
-if [ `hostname` = "vasilia" ]; then
-    if [ -f "/mnt/scratch-ntd/.ntd-thebrain" ] ; then true; else
-        sshfs thebrain:/scratch/ntd /mnt/scratch-ntd
-    fi
-fi
 
 # iRobot
 if [ `hostname` = "IRBT-2914" ]; then

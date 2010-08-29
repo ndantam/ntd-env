@@ -90,8 +90,8 @@ esac
 
 
 
-if [ `hostname` = vasilia ] ; then
-    export HUMROOT=~/mnt/daneel-src/humanoids
+if [ `hostname` = vasilia -o `hostname` = kelden ] ; then
+    export HUMROOT=~/mnt/daneel-src/humanoids/src/common
 else
     export HUMROOT=$HOME/src/humanoids/src/common
 fi
