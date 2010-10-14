@@ -9,11 +9,11 @@
 ST_FLAG=''
 function precmd {
     if [ "$TERM" = xterm -o "$TERM" = linux ]; then
-        local BLACK="%{\033[0;30%}"
-        local RED="%{\033[0;31%}"
-        local LIGHT_RED="%{\033[1;31%}"
-        local PURPLE="%{\033[0;35%}"
-        local LIGHT_PURPLE="%{\033[1;35%}"
+        local BLACK="%{\033[0;30m%}"
+        local RED="%{\033[0;31m%}"
+        local LIGHT_RED="%{\033[1;31m%}"
+        local PURPLE="%{\033[0;35m%}"
+        local LIGHT_PURPLE="%{\033[1;35m%}"
         local BROWN="%{\033[0;33%}"
         local WHITE="%{\033[1;37%}"
         local DARK_GRAY="%{\033[1;30m%}"
@@ -57,7 +57,7 @@ function precmd {
     if [ $TERM = xterm ]; then
         print -Pn "\e]0;%n@%m://%~\a"
     fi
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${ST_FLAG}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
     echo ${ST_HOST};
     #local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
     #local ST_RET=${(%):-%?}
@@ -90,14 +90,14 @@ esac
 
 
 
-if [ `hostname` = vasilia ] ; then
-    export HUMROOT=~/mnt/daneel-src/humanoids
+if [ `hostname` = vasilia -o `hostname` = kelden ] ; then
+    export HUMROOT=~/mnt/daneel-src/humanoids/src/common
 else
-    export HUMROOT=$HOME/src/humanoids
+    export HUMROOT=$HOME/src/humanoids/src/common
 fi
 
 function hls {
-    find $HUMROOT \( \( -name venkat -o -name jon -o -name papers -o -name projects \) -prune \) -o -name Makefile
+    find $HUMROOT -maxdepth 3 \( \( -name 3rdparty \) -prune \) -o -name Makefile
 }
 
 function hcomplete {

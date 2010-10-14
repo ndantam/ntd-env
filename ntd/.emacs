@@ -9,7 +9,6 @@
 (add-to-list 'load-path "~/.emacs.d/imaxima")
 
 
-load-path
 
 (require 'cl)
 
@@ -67,7 +66,14 @@ load-path
 ;;           (define-key c-mode-base-map (kbd "\C-c m")
 ;;                       'semantic-ia-complete-symbol-menu)))
 
-;; Semantic projects
+
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (local-set-key "\C-c\C-c"
+;;                            (execute-command #'save-buffer)
+;;                            (execute-command #'recompile))))
+
+;; Semantic project;; s
 
 ;;when-host "daneel"
 ;; (setq semanticdb-project-roots
@@ -83,7 +89,12 @@ load-path
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
-(global-set-key "\C-c\k" 'compile)
+(global-set-key "\C-c\k" (lambda ()
+                           (interactive)
+                           (command-execute 'save-buffer)
+                           (command-execute 'recompile)))
+
+(global-set-key "\C-c\l" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
 (global-set-key "\C-cc" 'comment-region)
@@ -163,6 +174,7 @@ load-path
 ;; Other people are annoyed by emacs 2-space default
 (setq c-basic-offset 4) ; I've written to much java,
                                         ; but then so have many other people...
+(setq c-default-style "bsd")
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -205,6 +217,20 @@ load-path
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 (setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
+
+;; make "C-c C-c" save buffer first
+(add-hook 'LaTeX-mode-hook
+          '(lambda()
+             (local-set-key "\C-c\C-c"
+                            (lambda ()
+                              (interactive)
+                              (command-execute 'save-buffer)
+                              (command-execute 'TeX-command-master)
+                              ))))
+
+
+
+
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -502,18 +528,19 @@ load-path
 ;; Display greek characters ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Courtesy of BenignoUria
-
+;; Based on pretty-greek by of BenignoUria
+;; ΣΤΥΦΧΨΩ
 (defun pretty-greek ()
   (let ((greek '("alpha" "beta" "gamma" "delta"
                  "epsilon" "zeta" "eta" "theta"
                  "iota" "kappa" "lambda" "mu" "nu"
-                 "xi" "omicron" "pi" "rho" "sigma_final"
+                 "xi" "omicron" "pi" "rho" "varsigma"
                  "sigma" "tau" "upsilon" "phi" "chi" "psi"
                  "omega")))
     (loop for word in greek
-          for code = 97 then (+ 1 code)
-          do  (let ((greek-char (make-char 'greek-iso8859-7 code)))
+                                        ;for code = 97 then (+ 1 code)
+          for greek-char across "αβγδεζηθικλμνξοπρςστυφχψω"
+          do  (progn
                 (font-lock-add-keywords
                  nil
                  `((,(concatenate 'string
@@ -527,7 +554,9 @@ load-path
                  `((,(concatenate 'string
                                   "\\(^\\|[^a-zA-Z0-9]\\)\\("
                                   word "\\)[^a-zA-Z]")
-                    (0 (progn (compose-region (match-beginning 2)
+                    (0 (progn (princ (buffer-substring (match-beginning 2)
+                                                       (match-end 2)))
+                              (compose-region (match-beginning 2)
                                               (match-end 2)
                                               ,greek-char)
                               nil)))))))))
@@ -563,4 +592,5 @@ load-path
 ;; RUN SHELL ;;
 ;;;;;;;;;;;;;;;
 (shell)
+
 
