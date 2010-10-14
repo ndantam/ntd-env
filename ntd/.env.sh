@@ -27,7 +27,7 @@ if [ `uname` = Linux ]; then
     alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
-    alias mount-humanoids-ssh="sshfs thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
+    alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
     alias clbuild="~/src/clbuild/clbuild"
     alias mount-daneel="sshfs daneel: ~/mnt/daneel"
     alias KILL="kill -9"
@@ -148,5 +148,6 @@ if [ `hostname` = "leela"  ]; then
     alias fanmax='fanlevel 7'
     alias fanauto='fanlevel auto'
     alias fandis='fanlevel disengaged'
+    export DOXRSYNCSSH=acme:public_html/docs
 fi
 PATH=~/bin:$PATH
