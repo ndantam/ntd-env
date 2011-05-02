@@ -14,7 +14,6 @@
 
 ;;require 'w3m-load)
 
-(add-to-list 'vc-handled-backends 'Git)
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
@@ -103,6 +102,7 @@
 (global-set-key "\C-cbe" (lambda () (interactive)
                            (switch-to-buffer "*eshell*")))
 (global-set-key "\C-xvp" 'vc-update)
+(global-set-key "\C-xve" 'ediff-revision)
 
 
 (global-set-key "\M-\\" 'hippie-expand)
@@ -131,6 +131,11 @@
 (set-scroll-bar-mode nil)
 (setq x-select-enable-clipboard t)
 
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;;add-to-list 'vc-handled-backends 'Git)
+(setq vc-handled-backends '(Git SVN))
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  Remote File  ;;
@@ -210,6 +215,8 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+
+
 
 ;;TeX-PDF-mode)
 
@@ -601,6 +608,7 @@
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
 ;;;;;;;;;;;;;;;
-(shell)
+(eshell)
+
 
 
