@@ -107,6 +107,10 @@
 
 (global-set-key "\M-\\" 'hippie-expand)
 
+(global-set-key "\C-xve" 'ediff-revision)
+
+(setq ediff-split-window-function 'split-window-horizontally)
+
 ;;;;;;;;;;;;;;
 ;;  GENTOO  ;;
 ;;;;;;;;;;;;;;
@@ -313,12 +317,18 @@
 ;;  js2   ;;
 ;;;;;;;;;;;;
 
-;;autoload 'js2-mode "js2" nil t)
+(autoload 'js2-mode "js2" nil t)
 
-;;add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-;;add-to-list 'auto-mode-alist '("\\.jixrc$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(add-to-list 'auto-mode-alist '("\\.jixrc$" . js2-mode))
 
 
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+(add-hook 'js2-mode-hook 'js2-custom-setup)
+(defun js2-custom-setup ()
+  (moz-minor-mode 1))
 
 ;;;;;;;;;;;
 ;;  m3   ;;
