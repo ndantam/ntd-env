@@ -22,9 +22,9 @@ if [ `uname` = Linux ]; then
     alias lp-duplex='lp -o sides=two-sided-long-edge'
     alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
     alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
-    alias mount-cc="sshfs gaia: ~/mnt/cc"
+    alias mount-cc="sshfs killerbee4: ~/mnt/cc"
     alias mount-acme="sshfs acme: ~/mnt/prism"
-    alias mount-ccwww="sshfs gaia:/net/www/grads/n/ndantam3 ~/www-cc"
+    alias mount-ccwww="sshfs killerbee4:/net/www/grads/n/ndantam3 ~/www-cc"
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     alias mount-humanoids-ssh="sshfs thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
@@ -43,7 +43,7 @@ function make-common-dist {
 
 if [ `hostname` = "daneel"  ]; then
   #export DOXPATH=~/mnt/prism/public_html/dox
-    export DOXRSYNCSSH=acme:public_html/docs
+    export DOXRSYNCSSH="thebrain:~humanoids/public_html/doc"
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
@@ -151,4 +151,9 @@ hmake() {
     shift
     for i in $@; do make $i; done
     popd
+}
+
+
+pdfcat() {
+    gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
 }
