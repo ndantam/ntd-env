@@ -6,5 +6,5 @@ live under ./ntd.
 To install the files on a new machine, the ./install.sh
 script will create hard links from ~ to the files here.
 
-To do a git update, you should first run the ./relink.sh script to fix links
-that have somehow gotten screwed up.
+Sometimes, the hard links break.  To keep the files in ~, run backlink.sh.  To
+keep the files in ./ntd, run reinstall.sh.

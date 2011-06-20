@@ -247,10 +247,10 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ("daneel" "hesh" "leela" "IRBT-2914")
+(when-host ( "hesh" "leela" "IRBT-2914")
            (setq inhibit-splash-screen t)
-           (pushnew "~/src/clbuild/source/slime/" load-path)
-           (pushnew "~/src/clbuild/source/slime/contrib/" load-path)
+                                        ;(pushnew "~/src/clbuild/source/slime/" load-path)
+                                        ;(pushnew "~/src/clbuild/source/slime/contrib/" load-path)
            (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
            (load "~/src/clbuild/source/slime/slime")
            (setq inferior-lisp-program "/usr/local/bin/sbcl")
@@ -486,12 +486,21 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
+(add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
+(autoload 'maxima-mode "maxima" "Maxima mode" t)
+(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
+(autoload 'maxima "maxima" "Maxima interaction" t)
+(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
+(setq imaxima-use-maxima-mode-flag t)
+
+
 
 (autoload 'imaxima "imaxima" "Frontend of Maxima CAS" t)
 (autoload 'imath "imath" "Interactive Math mode" t)
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-use-maxima-mode-flag nil)
 (setq imaxima-fnt-size "Large")
+(setq auto-mode-alist (cons '("\.mac" . maxima-mode) auto-mode-alist))
 ;;require 'maxima)
 
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))

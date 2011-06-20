@@ -1,7 +1,7 @@
 "colorscheme evening
 colorscheme ron
 set tabstop=8
-set shiftwidth=4
+set shiftwidth=8
 set showmatch
 set encoding=utf-8
 set expandtab
