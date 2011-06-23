@@ -13,7 +13,7 @@ if [ `uname` = Linux ]; then
     else
         alias ls="ls -F --color=auto"
     fi
-    alias clbuild="~/src/clbuild/clbuild"
+    alias clbuild="~/src/clbuild2/clbuild"
     alias ec=emacsclient
     alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
   # limit virtual memory to 1GB because linux sucks (and I sometimes write memory leaks)
@@ -28,7 +28,6 @@ if [ `uname` = Linux ]; then
     alias mount-virjay="sshfs virjay: ~/mnt/virjay"
     alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
     alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
-    alias clbuild="~/src/clbuild/clbuild"
     alias mount-daneel="sshfs daneel: ~/mnt/daneel"
     alias KILL="kill -9"
     alias sshsock="ssh -v -D1080 daneel"
