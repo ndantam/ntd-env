@@ -248,28 +248,6 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ( "hesh" "leela" "IRBT-2914")
-           (setq inhibit-splash-screen t)
-                                        ;(pushnew "~/src/clbuild/source/slime/" load-path)
-                                        ;(pushnew "~/src/clbuild/source/slime/contrib/" load-path)
-           (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
-           (load "~/src/clbuild/source/slime/slime")
-           (setq inferior-lisp-program "/usr/local/bin/sbcl")
-           (slime-require :swank-listener-hooks))
-
-(unless-host ("daneel" "hesh" "leela" "IRBT-2914")
-             (eval-after-load "slime"
-               '(progn
-                  (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
-                  (require 'slime)
-                  (require 'slime-tramp)
-                  (require 'slime-autoloads))))
-
-(slime-setup '(slime-fancy slime-asdf))
-(global-set-key "\C-cs" 'slime-selector)
-
-
-(setq browse-url-browser-function 'w3m-browse-url)
 
 ;;(setq slime-use-autodoc-mode nil)
 
@@ -286,15 +264,25 @@
 ;; (when-host ("daneel" "hesh" "olivaw" "babel")
 ;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
-;; (setq slime-lisp-implementations
-;;       '((sbcl ("/usr/bin/sbcl"))
-;;         (clisp ("/usr/bin/clisp"))
-;;         (ecl ("/usr/bin/ecl"))))
-
-
 (require 'slime)
 (require 'slime-autoloads)
 (require 'slime-tramp)
+
+
+(slime-setup '(slime-fancy slime-asdf))
+(global-set-key "\C-cs" 'slime-selector)
+
+
+(setq browse-url-browser-function 'w3m-browse-url)
+
+
+(setq slime-lisp-implementations
+      '((sbcl ("/usr/bin/sbcl"))
+        (clisp ("/usr/bin/clisp"))
+        (ecl ("/usr/bin/ecl"))))
+
+(setq slime-default-lisp 'sbcl)
+
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
