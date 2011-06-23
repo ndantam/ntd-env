@@ -515,6 +515,8 @@
 ;;autoload 'emaxima-mode "emaxima" "EMaxima" t)
 ;;add-hook 'emaxima-mode-hook 'emaxima-mark-file-as-emaxima)
 
+(setq auto-mode-alist (cons '("\.mac" . maxima-mode) auto-mode-alist))
+
 
 ;;;;;;;;;;;;
 ;; CUSTOM ;;

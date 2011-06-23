@@ -6,7 +6,7 @@
 
 export EDITOR=vim
 
-export CDPATH="$CDPATH:$HOME/src:$HOME/class"
+export CDPATH="$CDPATH:$HOME:$HOME/src"
 if [ `uname` = Linux ]; then
     if [ "$TERM" = dumb -o "$EMACS" = t ] ; then
         alias ls="ls -F"

@@ -50,7 +50,7 @@ function precmd {
 
 
     if [ $HOST = "hesh" -o $HOST = "leela" ]; then
-        local battery=`acpi -b | sed -e 's/.*\(..\)%,.*/\1/'`
+        local battery=`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`
         local battery="[${battery}%%]"
     fi
     # Print titlebar in xterms
