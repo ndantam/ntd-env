@@ -58,6 +58,9 @@ function precmd {
         krang)
 local HOSTCOLOR=${LIGHT_RED}
 ;;
+leela)
+local HOSTCOLOR=${LIGHT_PURPLE}
+;;
 *)
 local HOSTCOLOR=${GREEN}
 ;;
