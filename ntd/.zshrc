@@ -53,12 +53,23 @@ function precmd {
         local battery=`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`
         local battery="[${battery}%%]"
     fi
+
+    case $HOST in
+        krang)
+local HOSTCOLOR=${LIGHT_RED}
+;;
+*)
+local HOSTCOLOR=${GREEN}
+;;
+esac
+
+
     # Print titlebar in xterms
-    if [ $TERM = xterm ]; then
-        print -Pn "\e]0;%n@%m://%~\a"
-    fi
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
-    echo ${ST_HOST};
+if [ $TERM = xterm ]; then
+    print -Pn "\e]0;%n@%m://%~\a"
+fi
+local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${HOSTCOLOR}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+echo ${ST_HOST};
     #local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
     #local ST_RET=${(%):-%?}
     #PR_TITLEBAR=''
