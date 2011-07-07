@@ -125,6 +125,7 @@
 (setq make-backup-files nil)
 
 (setq inhibit-startup-message t)
+(setq inhibit-splash-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode 1)
 
@@ -247,26 +248,13 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(when-host ( "hesh" "leela" "IRBT-2914")
-           (setq inhibit-splash-screen t)
-                                        ;(pushnew "~/src/clbuild/source/slime/" load-path)
-                                        ;(pushnew "~/src/clbuild/source/slime/contrib/" load-path)
-           (setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
-           (load "~/src/clbuild/source/slime/slime")
-           (setq inferior-lisp-program "/usr/local/bin/sbcl")
-           (slime-require :swank-listener-hooks))
-
-(unless-host ("daneel" "hesh" "leela" "IRBT-2914")
-             (eval-after-load "slime"
-               '(progn
-                  (setq inferior-lisp-program "sbcl --dynamic-space-size 512")
-                  (require 'slime)
-                  (require 'slime-tramp)
-                  (require 'slime-autoloads))))
+;;setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
+;;load "~/src/clbuild/source/slime/slime")
+;;setq inferior-lisp-program "/usr/local/bin/sbcl")
+;; (slime-require :swank-listener-hooks))
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
-
 
 (setq browse-url-browser-function 'w3m-browse-url)
 
@@ -285,10 +273,10 @@
 ;; (when-host ("daneel" "hesh" "olivaw" "babel")
 ;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
-;; (setq slime-lisp-implementations
-;;       '((sbcl ("/usr/bin/sbcl"))
-;;         (clisp ("/usr/bin/clisp"))
-;;         (ecl ("/usr/bin/ecl"))))
+(setq slime-lisp-implementations
+      '((sbcl ("/usr/bin/sbcl"))
+        (clisp ("/usr/bin/clisp"))
+        (ecl ("/usr/bin/ecl"))))
 
 
 (require 'slime)
