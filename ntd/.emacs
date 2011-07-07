@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp -*-;;
 ;; .emacs
 ;; Emacs initialization file
 ;; Author: Neil Dantam
@@ -248,40 +249,25 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-;;setq slime-backend "~/src/clbuild/source/slime/swank-loader.lisp")
-;;load "~/src/clbuild/source/slime/slime")
-;;setq inferior-lisp-program "/usr/local/bin/sbcl")
-;; (slime-require :swank-listener-hooks))
+(require 'slime)
+(require 'slime-autoloads)
+(require 'slime-tramp)
+
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
 
+
 (setq browse-url-browser-function 'w3m-browse-url)
 
-;;(setq slime-use-autodoc-mode nil)
-
-;; ;(require 'slime-autoloads)
-;; ;require 'slime-tramp)
-;; (slime-setup '(slime-fancy))
-
-;; ;(push (slime-create-filename-translator :machine-instance "daneel"
-;;                                         ;:remote-host "daneel"
-;;                                         ;:username "ntd")
-;;       ;slime-filename-translations)
-;; ;(setq slime-filename-translations nil)
-
-;; (when-host ("daneel" "hesh" "olivaw" "babel")
-;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 (setq slime-lisp-implementations
       '((sbcl ("/usr/bin/sbcl"))
         (clisp ("/usr/bin/clisp"))
         (ecl ("/usr/bin/ecl"))))
 
+(setq slime-default-lisp 'sbcl)
 
-(require 'slime)
-(require 'slime-autoloads)
-(require 'slime-tramp)
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
@@ -483,10 +469,8 @@
 
 
 
-(autoload 'imaxima "imaxima" "Frontend of Maxima CAS" t)
 (autoload 'imath "imath" "Interactive Math mode" t)
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
-(setq imaxima-use-maxima-mode-flag nil)
 (setq imaxima-fnt-size "Large")
 (setq auto-mode-alist (cons '("\.mac" . maxima-mode) auto-mode-alist))
 ;;require 'maxima)
