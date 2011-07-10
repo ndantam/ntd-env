@@ -34,15 +34,14 @@ if [ `uname` = Linux ]; then
 fi
 
 
-alias rscp="rsync --inplace --partial --progress --times"
+alias rscp="rsync --recursive --partial --perms --progress --times"
 
 function make-common-dist {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }
+export DOXRSYNCSSH="thebrain:~humanoids/public_html/doc"
 
 if [ `hostname` = "daneel"  ]; then
-  #export DOXPATH=~/mnt/prism/public_html/dox
-    export DOXRSYNCSSH="thebrain:~humanoids/public_html/doc"
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
