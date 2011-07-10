@@ -126,6 +126,7 @@
 (setq make-backup-files nil)
 
 (setq inhibit-startup-message t)
+(setq inhibit-splash-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode 1)
 
@@ -247,22 +248,6 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-
-
-;;(setq slime-use-autodoc-mode nil)
-
-;; ;(require 'slime-autoloads)
-;; ;require 'slime-tramp)
-;; (slime-setup '(slime-fancy))
-
-;; ;(push (slime-create-filename-translator :machine-instance "daneel"
-;;                                         ;:remote-host "daneel"
-;;                                         ;:username "ntd")
-;;       ;slime-filename-translations)
-;; ;(setq slime-filename-translations nil)
-
-;; (when-host ("daneel" "hesh" "olivaw" "babel")
-;;   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 (require 'slime)
 (require 'slime-autoloads)

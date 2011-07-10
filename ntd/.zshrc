@@ -51,14 +51,36 @@ function precmd {
 
     if [ $HOST = "hesh" -o $HOST = "leela" ]; then
         local battery=`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`
-        local battery="[${battery}%%]"
+        if [  ${battery} -gt 60   ]; then
+            local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
+        elif [  ${battery} -eq 00  ]; then
+            local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
+        elif [ ${battery} -gt 30 ]; then
+            local battery="[${YELLOW}${battery}%%${NO_COLOR}]"
+        else
+            local battery="[${RED}${battery}%%${NO_COLOR}]"
+        fi
     fi
+
+    case $HOST in
+        krang)
+local HOSTCOLOR=${LIGHT_RED}
+;;
+leela)
+local HOSTCOLOR=${LIGHT_PURPLE}
+;;
+*)
+local HOSTCOLOR=${GREEN}
+;;
+esac
+
+
     # Print titlebar in xterms
-    if [ $TERM = xterm ]; then
-        print -Pn "\e]0;%n@%m://%~\a"
-    fi
-    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${GREEN}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
-    echo ${ST_HOST};
+if [ $TERM = xterm ]; then
+    print -Pn "\e]0;%n@%m://%~\a"
+fi
+local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${HOSTCOLOR}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+echo ${ST_HOST};
     #local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
     #local ST_RET=${(%):-%?}
     #PR_TITLEBAR=''
