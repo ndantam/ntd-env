@@ -40,6 +40,8 @@ function make-common-dist {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }
 export DOXRSYNCSSH="thebrain:~humanoids/public_html/doc"
+export DEBEMAIL="ntd@gatech.edu"
+export DEBFULLNAME="Neil Dantam"
 
 if [ `hostname` = "daneel"  ]; then
     export DISTSCPPATH=acme:tarballs
