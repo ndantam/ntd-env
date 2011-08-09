@@ -110,6 +110,8 @@
 
 (global-set-key "\C-xve" 'ediff-revision)
 
+(global-set-key "\C-cm" 'woman)
+
 (setq ediff-split-window-function 'split-window-horizontally)
 
 ;;;;;;;;;;;;;;
@@ -462,7 +464,7 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
-(add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
+(add-to-list 'load-path "/usr/share/maxima/4.22.1/emacs/")
 (add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/")
 (require 'maxima)
 (autoload 'maxima-mode "maxima" "Maxima mode" t)
