@@ -84,7 +84,6 @@ echo ${ST_HOST};
     #local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
     #local ST_RET=${(%):-%?}
     #PR_TITLEBAR=''
-    #echo ${ST_HOST};
 }
 
 #print titlebar in xterm
@@ -97,12 +96,12 @@ function preexec {
 ## Set PS1
 case $TERM in
     dumb*)
-        #PS1="$(print '%n@%m://%~ %# ')"
     PS1="$(print '%?,%!%# ')"
+        #PS1="$(print '%n@%m://%~ %# ')"
     ;;
     xterm|linux*)
-                #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
-    PS1="$(print '%?,%{\e[1;32m%}%!%#%{\e[0m%} ')"
+    PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
+        #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
     ;;
     *)
     PS1="$(print '%!%# ')"

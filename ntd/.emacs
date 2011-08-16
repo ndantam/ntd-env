@@ -110,6 +110,8 @@
 
 (global-set-key "\C-xve" 'ediff-revision)
 
+(global-set-key "\C-cm" 'woman)
+
 (setq ediff-split-window-function 'split-window-horizontally)
 
 ;;;;;;;;;;;;;;
@@ -253,6 +255,7 @@
 (require 'slime-autoloads)
 (require 'slime-tramp)
 
+(setq slime-net-coding-system 'utf-8-unix)
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
@@ -390,6 +393,7 @@
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
+
 ;;;;;;;;;;;
 ;; SHELL ;;
 ;;;;;;;;;;;
@@ -460,7 +464,9 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
-(add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
+(add-to-list 'load-path "/usr/share/maxima/4.22.1/emacs/")
+(add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/")
+(require 'maxima)
 (autoload 'maxima-mode "maxima" "Maxima mode" t)
 (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
 (autoload 'maxima "maxima" "Maxima interaction" t)
@@ -468,12 +474,10 @@
 (setq imaxima-use-maxima-mode-flag t)
 
 
-
 (autoload 'imath "imath" "Interactive Math mode" t)
 (autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-fnt-size "Large")
-(setq auto-mode-alist (cons '("\.mac" . maxima-mode) auto-mode-alist))
-;;require 'maxima)
+(setq auto-mode-alist (cons '("\.mac$" . maxima-mode) auto-mode-alist))
 
 ;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
@@ -488,7 +492,7 @@
 ;;autoload 'emaxima-mode "emaxima" "EMaxima" t)
 ;;add-hook 'emaxima-mode-hook 'emaxima-mark-file-as-emaxima)
 
-(setq auto-mode-alist (cons '("\.mac" . maxima-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\.mac$" . maxima-mode) auto-mode-alist))
 
 
 ;;;;;;;;;;;;
