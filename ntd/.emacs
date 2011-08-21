@@ -255,21 +255,23 @@
 (require 'slime-autoloads)
 (require 'slime-tramp)
 
-(setq slime-net-coding-system 'utf-8-unix)
+(setq slime-lisp-implementations
+      (list (list 'sbcl (list "/usr/bin/sbcl" "--core"))
+            '(clisp ("/usr/bin/clisp"))
+            '(ecl ("/usr/bin/ecl"))))
+
+(setq slime-default-lisp 'sbcl
+      slime-net-coding-system 'utf-8-unix
+      slime-startup-animation nil
+      )
 
 (slime-setup '(slime-fancy slime-asdf))
 (global-set-key "\C-cs" 'slime-selector)
 
-
 (setq browse-url-browser-function 'w3m-browse-url)
 
 
-(setq slime-lisp-implementations
-      '((sbcl ("/usr/bin/sbcl"))
-        (clisp ("/usr/bin/clisp"))
-        (ecl ("/usr/bin/ecl"))))
 
-(setq slime-default-lisp 'sbcl)
 
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
