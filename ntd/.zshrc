@@ -61,6 +61,9 @@ function precmd {
             local battery="[${RED}${battery}%%${NO_COLOR}]"
         fi
     fi
+    if [ $HOST = "krang" ]; then
+        local battery="[`bms -V`]"
+    fi
 
     case $HOST in
         krang)
