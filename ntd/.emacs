@@ -13,8 +13,6 @@
 
 (require 'cl)
 
-;;require 'w3m-load)
-
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
@@ -51,6 +49,8 @@
                               (string= (system-name) name))
                             (quote ,name))))
      ,@forms))
+
+
 
 
 ;;;;;;;;;;;;;;;;
@@ -110,7 +110,10 @@
 
 (global-set-key "\C-xve" 'ediff-revision)
 
-(global-set-key "\C-cm" 'woman)
+;;global-unset-key "\C-c\n")
+
+
+
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
@@ -251,25 +254,25 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(require 'slime)
-(require 'slime-autoloads)
-(require 'slime-tramp)
+(when-host ("daneel" "leela" "krang" "talos")
+           (require 'slime)
+           (require 'slime-autoloads)
+           (require 'slime-tramp)
 
-(setq slime-net-coding-system 'utf-8-unix)
+           (setq slime-net-coding-system 'utf-8-unix)
 
-(slime-setup '(slime-fancy slime-asdf))
-(global-set-key "\C-cs" 'slime-selector)
-
-
-(setq browse-url-browser-function 'w3m-browse-url)
+           (slime-setup '(slime-fancy slime-asdf))
+           (global-set-key "\C-cs" 'slime-selector)
 
 
-(setq slime-lisp-implementations
-      '((sbcl ("/usr/bin/sbcl"))
-        (clisp ("/usr/bin/clisp"))
-        (ecl ("/usr/bin/ecl"))))
 
-(setq slime-default-lisp 'sbcl)
+
+           (setq slime-lisp-implementations
+                 '((sbcl ("/usr/bin/sbcl"))
+                   (clisp ("/usr/bin/clisp"))
+                   (ecl ("/usr/bin/ecl"))))
+
+           (setq slime-default-lisp 'sbcl))
 
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
@@ -464,14 +467,15 @@
 ;;;;;;;;;;;;;
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
-(add-to-list 'load-path "/usr/share/maxima/4.22.1/emacs/")
-(add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/")
-(require 'maxima)
-(autoload 'maxima-mode "maxima" "Maxima mode" t)
-(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
-(autoload 'maxima "maxima" "Maxima interaction" t)
-(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
-(setq imaxima-use-maxima-mode-flag t)
+(when-host ("daneel" "leela")
+           (add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
+           (add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/")
+           (require 'maxima)
+           (autoload 'maxima-mode "maxima" "Maxima mode" t)
+           (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
+           (autoload 'maxima "maxima" "Maxima interaction" t)
+           (autoload 'imath-mode "imath" "Imath mode for math formula input" t)
+           (setq imaxima-use-maxima-mode-flag t))
 
 
 (autoload 'imath "imath" "Interactive Math mode" t)
@@ -517,7 +521,7 @@
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
- '(imaxima-fnt-size "LARGE")
+ '(imaxima-fnt-size "LARGE" t)
  '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
@@ -590,6 +594,58 @@
 
 (setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
                                      "#research")))
+
+;;;;;;;;;;;;;;
+;;  BROWSE  ;;
+;;;;;;;;;;;;;;
+(require 'w3m)
+
+;; (setq w3m-session-file "~/.emacs.d/w3m-session")
+;; (setq w3m-session-save-always nil)
+;; (setq w3m-session-load-always nil)
+;; (setq w3m-session-show-titles t)
+;; (setq w3m-session-duplicate-tabs 'ask)
+;; (setq w3m-language nil)
+
+;; (require 'w3m-session)
+;;require 'w3m-cookie)
+
+
+;; (defun w3m-browse-url-other-window (url &optional newwin)
+;;   (let ((w3m-pop-up-windows t))
+;;     (if (one-window-p) (split-window))
+;;     (other-window 1)
+;;     (w3m-browse-url url newwin)))
+
+(setq w3m-use-cookies t
+      w3m-default-display-inline-images t
+      browse-url-browser-function 'w3m-browse-url
+                                        ;browse-url-browser-function 'w3m-browse-url-other-window
+                                        ; w3m-pop-up-windows t
+      )
+
+;; Quirk: localhost may resolve to an ipv6 address,
+;; apache may not be supporting ipv6
+(when-host ("daneel")
+           (require 'mediawiki)
+           (setq mediawiki-site-alist
+                 '(("ntdnote"   "http://127.0.0.1/mediawiki/"
+                    "ntd"     "" "Main Page")
+                   ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
+
+
+(global-set-key "\C-c\m"
+                (lambda (name)
+                  (interactive "sWiki Page: ")
+                  (if (one-window-p) (split-window))
+                  (mediawiki-open name)
+                  (other-window 1)
+                  (browse-url
+                   (concat (mediawiki-site-url mediawiki-site)
+                           "index.php/"
+                           (replace-regexp-in-string " " "_"
+                                                     name)))
+                  (other-window 1)))
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
