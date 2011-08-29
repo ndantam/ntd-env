@@ -254,6 +254,7 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
+<<<<<<< HEAD
 (when-host ("daneel" "leela" "krang" "talos")
            (require 'slime)
            (require 'slime-autoloads)
@@ -273,7 +274,6 @@
                    (ecl ("/usr/bin/ecl"))))
 
            (setq slime-default-lisp 'sbcl))
-
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
