@@ -254,7 +254,6 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-<<<<<<< HEAD
 (when-host ("daneel" "leela" "krang" "talos")
            (require 'slime)
            (require 'slime-autoloads)
@@ -274,6 +273,7 @@
                    (ecl ("/usr/bin/ecl"))))
 
            (setq slime-default-lisp 'sbcl))
+
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
                                         ;:remote-host "daneel"
@@ -634,11 +634,11 @@
                    ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
 
 
-(global-set-key "\C-c\m"
+(global-set-key "\C-c\w"
                 (lambda (name)
                   (interactive "sWiki Page: ")
-                  (if (one-window-p) (split-window))
                   (mediawiki-open name)
+                  (if (one-window-p) (split-window))
                   (other-window 1)
                   (browse-url
                    (concat (mediawiki-site-url mediawiki-site)
