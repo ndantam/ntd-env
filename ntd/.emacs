@@ -254,7 +254,6 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-<<<<<<< HEAD
 (when-host ("daneel" "leela" "krang" "talos")
            (require 'slime)
            (require 'slime-autoloads)
