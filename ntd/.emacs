@@ -629,7 +629,7 @@
 (when-host ("daneel")
            (require 'mediawiki)
            (setq mediawiki-site-alist
-                 '(("ntdnote"   "http://127.0.0.1/mediawiki/"
+                 '(("infosphere"   "http://127.0.0.1:8080/infosphere/"
                     "ntd"     "" "Main Page")
                    ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
 
