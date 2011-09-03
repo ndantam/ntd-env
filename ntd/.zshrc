@@ -51,15 +51,18 @@ function precmd {
 
     if [ $HOST = "hesh" -o $HOST = "leela" ]; then
         local battery=`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`
-        if [  ${battery} -gt 60   ]; then
+        if [  "${battery}" -gt 60   ]; then
             local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
-        elif [  ${battery} -eq 00  ]; then
+        elif [  "${battery}" -eq 00  ]; then
             local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
-        elif [ ${battery} -gt 30 ]; then
+        elif [ "${battery}" -gt 30 ]; then
             local battery="[${YELLOW}${battery}%%${NO_COLOR}]"
         else
             local battery="[${RED}${battery}%%${NO_COLOR}]"
         fi
+    fi
+    if [ $HOST = "krang" ]; then
+        local battery="[`bms -V`]"
     fi
 
     case $HOST in
