@@ -89,29 +89,39 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
+
+;; quick compile
 (global-set-key "\C-c\k" (lambda ()
                            (interactive)
                            (command-execute 'save-buffer)
                            (command-execute 'recompile)))
-
 (global-set-key "\C-c\l" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
+;; commenting
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
-(global-set-key "\C-c#" 'server-start)
+
+;; expand
+(global-set-key "\M-\\" 'hippie-expand)
+;; go to eshell
 (global-set-key "\C-ce" (lambda () (interactive)
                           (switch-to-buffer "*eshell*")))
+;; version control
 (global-set-key "\C-xvp" 'vc-update)
-(global-set-key "\C-xvp" 'vc-update)
+(global-set-key "\C-xve" 'ediff-revision)
 (global-set-key "\C-xve" 'ediff-revision)
 
 
-(global-set-key "\M-\\" 'hippie-expand)
 
-(global-set-key "\C-xve" 'ediff-revision)
+;; toggle meubar
+(global-set-key "\C-cm" (lambda () (interactive)
+                          (if menu-bar-mode
+                              (menu-bar-mode -1)
+                            (menu-bar-mode 1))))
 
-;;global-unset-key "\C-c\n")
+;; server
+(global-set-key "\C-c#" 'server-start)
 
 
 
@@ -134,7 +144,7 @@
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
 (tool-bar-mode -1)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 
 (set-scroll-bar-mode nil)
 (setq x-select-enable-clipboard t)
