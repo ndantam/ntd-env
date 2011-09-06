@@ -36,6 +36,10 @@ fi
 
 alias rscp="rsync --recursive --partial --perms --progress --times"
 
+function rdebi() {
+    scp "$2" "$1":/tmp/ && ssh $1 "sudo dpkg -i /tmp/$2; rm /tmp/$2"
+}
+
 function make-common-dist {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }

@@ -144,6 +144,8 @@
 ;;add-to-list 'vc-handled-backends 'Git)
 (setq vc-handled-backends '(Git SVN))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;;;;;;;;;;;;;;;;;;;
 ;;  Remote File  ;;
 ;;;;;;;;;;;;;;;;;;;
