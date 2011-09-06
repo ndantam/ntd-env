@@ -626,7 +626,7 @@
 
 ;; Quirk: localhost may resolve to an ipv6 address,
 ;; apache may not be supporting ipv6
-(when-host ("daneel")
+(when-host ("daneel" "leela")
            (require 'mediawiki)
            (setq mediawiki-site-alist
                  '(("infosphere"   "http://127.0.0.1:8080/infosphere/"
