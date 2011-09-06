@@ -8,7 +8,7 @@
 ## Print the fancy status line
 ST_FLAG=''
 function precmd {
-    if [ "$TERM" = xterm -o "$TERM" = linux ]; then
+    if [ "$TERM" = xterm -o "$TERM" = linux -o "$TERM" = eterm-color ]; then
         local BLACK="%{\033[0;30m%}"
         local RED="%{\033[0;31m%}"
         local LIGHT_RED="%{\033[1;31m%}"
@@ -102,7 +102,7 @@ case $TERM in
     PS1="$(print '%?,%!%# ')"
         #PS1="$(print '%n@%m://%~ %# ')"
     ;;
-    xterm|linux*)
+    xterm|linux|eterm-color*)
     PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
         #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
     ;;
