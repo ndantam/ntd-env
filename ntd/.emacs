@@ -112,8 +112,20 @@
 
 ;;global-unset-key "\C-c\n")
 
+(defun toggle-fullscreen (&optional f)
+  (interactive)
+  (let ((current-value (frame-parameter nil 'fullscreen)))
+    (set-frame-parameter nil 'fullscreen
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                           (progn (setq old-fullscreen current-value)
+                                  'fullboth)))))
+(global-set-key [f11] 'toggle-fullscreen)
 
-
+(global-set-key "\C-cm" (lambda () (interactive)
+                          (if menu-bar-mode
+                              (menu-bar-mode -1)
+                            (menu-bar-mode 1))))
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
