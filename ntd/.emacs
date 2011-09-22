@@ -89,29 +89,43 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
+
+;; quick compile
 (global-set-key "\C-c\k" (lambda ()
                            (interactive)
                            (command-execute 'save-buffer)
                            (command-execute 'recompile)))
-
 (global-set-key "\C-c\l" 'compile)
 (global-set-key "\C-ctk" 'tramp-compile)
 
+;; commenting
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
-(global-set-key "\C-c#" 'server-start)
 (global-set-key "\C-ce" (lambda () (interactive)
                           (switch-to-buffer "*eshell*")))
+;; expand
+(global-set-key "\M-\\" 'hippie-expand)
+;; go to eshell
+(global-set-key "\C-ce" (lambda () (interactive)
+                          (switch-to-buffer "*eshell*")))
+;; version control
 (global-set-key "\C-xvp" 'vc-update)
 (global-set-key "\C-xve" 'ediff-revision)
-
-
-(global-set-key "\M-\\" 'hippie-expand)
-
 (global-set-key "\C-xve" 'ediff-revision)
 
-;;global-unset-key "\C-c\n")
 
+
+;; toggle meubar
+(global-set-key "\C-cm" (lambda () (interactive)
+                          (if menu-bar-mode
+                              (menu-bar-mode -1)
+                            (menu-bar-mode 1))))
+
+;; server
+(global-set-key "\C-c#" 'server-start)
+
+
+;; from the emacswiki
 (defun toggle-fullscreen (&optional f)
   (interactive)
   (let ((current-value (frame-parameter nil 'fullscreen)))
@@ -120,12 +134,10 @@
                              (if (boundp 'old-fullscreen) old-fullscreen nil)
                            (progn (setq old-fullscreen current-value)
                                   'fullboth)))))
+
+
 (global-set-key [f11] 'toggle-fullscreen)
 
-(global-set-key "\C-cm" (lambda () (interactive)
-                          (if menu-bar-mode
-                              (menu-bar-mode -1)
-                            (menu-bar-mode 1))))
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
@@ -145,7 +157,7 @@
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
 (tool-bar-mode -1)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 
 (set-scroll-bar-mode nil)
 (setq x-select-enable-clipboard t)
@@ -640,7 +652,7 @@
 
 ;; Quirk: localhost may resolve to an ipv6 address,
 ;; apache may not be supporting ipv6
-(when-host ("daneel")
+(when-host ("daneel" "leela")
            (require 'mediawiki)
            (setq mediawiki-site-alist
                  '(("infosphere"   "http://127.0.0.1:8080/infosphere/"
