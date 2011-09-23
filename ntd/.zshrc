@@ -147,11 +147,17 @@ function zgitcomplete {
 
 function gcd {
     DIR=$(zgitls | grep "$1" | sort)
-    if [ -n "$DIR" ] &&  [ `echo $DIR | wc -l` = 1 ];
-    then
-        cd "$DIR"
+    if [ -n "$DIR" ] ; then
+        if [ `echo $DIR | wc -l` = 1 ]; then
+            cd "$DIR"
+        else
+            echo Ambiguous repo:
+            echo "$DIR" | sed -e 's/^/> /'
+            return 1
+        fi
     else
         echo "no such project: $1"
+        return 1
     fi
 }
 
