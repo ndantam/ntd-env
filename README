@@ -1,7 +1,10 @@
-* README FOR NTD-DOTFILES *
+***********
+* NTD-ENV *
+***********
 
 This directory contains various dotfiles used by Neil Dantam.  The actual files
-live under ./ntd.
+live under ./ntd.  This is online mostly for my own convenience, but it's other
+folks may find some of this interesting.
 
 To install the files on a new machine, the ./install.sh
 script will create hard links from ~ to the files here.
