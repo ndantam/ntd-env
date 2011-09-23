@@ -137,6 +137,27 @@ function hcd {
 
 compctl -K hcomplete hcd
 
+function zgitls {
+    find ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+}
+
+function zgitcomplete {
+    reply=(`zgitls | egrep "/$1[^/]*$" | sed -e 's@.*/\([^/]\+\)/\?$@\1@'`)
+}
+
+function gcd {
+    DIR=$(zgitls | grep "$1" | sort)
+    if [ -n "$DIR" ] &&  [ `echo $DIR | wc -l` = 1 ];
+    then
+        cd "$DIR"
+    else
+        echo "no such project: $1"
+    fi
+}
+
+compctl -K zgitcomplete gcd
+
+
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
