@@ -68,23 +68,23 @@ function precmd {
 
     case $HOST in
         krang)
-local HOSTCOLOR=${LIGHT_RED}
-;;
-leela)
-local HOSTCOLOR=${LIGHT_PURPLE}
-;;
-*)
-local HOSTCOLOR=${GREEN}
-;;
-esac
+            local HOSTCOLOR=${LIGHT_RED}
+            ;;
+        leela)
+            local HOSTCOLOR=${LIGHT_PURPLE}
+            ;;
+        *)
+            local HOSTCOLOR=${GREEN}
+            ;;
+    esac
 
 
     # Print titlebar in xterms
-if [ $TERM = xterm ]; then
-    print -Pn "\e]0;%n@%m://%~\a"
-fi
-local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${HOSTCOLOR}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
-echo ${ST_HOST};
+    if [ $TERM = xterm ]; then
+        print -Pn "\e]0;%n@%m://%~\a"
+    fi
+    local ST_HOST=${(%):-%B-(%b${LIGHT_BLUE}%n${NO_COLOR}@${HOSTCOLOR}%m${NO_COLOR}${LIGHT_PURPLE}${ST_FLAG}${NO_COLOR}${battery}:${LIGHT_GRAY}%y${CYAN}//${NO_COLOR}${YELLOW}%~${NO_COLOR}%B)-%b}
+    echo ${ST_HOST};
     #local ST_HOST=${(%):-%B-(%b%n@%m:%y//%~%B)-%b}
     #local ST_RET=${(%):-%?}
     #PR_TITLEBAR=''
@@ -100,16 +100,16 @@ function preexec {
 ## Set PS1
 case $TERM in
     dumb*)
-    PS1="$(print '%?,%!%# ')"
+        PS1="$(print '%?,%!%# ')"
         #PS1="$(print '%n@%m://%~ %# ')"
-    ;;
+        ;;
     xterm|linux|eterm-color*)
-    PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
+        PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
         #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
-    ;;
+        ;;
     *)
-    PS1="$(print '%!%# ')"
-    ;;
+        PS1="$(print '%!%# ')"
+        ;;
 esac
 
 
