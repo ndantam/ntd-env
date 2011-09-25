@@ -151,6 +151,7 @@
 ;;;;;;;;;;
 ;; MISC ;;
 ;;;;;;;;;;
+(setq confirm-kill-emacs 'yes-or-no-p)
 
 (setq make-backup-files nil)
 
@@ -402,15 +403,21 @@
 ;;  Wanderlust  ;;
 ;;;;;;;;;;;;;;;;;;
 
+(defun ntd-email-addr (a b c)
+  (concatenate 'string a "@" b "." c))
+
+
+
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
-(setq elmo-imap4-default-server "mail.gatech.edu")
-(setq elmo-imap4-default-user "ndantam3")
-(setq elmo-imap4-default-authenticate-type 'clear)
-(setq elmo-imap4-default-port '993)
-(setq elmo-imap4-default-stream-type 'ssl)
+(setq elmo-imap4-default-server "mail.gatech.edu"
+      elmo-imap4-default-user "ndantam3"
+      elmo-imap4-default-authenticate-type 'clear
+      elmo-imap4-default-port 993
+      elmo-imap4-default-stream-type 'ssl)
+
 (setq wl-default-folder "%inbox")
 (setq wl-default-spec "%")
 (setq wl-folder-check-async t)
