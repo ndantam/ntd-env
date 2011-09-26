@@ -6,17 +6,23 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
-(add-to-list 'load-path "~/.emacs.d")
-(add-to-list 'load-path "~/.emacs.d/imaxima")
 
-
-
-(require 'cl)
-
+;;;;;;;;;;;;;
+;;  VIPER  ;;
+;;;;;;;;;;;;;
+;; Get viper first
+(setq viper-mode t)
+(require 'viper)
+(setq viper-always t)
+(setq viper-vi-state-cursor-color "green")
 
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
+
+(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/imaxima")
+(require 'cl)
 
 (defun all (args)
   (cond
@@ -117,15 +123,14 @@
 
 ;; toggle meubar
 (global-set-key "\C-cpm" (lambda () (interactive)
-                          (if menu-bar-mode
-                              (menu-bar-mode -1)
-                            (menu-bar-mode 1))))
+                           (if menu-bar-mode
+                               (menu-bar-mode -1)
+                             (menu-bar-mode 1))))
 
 (global-set-key "\C-cm" 'magit-status)
 
 ;; server
-(global-set-key "\C-c#" 'server-start)
-
+(global-set-key "\C-cv" 'server-start)
 
 ;; from the emacswiki
 (defun toggle-fullscreen (&optional f)
@@ -136,19 +141,9 @@
                              (if (boundp 'old-fullscreen) old-fullscreen nil)
                            (progn (setq old-fullscreen current-value)
                                   'fullboth)))))
-
-
 (global-set-key [f11] 'toggle-fullscreen)
 
 
-(setq ediff-split-window-function 'split-window-horizontally)
-
-;;;;;;;;;;;;;;
-;;  GENTOO  ;;
-;;;;;;;;;;;;;;
-;;load "/usr/share/emacs/site-lisp/site-gentoo.el")
-(when nil
-  (require 'site-gentoo))
 
 ;;;;;;;;;;
 ;; MISC ;;
@@ -170,12 +165,12 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;;add-to-list 'vc-handled-backends 'Git)
 (setq vc-handled-backends '(Git SVN))
+(autoload 'magit-status "magit" "" t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(require 'magit)
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  Remote File  ;;
@@ -221,9 +216,9 @@
 ;;;;;;;;;
 
 ;; Other people are annoyed by emacs 2-space default
-(setq c-basic-offset 4) ; I've written to much java,
+(setq c-basic-offset 4)                 ; I've written to much java,
                                         ; but then so have many other people...
-(setq c-default-style "bsd")
+(setq c-default-style "linux")
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -240,15 +235,6 @@
 ;;add-hook 'python-mode-hook 'whitespace-mode)
 
 
-
-;;;;;;;;;;;;;
-;;  VIPER  ;;
-;;;;;;;;;;;;;
-(setq viper-mode t)
-(setq viper-always t)
-(setq viper-vi-state-cursor-color "green")
-(require 'viper)
-
 ;;;;;;;;;;;;
 ;;  TEXT  ;;
 ;;;;;;;;;;;;
@@ -263,7 +249,6 @@
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
 ;;;;;;;;;;;;;
-;;load "auctex.el" nil t t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -276,36 +261,25 @@
                             (lambda ()
                               (interactive)
                               (command-execute 'save-buffer)
-                              (command-execute 'TeX-command-master)
-                              ))))
-
-
-
-
+                              (command-execute 'TeX-command-master)))))
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
+(require 'slime-autoloads)
+(eval-after-load "slime-autoloads"
+  '(progn
+     (setq slime-net-coding-system 'utf-8-unix)
 
-(when-host ("daneel" "leela" "krang" "talos")
-           (require 'slime)
-           (require 'slime-autoloads)
-           (require 'slime-tramp)
+     (slime-setup '(slime-fancy slime-asdf))
+     (global-set-key "\C-cs" 'slime-selector)
 
-           (setq slime-net-coding-system 'utf-8-unix)
+     (setq slime-lisp-implementations
+           '((sbcl ("/usr/bin/sbcl"))
+             (clisp ("/usr/bin/clisp"))
+             (ecl ("/usr/bin/ecl"))))
 
-           (slime-setup '(slime-fancy slime-asdf))
-           (global-set-key "\C-cs" 'slime-selector)
-
-
-
-
-           (setq slime-lisp-implementations
-                 '((sbcl ("/usr/bin/sbcl"))
-                   (clisp ("/usr/bin/clisp"))
-                   (ecl ("/usr/bin/ecl"))))
-
-           (setq slime-default-lisp 'sbcl))
+     (setq slime-default-lisp 'sbcl)))
 
 
 ;;push (slime-create-filename-translator :machine-instance "daneel"
@@ -320,8 +294,8 @@
                                         ;slime-filename-translations)
 ;;(setq slime-filename-translations nil)
 
-(when-host ("daneel" "hesh" "olivaw" "babel")
-           (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
+(when-host ("daneel" "leela")
+  (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 
 
@@ -336,13 +310,9 @@
 ;;;;;;;;;;;;
 ;;  js2   ;;
 ;;;;;;;;;;;;
-
 (autoload 'js2-mode "js2" nil t)
-
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
 (add-to-list 'auto-mode-alist '("\\.jixrc$" . js2-mode))
-
 
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 
@@ -467,13 +437,6 @@
 ;;;;;;;;;;;
 (setq explicit-shell-file-name "/bin/zsh" )
 
-
-
-;;(load "doctor")
-;;load "tnt")
-;;load "net-doctor")
-
-
 ;;;;;;;;;;;;;
 ;; FORTRAN ;;
 ;;;;;;;;;;;;;
@@ -488,8 +451,6 @@
 ;;;;;;;;;;;;;
 ;; OCTAVE  ;;
 ;;;;;;;;;;;;;
-;;;
-;;autoload 'octave-mode "octave-mod" nil t)
 (autoload 'run-octave "octave-inf" nil t)
 (add-hook 'inferior-octave-mode-hook
           (lambda ()
@@ -503,18 +464,11 @@
             (define-key inferior-octave-mode-map [down]
               'comint-next-input)))
 
-;;add-hook 'octave-mode-hook
-                                        ;(lambda ()
-                                        ;(run-octave)))
-
 (add-hook 'octave-mode-hook
           'viper-mode)
 
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
-
-;;define-key octave-mode-map "\C-m"
-                                        ;'octave-reindent-then-newline-and-indent)
 
 (setq inferior-octave-startup-args `("-q"))
 
@@ -533,38 +487,20 @@
 ;; MAXIMA  ;;
 ;;;;;;;;;;;;;
 (when-host ("daneel" "leela")
-           (add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
-           (add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/")
-           (require 'maxima)
-           (autoload 'maxima-mode "maxima" "Maxima mode" t)
-           (autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
-           (autoload 'maxima "maxima" "Maxima interaction" t)
-           (autoload 'imath-mode "imath" "Imath mode for math formula input" t)
-           (setq imaxima-use-maxima-mode-flag t))
+  (add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
+  (add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/"))
 
+(autoload 'maxima-mode "maxima" "Maxima mode" t)
+(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
+(autoload 'maxima "maxima" "Maxima interaction" t)
+(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
+(setq imaxima-use-maxima-mode-flag t)
 
-(autoload 'imath "imath" "Interactive Math mode" t)
-(autoload 'imath-mode "imath" "Interactive Math mode" t)
 (setq imaxima-fnt-size "Large")
 (setq auto-mode-alist (cons '("\.mac$" . maxima-mode) auto-mode-alist))
 
-;;setq load-path (cons  "/usr/share/maxima/5.9.1/emacs" load-path ))
 
-;;autoload 'maxima "maxima" "Running Maxima interactively" t)
-
-;;autoload 'maxima-mode "maxima" "Maxima editing mode" t)
-
-
-;;setq load-path (cons "/usr/share/maxima/5.9.0/emacs" load-path))
-;;autoload 'maxima-mode "maxima" "Maxima mode" t)
-;;autoload 'maxima "maxima" "Maxima interactive" t)
-;;autoload 'emaxima-mode "emaxima" "EMaxima" t)
-;;add-hook 'emaxima-mode-hook 'emaxima-mark-file-as-emaxima)
-
-(setq auto-mode-alist (cons '("\.mac$" . maxima-mode) auto-mode-alist))
-
-
-;;;;;;;;;;;;
+;;;;;;;;;;;
 ;; CUSTOM ;;
 ;;;;;;;;;;;;
 
@@ -645,11 +581,11 @@
 ;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
 
 
-;; erc
+;;;;;;;;;
+;; ERC ;;
+;;;;;;;;;
 
-(require 'erc)
-
-
+(autoload 'erc-tls "erc")
 
 (defun irobot-erc ()
   (interactive)
@@ -663,7 +599,14 @@
 ;;;;;;;;;;;;;;
 ;;  BROWSE  ;;
 ;;;;;;;;;;;;;;
-(require 'w3m)
+(autoload 'w3m-brows-url "w3m" "" t)
+(setq browse-url-browser-function 'w3m-browse-url)
+
+(eval-after-load "w3m"
+  '(setq w3m-use-cookies t
+         w3m-default-display-inline-images t
+         ;; w3m-pop-up-windows t
+         ))
 
 ;; (setq w3m-session-file "~/.emacs.d/w3m-session")
 ;; (setq w3m-session-save-always nil)
@@ -682,21 +625,14 @@
 ;;     (other-window 1)
 ;;     (w3m-browse-url url newwin)))
 
-(setq w3m-use-cookies t
-      w3m-default-display-inline-images t
-      browse-url-browser-function 'w3m-browse-url
-                                        ;browse-url-browser-function 'w3m-browse-url-other-window
-                                        ; w3m-pop-up-windows t
-      )
-
 ;; Quirk: localhost may resolve to an ipv6 address,
 ;; apache may not be supporting ipv6
-(when-host ("daneel" "leela")
-           (require 'mediawiki)
-           (setq mediawiki-site-alist
-                 '(("infosphere"   "http://127.0.0.1:8080/infosphere/"
-                    "ntd"     "" "Main Page")
-                   ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
+(autoload 'mediawiki-site "mediawiki" "" t)
+(eval-after-load "mediawiki"
+  '(setq mediawiki-site-alist
+         '(("infosphere"   "http://127.0.0.1:8080/infosphere/"
+            "ntd"     "" "Main Page")
+           ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
 
 
 (global-set-key "\C-c\w"
