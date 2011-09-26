@@ -116,10 +116,12 @@
 
 
 ;; toggle meubar
-(global-set-key "\C-cm" (lambda () (interactive)
+(global-set-key "\C-cpm" (lambda () (interactive)
                           (if menu-bar-mode
                               (menu-bar-mode -1)
                             (menu-bar-mode 1))))
+
+(global-set-key "\C-cm" 'magit-status)
 
 ;; server
 (global-set-key "\C-c#" 'server-start)
@@ -153,6 +155,8 @@
 ;;;;;;;;;;
 (setq confirm-kill-emacs 'yes-or-no-p)
 
+(desktop-save-mode 1)
+
 (setq make-backup-files nil)
 
 (setq inhibit-startup-message t)
@@ -170,6 +174,8 @@
 (setq vc-handled-backends '(Git SVN))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(require 'magit)
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  Remote File  ;;
