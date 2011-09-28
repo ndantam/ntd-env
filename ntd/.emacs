@@ -117,17 +117,25 @@
 ;; version control
 (global-set-key "\C-xvp" 'vc-update)
 (global-set-key "\C-xve" 'ediff-revision)
-(global-set-key "\C-xve" 'ediff-revision)
-
+(global-set-key "\C-cm" 'magit-status)
 
 
 ;; toggle meubar
-(global-set-key "\C-cpm" (lambda () (interactive)
+;; FIXME: reacts poorly with fullscreen
+(global-set-key "\C-cM" (lambda () (interactive)
                            (if menu-bar-mode
                                (menu-bar-mode -1)
                              (menu-bar-mode 1))))
+;; Window switching
+(global-set-key "\C-co" 'other-window)
+(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
 
-(global-set-key "\C-cm" 'magit-status)
+(global-set-key "\C-c\M-h" 'windmove-left)
+(global-set-key "\C-c\M-l" 'windmove-right)
+(global-set-key "\C-c\M-k" 'windmove-up)
+(global-set-key "\C-c\M-j" 'windmove-down)
+
+(global-set-key "\C-ci" 'other-frame)
 
 ;; server
 (global-set-key "\C-cv" 'server-start)
