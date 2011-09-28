@@ -120,8 +120,23 @@
 (global-set-key "\C-cm" 'magit-status)
 
 
+
+(global-set-key "\C-cvl" (lambda () (interactive)
+                           (let ((buf (current-buffer)))
+                             (magit-log)
+                             (switch-to-buffer buf))
+                           (pop-to-buffer "*magit-log*")))
+(global-set-key "\C-cvL" (lambda () (interactive)
+                           (let ((buf (current-buffer)))
+                             (magit-log-long)
+                             (switch-to-buffer buf))
+                           (pop-to-buffer "*magit-log*")))
+
+
+(global-set-key "\C-cv=" 'magit-diff-working-tree)
+
+
 ;; toggle meubar
-;; FIXME: reacts poorly with fullscreen
 (global-set-key "\C-cM" (lambda () (interactive)
                            (if menu-bar-mode
                                (menu-bar-mode -1)
