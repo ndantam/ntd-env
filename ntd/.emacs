@@ -97,12 +97,12 @@
 ;;;;;;;;;;;;;;;;;;;
 
 ;; quick compile
-(global-set-key "\C-c\k" (lambda ()
+(global-set-key "\C-cK" (lambda ()
                            (interactive)
                            (command-execute 'save-buffer)
                            (command-execute 'recompile)))
-(global-set-key "\C-c\l" 'compile)
-(global-set-key "\C-ctk" 'tramp-compile)
+(global-set-key "\C-cL" 'compile)
+(global-set-key "\C-ctK" 'tramp-compile)
 
 ;; commenting
 (global-set-key "\C-cc" 'comment-region)
@@ -130,10 +130,10 @@
 (global-set-key "\C-co" 'other-window)
 (global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
 
-(global-set-key "\C-c\M-h" 'windmove-left)
-(global-set-key "\C-c\M-l" 'windmove-right)
-(global-set-key "\C-c\M-k" 'windmove-up)
-(global-set-key "\C-c\M-j" 'windmove-down)
+(global-set-key "\C-ch" 'windmove-left)
+(global-set-key "\C-cl" 'windmove-right)
+(global-set-key "\C-ck" 'windmove-up)
+(global-set-key "\C-cj" 'windmove-down)
 
 (global-set-key "\C-ci" 'other-frame)
 
