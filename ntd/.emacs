@@ -155,7 +155,7 @@
 (global-set-key "\C-ci" 'other-frame)
 
 ;; server
-(global-set-key "\C-cv" 'server-start)
+(global-set-key "\C-cS" 'server-start)
 
 ;; from the emacswiki
 (defun toggle-fullscreen (&optional f)

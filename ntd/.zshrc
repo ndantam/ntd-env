@@ -146,7 +146,7 @@ function zgitcomplete {
 }
 
 function gcd {
-    DIR=$(zgitls | grep "$1" | sort)
+    DIR=$(zgitls | grep "/$1\$" | sort)
     if [ -n "$DIR" ] ; then
         if [ `echo $DIR | wc -l` = 1 ]; then
             cd "$DIR"
