@@ -138,7 +138,7 @@ function hcd {
 compctl -K hcomplete hcd
 
 function zgitls {
-    find ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+    find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
 }
 
 function zgitcomplete {
