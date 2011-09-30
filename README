@@ -7,8 +7,4 @@ actual files live under ./ntd.  This is online mostly for my own
 convenience, but other folks may find some of it interesting.
 
 To install the files on a new machine, the ./install.sh script will
-create hard links from ~ to the files here.  Symlinks would work for
-some programs, but ssh won't take it.
-
-Sometimes, the hard links break.  To keep the files in ~, run
-backlink.sh.  To keep the files in ./ntd, run reinstall.sh.
+create symlinks from ~ to the files here.

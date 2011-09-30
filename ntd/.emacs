@@ -193,6 +193,8 @@
 (setq vc-handled-backends '(Git SVN))
 (autoload 'magit-status "magit" "" t)
 
+(setq vc-follow-symlinks t)
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq ediff-split-window-function 'split-window-horizontally)
