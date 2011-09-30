@@ -97,18 +97,20 @@
 ;;;;;;;;;;;;;;;;;;;
 
 ;; quick compile
-(global-set-key "\C-cK" (lambda ()
+(global-set-key [f1] (lambda ()
                            (interactive)
                            (command-execute 'save-buffer)
                            (command-execute 'recompile)))
-(global-set-key "\C-cL" 'compile)
+(global-set-key [f2] 'compile)
+
 (global-set-key "\C-ctK" 'tramp-compile)
 
 ;; commenting
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
-(global-set-key "\C-ce" (lambda () (interactive)
-                          (switch-to-buffer "*eshell*")))
+(global-set-key "\C-cL" 'longlines-mode)
+
+
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
 ;; go to eshell
