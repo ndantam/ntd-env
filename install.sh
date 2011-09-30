@@ -10,7 +10,7 @@ find ntd -type f | sed -e 's!^ntd/*!!' |
         if [ -e "$HOME/$fn" ]; then
             echo "$fn exists, won't replace"
         else
-            echo ln -sv "$(pwd)/ntd/$fn"  "$HOME/$fn"
+            ln -sv "$(pwd)/ntd/$fn"  "$HOME/$fn"
         fi
     done
 )
