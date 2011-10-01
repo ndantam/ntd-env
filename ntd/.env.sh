@@ -35,6 +35,11 @@ fi
 
 
 alias rscp="rsync --recursive --partial --perms --progress --times"
+webcp () {
+    pushd ~/www && \
+    rsync --progress --recursive --times android.html org.css img killerbee3:www && \
+    popd
+}
 
 function rdebi() {
     scp "$2" "$1":/tmp/ && ssh $1 "sudo dpkg -i /tmp/$2; rm /tmp/$2"
@@ -162,3 +167,5 @@ hmake() {
 pdfcat() {
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
 }
+
+

@@ -253,13 +253,14 @@
                      type=\"text/css\"/>"
          :exclude ".*"
          :email ""
-         :publishing-directory ,(expand-file-name "~/worg/"))
+         :publishing-directory ,(expand-file-name "~/www/"))
         ("web.static"
          :base-directory ,(expand-file-name "~/org/")
          :publishing-function org-publish-attachment
          :base-extension "css"
-         :email nil
-         :publishing-directory ,(expand-file-name "~/worg/"))))
+         :include ("img/droidmacs.jpeg")
+         :email ""
+         :publishing-directory ,(expand-file-name "~/www/"))))
 
 
 ;;;;;;;;;
