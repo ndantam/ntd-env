@@ -239,6 +239,30 @@
 
 
 ;;;;;;;;;
+;; ORG ;;
+;;;;;;;;;
+(setq org-export-email-info nil)
+
+(setq org-publish-project-alist
+      `(("web"
+         :base-directory ,(expand-file-name "~/org/")
+         :publishing-function org-publish-org-to-html
+         :include ("android.org")
+         :style "<link rel=\"stylesheet\"
+                     href=\"org.css\"
+                     type=\"text/css\"/>"
+         :exclude ".*"
+         :email ""
+         :publishing-directory ,(expand-file-name "~/worg/"))
+        ("web.static"
+         :base-directory ,(expand-file-name "~/org/")
+         :publishing-function org-publish-attachment
+         :base-extension "css"
+         :email nil
+         :publishing-directory ,(expand-file-name "~/worg/"))))
+
+
+;;;;;;;;;
 ;;  C  ;;
 ;;;;;;;;;
 
