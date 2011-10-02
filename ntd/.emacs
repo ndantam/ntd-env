@@ -242,23 +242,28 @@
 ;; ORG ;;
 ;;;;;;;;;
 (setq org-export-email-info nil)
-
+(setq org-export-html-preamble nil)
 (setq org-publish-project-alist
       `(("web"
-         :base-directory ,(expand-file-name "~/org/")
+         :base-directory ,(expand-file-name "~/org/web")
          :publishing-function org-publish-org-to-html
-         :include ("android.org")
+         :base-extension "org"
          :style "<link rel=\"stylesheet\"
-                     href=\"org.css\"
-                     type=\"text/css\"/>"
-         :exclude ".*"
+                     href=\"web/org.css\"
+                     type=\"text/css\"/>
+                 <script src=\"web/org.js\"
+                     type=\"text/javascript\"></script>"
          :email ""
          :publishing-directory ,(expand-file-name "~/www/"))
         ("web.static"
          :base-directory ,(expand-file-name "~/org/")
          :publishing-function org-publish-attachment
-         :base-extension "css"
-         :include ("img/droidmacs.jpeg")
+         :base-extension "css|js"
+         :recursive t
+         :include ("web/org.css" "web/org.js"
+                   "img/droidmacs.jpeg"
+                   "img/yama.jpeg" "img/ntd-lwa3-chess.jpeg"
+                   "img/hydrocar.jpeg")
          :email ""
          :publishing-directory ,(expand-file-name "~/www/"))))
 

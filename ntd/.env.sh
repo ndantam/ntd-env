@@ -36,8 +36,10 @@ fi
 
 alias rscp="rsync --recursive --partial --perms --progress --times"
 webcp () {
-    pushd ~/www && \
-    rsync --progress --recursive --times android.html org.css img killerbee3:www && \
+    pushd ~/www
+    rsync --links --progress --recursive --times \
+        index.html android.html web img \
+        killerbee3:www
     popd
 }
 
