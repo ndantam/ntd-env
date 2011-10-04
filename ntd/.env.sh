@@ -38,7 +38,7 @@ alias rscp="rsync --recursive --partial --perms --progress --times"
 webcp () {
     pushd ~/www
     rsync --links --progress --recursive --times \
-        index.html android.html web img \
+        index.html lisp.html android.html web img \
         killerbee3:www
     popd
 }
