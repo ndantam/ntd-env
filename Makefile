@@ -1,9 +1,13 @@
 
-FILES := .cshrc  .emacs   .env.sh  .gitconfig  .gitignore  .gvimrc  .mechsoph_bash  .ssh/config  .vimrc  .viper  .zshrc .emacs.d/site-lisp/magit
+FILES := $(shell git ls-tree  HEAD -r ntd | cut -f 2 | sed -e 's!^ntd/!!')
 
 HOME_FILES := $(addprefix $(HOME)/, $(FILES))
 
 install: $(HOME_FILES)
+
+list:
+	@echo $(FILES)
+	@echo $(HOME_FILES)
 
 $(HOME)/%: ntd/%
 	@mkdir -vp `dirname $@`
