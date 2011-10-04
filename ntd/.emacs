@@ -16,12 +16,21 @@
 (setq viper-always t)
 (setq viper-vi-state-cursor-color "green")
 
+(when (boundp 'viper-emacs-state-mode-list)
+  (mapc (lambda (mode)
+          (add-to-list 'viper-emacs-state-mode-list mode))
+        '(magit-key-mode)))
+
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/.emacs.d/imaxima")
+(add-to-list 'load-path "~/.emacs.d")
+
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (require 'cl)
 
 (defun all (args)
