@@ -332,11 +332,13 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-(require 'slime-autoloads)
-(eval-after-load "slime-autoloads"
+(autoload 'slime "slime" "slime" t)
+(autoload 'slime-connect "slime" "slime" t)
+(eval-after-load "slime"
   '(progn
+     (require 'slime-fancy)
      (setq slime-net-coding-system 'utf-8-unix)
-
+     (setq slime-use-autodoc-mode t)
      (slime-setup '(slime-fancy slime-asdf))
      (global-set-key "\C-cs" 'slime-selector)
 
@@ -346,19 +348,6 @@
              (ecl ("/usr/bin/ecl"))))
 
      (setq slime-default-lisp 'sbcl)))
-
-
-;;push (slime-create-filename-translator :machine-instance "daneel"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations
-;;
-
-;;push (slime-create-filename-translator :machine-instance "daneel"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations)
-;;(setq slime-filename-translations nil)
 
 (when-host ("daneel" "leela")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
