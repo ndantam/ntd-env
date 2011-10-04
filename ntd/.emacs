@@ -286,6 +286,15 @@
                                         ; but then so have many other people...
 (setq c-default-style "linux")
 
+(defconst ros-cc-style
+  '("k&r"
+    (c-basic-offset . 2)
+    (c-offsets-alist . ((innamespace . [0])
+                        (member-init-intro . [0])))))
+
+(c-add-style "ros-cc-style" ros-cc-style)
+
+
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
 ;;;;;;;;;;;;;;
