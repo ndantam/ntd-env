@@ -1,0 +1,3 @@
+[submodule "ntd/.emacs.d/site-lisp/magit"]
+	path = ntd/.emacs.d/site-lisp/magit
+	url = https://github.com/magit/magit.git
