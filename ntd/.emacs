@@ -134,7 +134,7 @@
 
 (global-set-key "\C-cvl" (lambda () (interactive)
                            (let ((buf (current-buffer)))
-                             (magit-log)
+                             (magit-display-log)
                              (switch-to-buffer buf))
                            (pop-to-buffer "*magit-log*")))
 (global-set-key "\C-cvL" (lambda () (interactive)
