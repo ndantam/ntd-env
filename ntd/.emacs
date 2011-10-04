@@ -16,12 +16,21 @@
 (setq viper-always t)
 (setq viper-vi-state-cursor-color "green")
 
+(when (boundp 'viper-emacs-state-mode-list)
+  (mapc (lambda (mode)
+          (add-to-list 'viper-emacs-state-mode-list mode))
+        '(magit-key-mode slime-connection-list-mode)))
+
 ;;;;;;;;;;;;
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/.emacs.d/imaxima")
+(add-to-list 'load-path "~/.emacs.d")
+
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (require 'cl)
 
 (defun all (args)
@@ -125,7 +134,7 @@
 
 (global-set-key "\C-cvl" (lambda () (interactive)
                            (let ((buf (current-buffer)))
-                             (magit-log)
+                             (magit-display-log)
                              (switch-to-buffer buf))
                            (pop-to-buffer "*magit-log*")))
 (global-set-key "\C-cvL" (lambda () (interactive)
@@ -323,11 +332,13 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
-(require 'slime-autoloads)
-(eval-after-load "slime-autoloads"
+(autoload 'slime "slime" "slime" t)
+(autoload 'slime-connect "slime" "slime" t)
+(eval-after-load "slime"
   '(progn
+     (require 'slime-fancy)
      (setq slime-net-coding-system 'utf-8-unix)
-
+     (setq slime-use-autodoc-mode t)
      (slime-setup '(slime-fancy slime-asdf))
      (global-set-key "\C-cs" 'slime-selector)
 
@@ -337,19 +348,6 @@
              (ecl ("/usr/bin/ecl"))))
 
      (setq slime-default-lisp 'sbcl)))
-
-
-;;push (slime-create-filename-translator :machine-instance "daneel"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations
-;;
-
-;;push (slime-create-filename-translator :machine-instance "daneel"
-                                        ;:remote-host "daneel"
-                                        ;:username "ntd")
-                                        ;slime-filename-translations)
-;;(setq slime-filename-translations nil)
 
 (when-host ("daneel" "leela")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
