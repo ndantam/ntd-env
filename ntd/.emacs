@@ -105,6 +105,14 @@
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
 
+;; woman
+(global-set-key "\C-cw" (lambda () (interactive)
+			  (if (one-window-p) (split-window))
+			  (let ((buf (current-buffer)))
+			    (other-window 1)
+			    (switch-to-buffer buf))
+			  (woman)))
+
 ;; quick compile
 (global-set-key [f1] (lambda ()
                            (interactive)
@@ -692,18 +700,18 @@
            ("Wikipedia" "http://en.wikipedia.org/w/"  "ndantam" "" "Main Page"))))
 
 
-(global-set-key "\C-c\w"
-                (lambda (name)
-                  (interactive "sWiki Page: ")
-                  (mediawiki-open name)
-                  (if (one-window-p) (split-window))
-                  (other-window 1)
-                  (browse-url
-                   (concat (mediawiki-site-url mediawiki-site)
-                           "index.php/"
-                           (replace-regexp-in-string " " "_"
-                                                     name)))
-                  (other-window 1)))
+;; (global-set-key "\C-c\w"
+;;                 (lambda (name)
+;;                   (interactive "sWiki Page: ")
+;;                   (mediawiki-open name)
+;;                   (if (one-window-p) (split-window))
+;;                   (other-window 1)
+;;                   (browse-url
+;;                    (concat (mediawiki-site-url mediawiki-site)
+;;                            "index.php/"
+;;                            (replace-regexp-in-string " " "_"
+;;                                                      name)))
+;;                   (other-window 1)))
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
