@@ -163,7 +163,6 @@ function gcd {
 
 compctl -K zgitcomplete gcd
 
-
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
@@ -175,15 +174,11 @@ zstyle '*' hosts $hosts
 ## set keymapt
 bindkey -v
 
-## load environment
-source ~/.env.sh
-
 ## get rid of prompt \r
 unsetopt promptcr
 
 ## emacs bindings
 bindkey -e
-
 
 [[ $EMACS = t ]] && unsetopt zle
 
@@ -195,7 +190,6 @@ HISTSIZE=1000
 HISTFILE=~/.zsh_history
 SAVEHIST=500
 
-
 ## ROS SETUP  ##
 if [ -e "$HOME/ros/setup.zsh" ]; then
     source "$HOME/ros/setup.zsh"
@@ -205,6 +199,5 @@ elif [ -e /opt/ros/electric/setup.zsh ]; then
     source /opt/ros/electric/setup.zsh
 fi
 
-if [ -d "$HOME/ros/pkg" ]; then
-    ROS_PACKAGE_PATH="$HOME/ros/pkg:$ROS_PACKAGE_PATH"
-fi
+## load environment
+source ~/.env.sh
