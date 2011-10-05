@@ -115,7 +115,7 @@ bglisp () {
 ##############
 
 ## My
-if [ `hostname` = "leela"  ]; then
+if [ "$HOST" = "leela"  ]; then
     fanlevel() {
         echo level $1 | sudo tee /proc/acpi/ibm/fan
     }
@@ -129,7 +129,7 @@ if [ `hostname` = "leela"  ]; then
 fi
 
 ## GT
-if [ `hostname` = "daneel"  ]; then
+if [ "$HOST" = "daneel"  ]; then
     export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
@@ -140,13 +140,12 @@ if [ `hostname` = "daneel"  ]; then
     export PATH=$PATH:~/src/other/depot_tools
 fi
 
-
-if [ `hostname` = "chetter"  ]; then
+if [ "$HOST" = "chetter"  ]; then
     alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
 fi
 
 ## LL
-if [ `hostname` = olivaw ]; then
+if [ "$HOST" = olivaw ]; then
     export ROS_ROOT=~/src/ros
     export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src:~/src/indoor-packbot/software/python:
     export PATH=$ROS_ROOT/bin:$PATH
@@ -155,7 +154,7 @@ if [ `hostname` = olivaw ]; then
     export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct/octave
 fi
 
-if [ `hostname` = "SuperSloth" -o `hostname` = "babel"  ]; then
+if [ "$HOST" = "SuperSloth" ] || [ "$HOST" = "babel"  ]; then
     export ROS_ROOT=~/src/ros
     export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot
     export ROS_MASTER_URI=http://192.168.1.2:11311/
@@ -166,13 +165,13 @@ if [ `hostname` = "SuperSloth" -o `hostname` = "babel"  ]; then
     ntd_ros_load_shell
 fi
 
-if [ `hostname` = "babel" ]; then
+if [ "$HOST" = "babel" ]; then
     alias wifion="sudo ifdown eth0 && sudo ifup wlan0"
     alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
 fi
 
 # iRobot
-if [ `hostname` = "IRBT-2914" ]; then
+if [ "$HOST" = "IRBT-2914" ]; then
     ulimit -s 2048
     aware_env() {
         export AWAREPM_LOCAL_CACHE=~/src/irobot/cache
