@@ -186,3 +186,16 @@ gitrcp () {
 	echo "No .git here"
     fi
 }
+
+bglisp () {
+    if [ ! -d ~/.bglisp ] ; then
+	mkdir ~/.bglisp  || return 1
+    fi
+    detachtty                                        \
+	--pid-file ~/.bglisp/pid                     \
+	--dribble-file ~/.bglisp/dribble             \
+	~/.bglisp/socket                              \
+	/usr/bin/env sbcl  --eval '(require :swank)' \
+	--eval '(swank:create-server :dont-close t)' \
+	|| return 1
+}
