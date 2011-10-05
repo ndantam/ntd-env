@@ -108,7 +108,7 @@
 ;; quick compile
 (global-set-key [f1] (lambda ()
                            (interactive)
-                           (command-execute 'save-buffer)
+                           ;(command-execute 'save-buffer)
                            (command-execute 'recompile)))
 (global-set-key [f2] 'compile)
 
