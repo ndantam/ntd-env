@@ -1,14 +1,14 @@
 "colorscheme evening
 colorscheme ron
-set tabstop=8
-set shiftwidth=8
 set showmatch
 set encoding=utf-8
-set expandtab
-set autoindent
-
-
-imap <tab> <esc>==i
+"set tabstop=8
+"set shiftwidth=8
+"set expandtab
+"set autoindent
+"imap <tab> <esc>==i
+"autocmd FileType make setlocal noexpandtab
+"autocmd FileType make imap <tab> <tab>
 
 augroup filetype
         au! BufRead,BufNewFile *.jm4    set filetype=java
@@ -28,8 +28,6 @@ augroup filetype
 augroup END
 
 autocmd Filetype mail set textwidth=68
-autocmd FileType make setlocal noexpandtab
-autocmd FileType make imap <tab> <tab>
 
 let spell_auto_type="latex,tex,txt,html"
 
