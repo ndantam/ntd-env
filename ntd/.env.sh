@@ -170,4 +170,19 @@ pdfcat() {
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
 }
 
-
+gitrcp () {
+    RDIR=`echo "$1" | sed -e 's/^\([^:]\+:\)//'`
+    RHOST=`echo "$1" | sed -e 's/\(:.*\)$//'`
+    RGRP=$2
+    if [ -d .git ] ; then
+	if [ -n "$RHOST" ] && [ -n "$RDIR" ] && [ -n "$RGRP" ] ; then
+	    rsync -r .git/ "$RHOST:$RDIR" && \
+		ssh "$RHOST" \
+		"cd $RDIR && chmod -R g+w . && find . -type d -exec chmod g+s '{}' ';' && chgrp -R $RGRP . && git config core.bare true"
+	else
+	    echo "Usage: gitrcp REMOTE-HOST:REMOTE-DIR.git REMOTE-GROUP"
+	fi
+    else
+	echo "No .git here"
+    fi
+}
