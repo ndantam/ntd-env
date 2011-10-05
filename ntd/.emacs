@@ -131,18 +131,8 @@
 (global-set-key "\C-cm" 'magit-status)
 
 
-
-(global-set-key "\C-cvl" (lambda () (interactive)
-                           (let ((buf (current-buffer)))
-                             (magit-display-log)
-                             (switch-to-buffer buf))
-                           (pop-to-buffer "*magit-log*")))
-(global-set-key "\C-cvL" (lambda () (interactive)
-                           (let ((buf (current-buffer)))
-                             (magit-log-long)
-                             (switch-to-buffer buf))
-                           (pop-to-buffer "*magit-log*")))
-
+(global-set-key "\C-cvl" 'magit-display-log)
+(global-set-key "\C-cvL"  'magit-log-long)
 
 (global-set-key "\C-cv=" 'magit-diff-working-tree)
 
