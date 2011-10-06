@@ -104,7 +104,6 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
-
 ;; woman
 (global-set-key "\C-cw" (lambda () (interactive)
 			  (if (one-window-p) (split-window))
@@ -712,6 +711,12 @@
 ;;                            (replace-regexp-in-string " " "_"
 ;;                                                      name)))
 ;;                   (other-window 1)))
+
+;;;;;;;;;
+;; ROS ;;
+;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.rosinstall$" . yaml-mode))
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
