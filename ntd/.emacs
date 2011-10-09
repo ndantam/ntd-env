@@ -695,26 +695,33 @@
 ;; (load "/usr/share/emacs/site-lisp/ede/ede-dired.el")
 ;; (global-ede-mode 1)
 
-;; (require 'cedet)
-;; (require 'semantic-ia)
+(require 'cedet)
+(require 'semantic-load)
+(require 'semantic-ia)
 ;; (require 'semantic-gcc) ; use system include files
 
+;; this option breaks things
+;; (setq semanticdb-default-save-directory "~/.emacs.d/semantic")
+
 ;; (setq semantic-load-turn-everything-on t)
-(require 'semantic-load)
 (setq semantic-load-turn-useful-things-on t)
 ;; (require 'semantic-gcc) ; use system include files
 (semantic-load-enable-code-helpers)
 ;; (semantic-load-enable-guady-code-helpers)
+
+;; TODO: make open-paren show summary
+
 (add-hook 'c-mode-common-hook
          (lambda ()
            ;; (local-set-key "." 'semantic-complete-self-insert)
            ;; (local-set-key ">" 'semantic-complete-self-insert))
+           (define-key c-mode-base-map (kbd "<C-tab>")
+                       'semantic-complete-analyze-inline)
            (define-key c-mode-base-map (kbd "\C-c TAB")
                        'semantic-ia-complete-symbol-menu)))
 
 ;; (semantic-idle-completions-mode nil)
 (setq global-semantic-idle-summary-mode t)
-
 
 (setq semanticdb-project-roots
       (list "~/git/thebrain.golems.org/lib/somatic/"
@@ -727,6 +734,11 @@
 
 (semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include/")
 (semantic-add-system-include "/home/ntd/git/thebrain.golems.org/lib/amino/include/")
+
+(setq-mode-local c-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
+(setq-mode-local c++-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
