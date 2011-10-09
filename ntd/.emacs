@@ -68,42 +68,11 @@
 
 
 
-;;;;;;;;;;;;;;;;
-;;  SEMANTIC  ;;
-;;;;;;;;;;;;;;;;
-;;setq semantic-load-turn-everything-on t)
-;;require 'semantic-load)
-;;require 'semantic-ia)
-;;add-hook 'c-mode-common-hook
-;;         (lambda ()
-;;           (define-key c-mode-base-map (kbd "\C-c TAB")
-;;                       'semantic-complete-analyze-inline)
-;;           (define-key c-mode-base-map (kbd "\C-c m")
-;;                       'semantic-ia-complete-symbol-menu)))
-
-
-;; (add-hook 'c-mode-common-hook
-;;           (lambda ()
-;;             (local-set-key "\C-c\C-c"
-;;                            (execute-command #'save-buffer)
-;;                            (execute-command #'recompile))))
-
-;; Semantic project;; s
-
-;;when-host "daneel"
-;; (setq semanticdb-project-roots
-;;       (list "~/cc/sparky/src")))
-
-
-
-;;semantic-load-enable-code-helpers)
-
-;;setq semantic-load-turn-useful-things-on t)
-
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
+
 ;; woman
 (global-set-key "\C-cw" (lambda () (interactive)
 			  (if (one-window-p) (split-window))
