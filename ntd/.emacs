@@ -718,6 +718,47 @@
 
 (add-to-list 'auto-mode-alist '("\\.rosinstall$" . yaml-mode))
 
+;;;;;;;;;;;;;;;;
+;;  SEMANTIC  ;;
+;;;;;;;;;;;;;;;;
+;; (require 'ede)
+;; (require 'ede-dired)
+;; (load "/usr/share/emacs/site-lisp/ede/ede-dired.el")
+;; (global-ede-mode 1)
+
+;; (require 'cedet)
+;; (require 'semantic-ia)
+;; (require 'semantic-gcc) ; use system include files
+
+;; (setq semantic-load-turn-everything-on t)
+(require 'semantic-load)
+(setq semantic-load-turn-useful-things-on t)
+;; (require 'semantic-gcc) ; use system include files
+(semantic-load-enable-code-helpers)
+;; (semantic-load-enable-guady-code-helpers)
+(add-hook 'c-mode-common-hook
+         (lambda ()
+           ;; (local-set-key "." 'semantic-complete-self-insert)
+           ;; (local-set-key ">" 'semantic-complete-self-insert))
+           (define-key c-mode-base-map (kbd "\C-c TAB")
+                       'semantic-ia-complete-symbol-menu)))
+
+;; (semantic-idle-completions-mode nil)
+(setq global-semantic-idle-summary-mode t)
+
+
+(setq semanticdb-project-roots
+      (list "~/git/thebrain.golems.org/lib/somatic/"
+            "~/git/thebrain.golems.org/drivers/pcio/"
+            "~/git/thebrain.golems.org/lib/amino/"
+            "~/git/thebrain.golems.org/lib/ach/"))
+
+
+(semantic-add-system-include "/usr/include")
+
+(semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include/")
+(semantic-add-system-include "/home/ntd/git/thebrain.golems.org/lib/amino/include/")
+
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
 ;;;;;;;;;;;;;;;
