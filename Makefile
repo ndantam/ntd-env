@@ -10,8 +10,8 @@ list:
 	@echo $(HOME_FILES)
 
 $(HOME)/%: ntd/%
-	@mkdir -vp `dirname $@`
-	@if [ ! -L $@ ] ; then ln -sv `pwd`/$< $@; fi
+	@mkdir -p `dirname $@`
+	@if [ ! -L $@ ] ; then ln -s `pwd`/$< $@; fi
 
 clean:
 	rm -f $(HOME_FILES)
