@@ -1,3 +1,21 @@
 [submodule "ntd/.emacs.d/site-lisp/magit"]
 	path = ntd/.emacs.d/site-lisp/magit
 	url = https://github.com/magit/magit.git
+[submodule "ntd/emacs/semi"]
+	path = ntd/emacs/semi
+	url = https://github.com/wanderlust/semi.git
+[submodule "ntd/emacs/apel"]
+	path = ntd/emacs/apel
+	url = https://github.com/wanderlust/semi.git
+[submodule "emacs/apel"]
+	path = emacs/apel
+	url = https://github.com/wanderlust/apel.git
+[submodule "emacs/semi"]
+	path = emacs/semi
+	url = https://github.com/wanderlust/semi.git
+[submodule "emacs/flim"]
+	path = emacs/flim
+	url = https://github.com/wanderlust/flim.git
+[submodule "emacs/wanderlust"]
+	path = emacs/wanderlust
+	url = https://github.com/wanderlust/wanderlust.git

@@ -67,11 +67,11 @@ webcp () {
     popd
 }
 
-function rdebi() {
+rdebi () {
     scp "$2" "$1":/tmp/ && ssh $1 "sudo dpkg -i /tmp/$2; rm /tmp/$2"
 }
 
-function make-common-dist {
+make_common_dist () {
     make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
 }
 
@@ -213,7 +213,7 @@ fi
 # ROS #
 #######
 
-function ntd_ros_load_shell {
+ntd_ros_load_shell () {
     case $SHELL in
         /bin/zsh)
 	    source $ROS_ROOT/tools/rosbash/roszsh
