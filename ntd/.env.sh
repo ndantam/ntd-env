@@ -22,7 +22,6 @@ export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 alias rscp="rsync --recursive --partial --perms --progress --times"
 alias ec=emacsclient
 alias lp-duplex='lp -o sides=two-sided-long-edge'
-alias ecdisp='emacsclient -e "(make-frame-on-display \"$DISPLAY\")"'
 alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
 alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
 alias mount-cc="sshfs killerbee4: ~/mnt/cc"
@@ -33,6 +32,8 @@ alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
 alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
 alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
+
+
 
 ## Linux specific
 if [ `uname` = Linux ]; then
@@ -50,6 +51,13 @@ fi
 ###############
 ## FUNCTIONS ##
 ###############
+
+
+
+ecdisp() {
+    emacsclient -e '(shell-command  "xauth merge ~/.Xauthority")' && \
+    emacsclient -e "(make-frame-on-display  \"$DISPLAY\")"
+}
 
 webcp () {
     pushd ~/www
