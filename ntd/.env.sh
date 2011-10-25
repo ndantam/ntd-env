@@ -47,6 +47,14 @@ if [ `uname` = Linux ]; then
     ulimit -m 1024000
 fi
 
+## BSD
+if [ `uname` = FreeBSD ]; then
+    if [ "$TERM" = dumb -o "$EMACS" = t ] ; then
+        alias ls="ls -F"
+    else
+        alias ls="ls -FG"
+    fi
+fi
 
 ###############
 ## FUNCTIONS ##
@@ -135,6 +143,12 @@ if [ "$HOST" = "leela"  ]; then
     alias fandis='fanlevel disengaged'
     export DOXRSYNCSSH=acme:public_html/docs
 fi
+
+if [ "$HOST" = "leela-susan"  ]; then
+    alias vi=vim
+    alias pkg_add="sudo pkg_add -rv"
+fi
+
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
