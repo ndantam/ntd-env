@@ -33,6 +33,10 @@ alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/
 alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 
+if [ -d /usr/lib/ccache/ ] ; then
+    PATH="/usr/lib/ccache:$PATH"
+    alias debuild="debuild  --prepend-path=/usr/local/bin"
+fi
 
 
 ## Linux specific
