@@ -91,20 +91,18 @@
 (global-set-key "\C-ctK" 'tramp-compile)
 
 ;; commenting
-(global-set-key "\C-cc" 'comment-region)
-(global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-cX" 'comment-region)
+(global-set-key "\C-cU" 'uncomment-region)
 (global-set-key "\C-cL" 'longlines-mode)
 
 
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
-;; go to eshell
-(global-set-key "\C-ce" (lambda () (interactive)
-                          (switch-to-buffer "*eshell*")))
+
 ;; version control
 (global-set-key "\C-xvp" 'vc-update)
 (global-set-key "\C-xve" 'ediff-revision)
-(global-set-key "\C-cm" 'magit-status)
+(global-set-key "\C-cc" 'magit-status)
 
 
 (global-set-key "\C-cvl" 'magit-display-log)
