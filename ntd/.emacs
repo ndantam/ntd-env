@@ -127,6 +127,15 @@
 
 (global-set-key "\C-ci" 'other-frame)
 
+
+;; Encryption
+(global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)
+(global-set-key "\C-ceS" 'pgg-encrypt-symmetric)
+(global-set-key "\C-ced" 'pgg-decrypt-region)
+(global-set-key "\C-ceD" 'pgg-decrypt)
+(global-set-key "\C-cea" 'pgg-encrypt-region)
+(global-set-key "\C-ceA" 'pgg-encrypt)
+
 ;; server
 (global-set-key "\C-cS" 'server-start)
 
@@ -732,11 +741,17 @@
 
 (semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include/")
 (semantic-add-system-include "/home/ntd/git/thebrain.golems.org/lib/amino/include/")
+;;;;;;;;;
+;; PGP ;;
+;;;;;;;;;
 
-(setq-mode-local c-mode semanticdb-find-default-throttle
-                 '(project unloaded system recursive))
-(setq-mode-local c++-mode semanticdb-find-default-throttle
-                 '(project unloaded system recursive))
+(autoload 'pgg-encrypt-region "pgg" "Encrypt the current region." t)
+(autoload 'pgg-encrypt-symmetric-region "pgg" "Encrypt the current region with symmetric algorithm." t)
+(autoload 'pgg-decrypt-region "pgg" "Decrypt the current region." t)
+(autoload 'pgg-sign-region "pgg" "Sign the current region." t)
+(autoload 'pgg-verify-region "pgg" "Verify the current region." t)
+(autoload 'pgg-insert-key "pgg" "Insert the ASCII armored public key." t)
+(autoload 'pgg-snarf-keys-region "pgg" "Import public keys in the current region." t)
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
