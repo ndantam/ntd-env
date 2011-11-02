@@ -25,13 +25,19 @@
 ;;  DEFS  ;;
 ;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/imaxima")
-(add-to-list 'load-path "~/.emacs.d")
+(require 'cl)
+
+(labels ((try-add-dir (dir)
+           (when (file-exists-p dir)
+             (add-to-list 'load-path dir))))
+  (try-add-dir "~/.emacs.d")
+  (try-add-dir "~/.emacs.d/imaxima")
+  (try-add-dir "~/share/emacs/site-lisp/"))
+
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(require 'cl)
 
 (defun all (args)
   (cond
