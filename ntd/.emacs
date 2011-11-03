@@ -76,26 +76,29 @@
 ;;  Compilation  ;;
 ;;;;;;;;;;;;;;;;;;;
 
-;; From emacswsiki
-(defun* get-closest-pathname (&optional (file "Makefile"))
-  "Determine the pathname of the first instance of FILE starting from the current directory towards root.
-This may not do the correct thing in presence of links. If it
-does not find FILE, then it shall return the name of FILE in the
-current directory, suitable for creation"
+(setq my-compile-command "make -kj2")
+
+(defun get-closest-makefile-dir ()
   (let ((root (expand-file-name "/")))
-    (expand-file-name file
-		      (loop
-			for d = default-directory then (expand-file-name ".." d)
-			if (file-exists-p (expand-file-name file d))
-			return d
-			if (equal d root)
-			return nil))))
+    (loop
+     for d = ".." then (concat "../" d)
+     if (file-exists-p (expand-file-name "Makefile" d))
+     return d
+     if (equal (expand-file-name d) root)
+     return nil)))
+
 
 (defun closest-makefile-hook ()
   (set (make-local-variable 'compile-command)
-       (format "make -f %s -kj2 " (get-closest-pathname))))
+       (if (file-exists-p (expand-file-name "Makefile" default-directory))
+           my-compile-command
+         (format "cd %s && %s" (get-closest-makefile-dir)
+                 my-compile-command))))
 
 (add-hook 'c-mode-hook 'closest-makefile-hook)
+(add-hook 'c++-mode-hook 'closest-makefile-hook)
+(add-hook 'f90-mode-hook 'closest-makefile-hook)
+(add-hook 'f77-mode-hook 'closest-makefile-hook)
 (add-hook 'org-mode-hook 'closest-makefile-hook)
 
 
