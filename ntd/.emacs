@@ -102,13 +102,12 @@
 (add-hook 'org-mode-hook 'closest-makefile-hook)
 
 
-
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
 
 ;; woman
-(global-set-key "\C-cw" (lambda () (interactive)
+(global-set-key "\C-cm" (lambda () (interactive)
 			  (if (one-window-p) (split-window))
 			  (let ((buf (current-buffer)))
 			    (other-window 1)
@@ -129,7 +128,6 @@
 (global-set-key "\C-cU" 'uncomment-region)
 (global-set-key "\C-cL" 'longlines-mode)
 
-
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
 
@@ -137,7 +135,6 @@
 (global-set-key "\C-xvp" 'vc-update)
 (global-set-key "\C-xve" 'ediff-revision)
 (global-set-key "\C-cc" 'magit-status)
-
 
 (global-set-key "\C-cvl" 'magit-display-log)
 (global-set-key "\C-cvL"  'magit-log-long)
@@ -154,13 +151,13 @@
 (global-set-key "\C-co" 'other-window)
 (global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
 
-(global-set-key "\C-ch" 'windmove-left)
-(global-set-key "\C-cl" 'windmove-right)
-(global-set-key "\C-ck" 'windmove-up)
-(global-set-key "\C-cj" 'windmove-down)
+;; These seem unhelpful
+;;(global-set-key "\C-ch" 'windmove-left)
+;;(global-set-key "\C-cl" 'windmove-right)
+;;(global-set-key "\C-ck" 'windmove-up)
+;;(global-set-key "\C-cj" 'windmove-down)
 
 (global-set-key "\C-ci" 'other-frame)
-
 
 ;; Encryption
 (global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)
@@ -170,8 +167,8 @@
 (global-set-key "\C-cea" 'pgg-encrypt-region)
 (global-set-key "\C-ceA" 'pgg-encrypt)
 
-;; server
-(global-set-key "\C-cS" 'server-start)
+;; server (just use daemon mode)
+;;(global-set-key "\C-cS" 'server-start)
 
 ;; from the emacswiki
 (defun toggle-fullscreen (&optional f)
