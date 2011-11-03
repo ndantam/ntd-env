@@ -225,31 +225,19 @@
 ;;  FONT  ;;
 ;;;;;;;;;;;;
 
-(set-background-color "black")
-(add-to-list 'default-frame-alist '(background-color . "black"))
+(set-face-background 'region               "#555555")
+(set-face-foreground 'modeline             "white")
+(set-face-background 'modeline             "#333333")
 
-(set-foreground-color "green")
-(add-to-list 'default-frame-alist '(foreground-color . "green"))
+(set-face-background 'default              "black")
+(set-face-foreground 'default              "green")
 
 
-
-(add-to-list 'default-frame-alist '(foreground-color . "green"))
-
-(if (eq window-system 'x)
-    (progn
-      (set-face-background 'region                   "#555555")
-      (set-face-foreground 'modeline             "white")
-      (set-face-background 'modeline             "#333333"))
-  (progn
-    (set-face-background 'region                   "gray")
-    (set-face-foreground 'region                   "black")))
-
+(add-to-list 'default-frame-alist '(background-mode . dark))
 
 (mouse-wheel-mode t)
-(add-to-list 'default-frame-alist '(background-mode . dark))
 (global-font-lock-mode t)
 (setq font-lock-maximum-decoration t)
-
 
 ;;;;;;;;;
 ;; ORG ;;
