@@ -201,6 +201,8 @@
 (set-scroll-bar-mode nil)
 (setq x-select-enable-clipboard t)
 
+(setq column-number-mode t)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
