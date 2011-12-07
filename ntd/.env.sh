@@ -20,7 +20,7 @@ export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 ## ALIASES ##
 #############
 alias rscp="rsync --recursive --partial --perms --progress --times"
-alias ec=emacsclient
+alias ec="emacsclient -nw"
 alias lp-duplex='lp -o sides=two-sided-long-edge'
 alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
 alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
