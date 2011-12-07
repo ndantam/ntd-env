@@ -181,7 +181,8 @@
                                   'fullboth)))))
 (global-set-key [f11] 'toggle-fullscreen)
 
-
+;; reload file
+(global-set-key [f5] 'revert-buffer)
 
 ;;;;;;;;;;
 ;; MISC ;;
@@ -195,7 +196,7 @@
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+(menu-bar-mode 1)
 
 (set-scroll-bar-mode nil)
 (setq x-select-enable-clipboard t)
@@ -244,6 +245,7 @@
 ;;;;;;;;;
 (setq org-export-email-info nil)
 (setq org-export-html-preamble nil)
+(setq org-export-html-validation-link nil)
 (setq org-publish-project-alist
       `(("web"
          :base-directory ,(expand-file-name "~/org/web")
