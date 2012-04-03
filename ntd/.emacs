@@ -108,11 +108,11 @@
 
 ;; woman
 (global-set-key "\C-cm" (lambda () (interactive)
-			  (if (one-window-p) (split-window))
-			  (let ((buf (current-buffer)))
-			    (other-window 1)
-			    (switch-to-buffer buf))
-			  (woman)))
+                          (if (one-window-p) (split-window))
+                          (let ((buf (current-buffer)))
+                            (other-window 1)
+                            (switch-to-buffer buf))
+                          (woman)))
 
 ;; quick compile
 (global-set-key [f1] (lambda ()
@@ -188,7 +188,6 @@
 ;; MISC ;;
 ;;;;;;;;;;
 (setq confirm-kill-emacs 'yes-or-no-p)
-
 (desktop-save-mode 1)
 
 (setq make-backup-files nil)
@@ -207,13 +206,26 @@
 (put 'downcase-region 'disabled nil)
 
 (setq vc-handled-backends '(Git SVN))
-(autoload 'magit-status "magit" "" t)
+
 
 (setq vc-follow-symlinks t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 (setq ediff-split-window-function 'split-window-horizontally)
+
+;;;;;;;;;;;
+;; MAGIT ;;
+;;;;;;;;;;;
+(autoload 'magit-status "magit" "" t)
+
+(eval-after-load 'magit
+  '(progn
+     (require 'magit-key-mode)
+     (require 'magit-svn)
+     ;;(add-hook 'magit-mode-hook 'magit-load-config-extensions)
+  ))
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  Remote File  ;;
@@ -339,9 +351,15 @@
 ;;;;;;;;;;;;
 (autoload 'slime "slime" "slime" t)
 (autoload 'slime-connect "slime" "slime" t)
+
+;;(load-library "slime")
+;;(load-library "slime-autodoc")
+;;(setq slime-use-autodoc-mode t)
+
 (eval-after-load "slime"
   '(progn
      (require 'slime-fancy)
+     (require 'slime-autodoc)
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-use-autodoc-mode t)
      (slime-setup '(slime-fancy slime-asdf))
@@ -523,7 +541,6 @@
               'comint-previous-input)
             (define-key inferior-octave-mode-map [down]
               'comint-next-input)))
-
 (add-hook 'octave-mode-hook
           'viper-mode)
 
@@ -720,50 +737,72 @@
 ;;;;;;;;;;;;;;;;
 ;;  SEMANTIC  ;;
 ;;;;;;;;;;;;;;;;
-;; (require 'ede)
-;; (require 'ede-dired)
-;; (load "/usr/share/emacs/site-lisp/ede/ede-dired.el")
-;; (global-ede-mode 1)
+;; ;; (require 'ede)
+;; ;; (require 'ede-dired)
+;; ;; (load "/usr/share/emacs/site-lisp/ede/ede-dired.el")
+;; ;; (global-ede-mode 1)
 
-(require 'cedet)
-(require 'semantic-load)
-(require 'semantic-ia)
-;; (require 'semantic-gcc) ; use system include files
+;(require 'cedet)
+;(require 'semantic-load)
+;(require 'semantic-ia)
+;; ;; (require 'semantic-gcc) ; use system include files
 
-;; this option breaks things
-;; (setq semanticdb-default-save-directory "~/.emacs.d/semantic")
+(setq semanticdb-default-save-directory "~/.emacs.d/semanticdb")
+;; (setq semantic-load-turn-useful-things-on nil)
+;; ;;(semantic-load-enable-code-helpers)
 
-;; (setq semantic-load-turn-everything-on t)
-(setq semantic-load-turn-useful-things-on t)
-;; (require 'semantic-gcc) ; use system include files
-(semantic-load-enable-code-helpers)
-;; (semantic-load-enable-guady-code-helpers)
+;; ;; (setq semantic-load-turn-everything-on t)
+;; ;; (require 'semantic-gcc) ; use system include files
+;; ;; (semantic-load-enable-guady-code-helpers)
 
-;; TODO: make open-paren show summary
+;; ;; TODO: make open-paren show summary
+;; (add-hook 'c-mode-common-hook
+;;          (lambda ()
+;;            ;(setq semantic-load-turn-useful-things-on t)
+;;            ;;(semantic-load-enable-code-helpers)
+;;            (setq semantic-idle-summary t)
+;;            (setq semantic-idle-scheduler-idle-time 0.1)
+;;            ;; (local-set-key "." 'semantic-complete-self-insert)
+;;            ;; (local-set-key ">" 'semantic-complete-self-insert))
+;;            (define-key c-mode-base-map (kbd "<C-tab>")
+;;                        'semantic-complete-analyze-inline)
+;;            ;; TODO: this
+;;            (define-key c-mode-base-map "\C-cd"
+;;                        'semantic-ia-show-doc)
+;;            ;(define-key c-mode-base-map "\C-cc"
+;;                        ;'semantic-ia-complete-symbol-menu)
+;;            (define-key c-mode-base-map (kbd "<C-return>")
+;;                        'semantic-ia-complete-symbol-menu)))
 
-(add-hook 'c-mode-common-hook
-         (lambda ()
-           ;; (local-set-key "." 'semantic-complete-self-insert)
-           ;; (local-set-key ">" 'semantic-complete-self-insert))
-           (define-key c-mode-base-map (kbd "<C-tab>")
-                       'semantic-complete-analyze-inline)
-           (define-key c-mode-base-map (kbd "\C-c TAB")
-                       'semantic-ia-complete-symbol-menu)))
 
-;; (semantic-idle-completions-mode nil)
-(setq global-semantic-idle-summary-mode t)
+
+;; ;; (semantic-idle-completions-mode nil)
+
+
+;; ;; TODO: write function to print types here
+;; (setq semantic-idle-summary-function 'semantic-format-tag-prototype)
 
 (setq semanticdb-project-roots
-      (list "~/git/thebrain.golems.org/lib/somatic/"
-            "~/git/thebrain.golems.org/drivers/pcio/"
-            "~/git/thebrain.golems.org/lib/amino/"
-            "~/git/thebrain.golems.org/lib/ach/"))
+      (list "~/git/thebrain.golems.org/lib/somatic"
+            "~/git/thebrain.golems.org/drivers/pcio"
+            "~/git/thebrain.golems.org/lib/amino"
+            "~/git/thebrain.golems.org/drivers/lwa4"
+            "~/git/thebrain.golems.org/lib/ach"))
 
 
-(semantic-add-system-include "/usr/include")
+;;(semantic-add-system-include "/usr/include")
 
-(semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include/")
-(semantic-add-system-include "/home/ntd/git/thebrain.golems.org/lib/amino/include/")
+;; (semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include")
+;; (semantic-add-system-include "~/git/thebrain.golems.org/lib/amino/include")
+;; (semantic-add-system-include "~/git/thebrain.golems.org/drivers/lwa4/include")
+
+;; ;; TODO: set search throttle properly
+;; (setq-mode-local c-mode semanticdb-find-default-throttle
+;;                  '(project unloaded system recursive))
+;; (setq-mode-local c++-mode semanticdb-find-default-throttle
+;;                  '(project unloaded system recursive))
+
+
 ;;;;;;;;;
 ;; PGP ;;
 ;;;;;;;;;
@@ -780,6 +819,3 @@
 ;; RUN SHELL ;;
 ;;;;;;;;;;;;;;;
 (eshell)
-
-
-
