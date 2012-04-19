@@ -33,11 +33,6 @@ alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/
 alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 
-if [ -d /usr/lib/ccache/ ] ; then
-    PATH="/usr/lib/ccache:$PATH"
-    alias debuild="debuild  --prepend-path=/usr/local/bin"
-fi
-
 
 ## Linux specific
 if [ `uname` = Linux ]; then
@@ -130,6 +125,21 @@ bglisp () {
 	--eval '(swank:create-server :dont-close t)'   \
 	|| return 1
 }
+
+
+#################
+## Compilation ##
+#################
+
+if [ -d /usr/lib/ccache/ ] ; then
+    PATH="/usr/lib/ccache:$PATH"
+    alias debuild="debuild  --prepend-path=/usr/lib/ccache"
+fi
+
+if [ "$HOST" = "daneel"  ]; then
+    export DISTCC_HOSTS="talos vasilia localhost"
+    export CCACHE_PREFIX="distcc"
+fi
 
 ##############
 ## PER-HOST ##
