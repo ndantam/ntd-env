@@ -210,10 +210,31 @@
 
 (setq vc-follow-symlinks t)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'before-save-hook 'whitespace-cleanup)
 
 (setq ediff-split-window-function 'split-window-horizontally)
+
+;;;;;;;;;;;;;;;;
+;; WHITESPACE ;;
+;;;;;;;;;;;;;;;;
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 8)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(defvar ntd-whitespace-cleanup-modes
+  '(org-mode
+    latex-mode
+    html-mode xml-mode
+    c-mode c++-mode
+    conf-space-mode
+    sh-mode
+    lisp-mode emacs-lisp-mode))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (find major-mode ntd-whitespace-cleanup-modes)
+        (whitespace-cleanup))))
 
 ;;;;;;;;;;;
 ;; MAGIT ;;
@@ -491,14 +512,6 @@
 ;;setq load-path (cons "/home/mechsoph/src/elisp" load-path))
 ;;autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
 ;;setq auto-mode-alist (cons '("\.html$" . html-helper-mode) auto-mode-alist))
-
-;;;;;;;;;;;;
-;;  TABS  ;;
-;;;;;;;;;;;;
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 8)
-
-
 
 ;;;;;;;;;;;
 ;; UTF-8 ;;
