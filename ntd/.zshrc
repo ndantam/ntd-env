@@ -186,9 +186,14 @@ bindkey -e
 setopt correct
 
 ## enable history
-HISTSIZE=1000
+HISTSIZE=4096
 HISTFILE=~/.zsh_history
-SAVEHIST=500
+SAVEHIST=4096
+
+# These options seem to help ZSH play nice on NFS
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_FCNTL_LOCK
 
 ## ROS SETUP  ##
 if [ -e "$HOME/ros/setup.zsh" ]; then
