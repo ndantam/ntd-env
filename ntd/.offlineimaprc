@@ -1,0 +1,56 @@
+[general]
+accounts = gatech, gmail-mechsoph, gmail-ntd
+pythonfile=~/.offlineimap.py
+ui = TTYUI
+
+
+[Account gatech]
+localrepository = dot-maildir
+remoterepository = gatech-remote
+
+[Repository dot-maildir]
+type = Maildir
+localfolders = ~/.maildir
+nametrans = makelocaltrans('gt')
+
+[Repository gatech-remote]
+type = IMAP
+remotehost = mail.gatech.edu
+remoteuser = ndantam3
+ssl = yes
+nametrans = makeimaptrans('gt')
+folderfilter = lambda foldername: foldername in [ '2008', '2009', '2010', '2011', 'INBOX' ]
+
+
+[Account gmail-mechsoph]
+localrepository = dot-maildir-gmail-mechsoph
+remoterepository = remote-gmail-mechsoph
+
+[Repository dot-maildir-gmail-mechsoph]
+type = Maildir
+localfolders = ~/.maildir
+nametrans = makelocaltrans('mechsoph@gmail')
+
+[Repository remote-gmail-mechsoph]
+type = Gmail
+remoteuser = mechsoph@gmail.com
+remotepassfile = ~/.password-mechsoph@gmail.com
+nametrans = makeimaptrans('mechsoph@gmail')
+folderfilter = lambda foldername: foldername in [ 'INBOX' ]
+
+
+[Account gmail-ntd]
+localrepository = dot-maildir-gmail-ntd
+remoterepository = remote-gmail-ntd
+
+[Repository dot-maildir-gmail-ntd]
+type = Maildir
+localfolders = ~/.maildir
+nametrans = makelocaltrans('ntd@gmail')
+
+[Repository remote-gmail-ntd]
+type = Gmail
+remoteuser = neil.dantam@gmail.com
+remotepassfile = ~/.password-neil.dantam@gmail.com
+nametrans = makeimaptrans('ntd@gmail')
+folderfilter = lambda foldername: foldername in [ 'INBOX' ]
