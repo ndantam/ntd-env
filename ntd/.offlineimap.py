@@ -6,7 +6,7 @@ def makeimaptrans(prefix):
             retval = "." + prefix
         else:
             retval = "." + prefix + "." + foldername
-        print "imap trans: " + foldername + " -> " + retval
+        #print "imap trans: " + foldername + " -> " + retval
         return retval
     return imaptrans
 
@@ -17,6 +17,6 @@ def makelocalstrans(prefix):
         else:
             # remove leading '.acc1'
             retval = re.sub("^\." + prefix + "\.", "", foldername)
-        print "local trans: " + foldername + " -> " + retval
+        #print "local trans: " + foldername + " -> " + retval
         return retval
     return localtrans

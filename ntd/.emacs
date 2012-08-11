@@ -481,29 +481,64 @@
 (defun ntd-email-addr (a b c)
   (concatenate 'string a "@" b "." c))
 
-
+(setq user-mail-address (ntd-email-addr "ntd" "gatech" "edu"))
+(setq wl-user-mail-address-list (list user-mail-address))
 
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
-(setq elmo-imap4-default-server "mail.gatech.edu"
-      elmo-imap4-default-user "ndantam3"
-      elmo-imap4-default-authenticate-type 'clear
-      elmo-imap4-default-port 993
-      elmo-imap4-default-stream-type 'ssl)
-
-(setq wl-default-folder "%inbox")
-(setq wl-default-spec "%")
-(setq wl-folder-check-async t)
-
-(setq wl-insert-message-id nil)
+(setq wl-insert-message-id nil
+      wl-forward-subject-prefix "Fwd: "
+      wl-folder-check-async t
+      wl-summary-width nil)
 
 
-;; SMTP server for mail posting. Default: nil
-;;(setq wl-smtp-posting-server "your.smtp.example.com")
-;; NNTP server for news posting. Default: nil
-;;(setq wl-nntp-posting-server "your.nntp.example.com")
+
+(setq elmo-maildir-folder-path "~/.maildir")
+
+(setq wl-default-folder "..gt")
+(setq wl-default-spec "..")
+
+
+
+;; ignore  all fields
+(setq wl-message-ignored-field-list '("^.*:")
+      ;; ..but these five
+      wl-message-visible-field-list '("^From:"
+                                      "^Subject:"
+                                      "^Date:"
+                                      "^To:"
+                                      "^Cc:"
+                                      "^User-Agent:")
+      wl-message-sort-field-list '("^From:"
+                                   "^Subject:"
+                                   "^Date:"
+                                   "^To:"
+                                   "^Cc:"
+                                   "^User-Agent:"))
+
+
+
+;; Gatech Config
+
+;; use local maildir instead of imap
+;; (setq elmo-imap4-default-server "mail.gatech.edu"
+;;       elmo-imap4-default-user "ndantam3"
+;;       elmo-imap4-default-authenticate-type 'clear
+;;       elmo-imap4-default-port 993
+;;       elmo-imap4-default-stream-type 'ssl)
+
+(setq wl-bcc user-mail-address
+      wl-from (concatenate 'string "Neil T. Dantam <" user-mail-address ">")
+      wl-smtp-posting-server "smtp.mail.gatech.edu"
+      wl-local-domain "gatech.edu"
+      wl-smtp-connection-type 'starttls
+      wl-smtp-posting-port 587
+      wl-smtp-authenticate-type "plain"
+      wl-smtp-posting-user "ndantam3"
+)
+
 
 
 ;;;;;;;;;;;;
