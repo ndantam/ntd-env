@@ -472,7 +472,55 @@
 (push  '("\\.eml$" . mail-mode) auto-mode-alist )
 (push  '("\\.tsj$" . mail-mode) auto-mode-alist )
 (push  '("\\.tse$" . mail-mode) auto-mode-alist )
-(setq mail-self-blind t)
+(setq mail-self-blind nil)
+
+;; (push
+;;  '("\\.pdf$" "application" "pdf"
+;;    nil "base64" "attachment"
+;;    (("filename" . file)))
+
+
+
+;;;;;;;;;;
+;; BBDB ;;
+;;;;;;;;;;
+
+(setq bbdb-file "~/.emacs.d/bbdb")           ;; keep ~/ clean; set before loading
+(require 'bbdb)
+(bbdb-initialize)
+(setq
+    bbdb-offer-save 1                        ;; 1 means save-without-asking
+
+
+    bbdb-use-pop-up nil                        ;; allow popups for addresses
+    bbdb-electric-p t                        ;; be disposable with SPC
+    bbdb-popup-target-lines  1               ;; very small
+
+    bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+    bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
+
+    bbdb-always-add-address t                ;; add new addresses to existing...
+                                             ;; ...contacts automatically
+    bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
+
+    bbdb-completion-type nil                 ;; complete on anything
+
+    bbdb-complete-name-allow-cycling t       ;; cycle through matches
+                                             ;; this only works partially
+
+    bbbd-message-caching-enabled t           ;; be fast
+    bbdb-use-alternate-names t               ;; use AKA
+
+
+    bbdb-elided-display t                    ;; single-line addresses
+
+    ;; auto-create addresses from mail
+    bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
+    bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+    ;; NOTE: there can be only one entry per header (such as To, From)
+    ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+
+    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
@@ -488,58 +536,7 @@
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
-(setq wl-insert-message-id nil
-      wl-forward-subject-prefix "Fwd: "
-      wl-folder-check-async t
-      wl-summary-width nil)
-
-
-
-(setq elmo-maildir-folder-path "~/.maildir")
-
-(setq wl-default-folder "..gt")
-(setq wl-default-spec "..")
-
-
-
-;; ignore  all fields
-(setq wl-message-ignored-field-list '("^.*:")
-      ;; ..but these five
-      wl-message-visible-field-list '("^From:"
-                                      "^Subject:"
-                                      "^Date:"
-                                      "^To:"
-                                      "^Cc:"
-                                      "^User-Agent:")
-      wl-message-sort-field-list '("^From:"
-                                   "^Subject:"
-                                   "^Date:"
-                                   "^To:"
-                                   "^Cc:"
-                                   "^User-Agent:"))
-
-
-
-;; Gatech Config
-
-;; use local maildir instead of imap
-;; (setq elmo-imap4-default-server "mail.gatech.edu"
-;;       elmo-imap4-default-user "ndantam3"
-;;       elmo-imap4-default-authenticate-type 'clear
-;;       elmo-imap4-default-port 993
-;;       elmo-imap4-default-stream-type 'ssl)
-
-(setq wl-bcc user-mail-address
-      wl-from (concatenate 'string "Neil T. Dantam <" user-mail-address ">")
-      wl-smtp-posting-server "smtp.mail.gatech.edu"
-      wl-local-domain "gatech.edu"
-      wl-smtp-connection-type 'starttls
-      wl-smtp-posting-port 587
-      wl-smtp-authenticate-type "plain"
-      wl-smtp-posting-user "ndantam3"
-)
-
-
+;; SEE ALSO: ~/.wl
 
 ;;;;;;;;;;;;
 ;;  HTML  ;;
