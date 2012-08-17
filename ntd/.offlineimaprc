@@ -24,7 +24,7 @@ holdconnectionopen = yes
 remotehost = mail.gatech.edu
 remoteuser = ndantam3
 nametrans = makeimaptrans('gt')
-folderfilter = lambda foldername: foldername in [ '2008', '2009', '2010', '2011', 'INBOX' ]
+folderfilter = lambda foldername: foldername in [ 'INBOX' ]
 
 
 [Account gmail-mechsoph]
