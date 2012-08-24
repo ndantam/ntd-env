@@ -51,25 +51,27 @@
    ((car args) t)
    (t (any (cdr args)))))
 
+(defun host-match (name)
+  (string-match (concat "^" (regexp-quote "daneel") ".*")
+                (system-name)))
+
+(defmacro if-host (name then-clause &optional else-clause)
+  `(if ,(if (atom name)
+            `(host-match  ,name)
+          `(any (mapcar 'host-match
+                        (quote ,name))))
+     ,then-clause
+     ,else-clause))
 
 (defmacro when-host (name &rest forms)
   (declare (indent 1))
-  `(when ,(if (atom name)
-              `(string= (system-name) ,name)
-            `(any (mapcar (lambda (name)
-                            (string= (system-name) name))
-                          (quote ,name))))
-     ,@forms))
+  `(if-host ,name
+            (progn ,@forms)))
 
 
 (defmacro unless-host (name &rest forms)
   (declare (indent 1))
-  `(unless ,(if (atom name)
-                `(string= (system-name) ,name)
-              `(any (mapcar (lambda (name)
-                              (string= (system-name) name))
-                            (quote ,name))))
-     ,@forms))
+  `(if-host ,name nil (progn ,@forms)))
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -387,8 +389,11 @@
      (global-set-key "\C-cs" 'slime-selector)
 
      (setq slime-lisp-implementations
-           '((sbcl ("/usr/bin/sbcl"))
+           `((sbcl ,(if-host "daneel"
+                             '("sbcl" "--dynamic-space-size" "12GB")
+                             '("sbcl")))
              (clisp ("/usr/bin/clisp"))
+             (ccl ("ccl"))
              (ecl ("/usr/bin/ecl"))))
 
      (setq slime-default-lisp 'sbcl)))
