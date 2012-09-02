@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#### Create a new emacs frame on $DISPLAY, setting xauthority properly
+
+### Merge the xauth entry for $DISPLAY into emacs's xauthority
+# scrub out localhost from display, or xauth doesn't list it
+SCRUBBED_DISPLAY=`echo $DISPLAY | sed -e 's/^localhost:/:/'`
+CURRENT_XAUTH=`xauth list $SCRUBBED_DISPLAY`
+xauth -f ~/.emacs.d/xauth add $CURRENT_XAUTH
+
+### New emacs frame
+exec emacsclient -e "(make-frame-on-display  \"$DISPLAY\")"

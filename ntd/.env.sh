@@ -59,11 +59,9 @@ fi
 ## FUNCTIONS ##
 ###############
 
-
-
-ecdisp() {
-    emacsclient -e '(shell-command  "xauth merge ~/.Xauthority")' && \
-    emacsclient -e "(make-frame-on-display  \"$DISPLAY\")"
+start-emacs () {
+    ## Emacs, no slave to X sessions, gets its own xauthority
+    XAUTHORITY=~/.emacs.d/xauth emacs --daemon
 }
 
 webcp () {
