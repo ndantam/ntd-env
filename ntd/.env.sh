@@ -61,8 +61,9 @@ fi
 
 start-emacs () {
     ## Emacs, no slave to X sessions, gets its own xauthority
-    XAUTHORITY=~/.emacs.d/xauth emacs --daemon
+    XAUTHORITY=/tmp/xauth.emacs:$USER@$HOST emacs --daemon
 }
+
 
 webcp () {
     pushd ~/www
