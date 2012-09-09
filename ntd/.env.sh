@@ -125,6 +125,13 @@ bglisp () {
 	|| return 1
 }
 
+cpugov () {
+    i=0
+    while [ $i -lt `grep "^processor" /proc/cpuinfo | wc -l` ]; do
+        sudo cpufreq-set -c $i -g $1 || return
+        i=$(($i+1))
+    done
+}
 
 #################
 ## Compilation ##
