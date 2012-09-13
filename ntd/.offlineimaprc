@@ -40,7 +40,7 @@ nametrans = makelocaltrans('mechsoph@gmail')
 
 [Repository remote-gmail-mechsoph]
 type = Gmail
-holdconnectionopen = yes
+#holdconnectionopen = yes
 remoteuser = mechsoph@gmail.com
 remotepassfile = ~/.password-mechsoph@gmail.com
 nametrans = makeimaptrans('mechsoph@gmail')
@@ -60,7 +60,7 @@ nametrans = makelocaltrans('ntd@gmail')
 
 [Repository remote-gmail-ntd]
 type = Gmail
-holdconnectionopen = yes
+#holdconnectionopen = yes
 remoteuser = neil.dantam@gmail.com
 remotepassfile = ~/.password-neil.dantam@gmail.com
 nametrans = makeimaptrans('ntd@gmail')
