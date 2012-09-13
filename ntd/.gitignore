@@ -1,7 +1,16 @@
 *.fasl
+*.lx32fsl
 *.o
+*.Po
+*.Plo
 *.so
 *.a
+*.lo
+*.la
 *.deb
+*.fas
+*.lib
 semantic.cache
 *~
+/.deps
+/.libs
