@@ -5,12 +5,22 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
+(require 'mime-w3m)
+
+(setq mime-view-type-subtype-score-alist
+  '(((text . plain) . 4)
+    ((text . enriched) . 3)
+    ((text . html) . 2)
+    ((text . richtext) . 1)))
+
 
 (setq wl-insert-message-id nil
       wl-forward-subject-prefix "Fwd: "
       ;;wl-folder-check-async t
       wl-draft-always-delete-myself t
       wl-use-scoring nil
+      wl-stay-folder-window t
+      wl-folder-window-width 35
       wl-ask-range nil
       wl-summary-width nil
       mime-edit-split-message nil)
@@ -80,6 +90,7 @@
             (ntd-wl-template "mechsoph-gmail" "mechsoph" "gmail" "com")
             (ntd-wl-template "ntd-gmail" "neil.dantam" "gmail" "com")))
 
+(setq wl-nntp-posting-server "news.gmane.org")
 
 ;; TODO: drafts and sent folders possibly on IMAP
 (setq wl-draft-config-alist

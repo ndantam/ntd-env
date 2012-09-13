@@ -183,6 +183,10 @@
                                   'fullboth)))))
 (global-set-key [f11] 'toggle-fullscreen)
 
+
+;; reload file
+(global-set-key [f6] 'wl-folder-check-all)
+
 ;; reload file
 (global-set-key [f5] 'revert-buffer)
 
@@ -535,7 +539,7 @@
     ;; NOTE: there can be only one entry per header (such as To, From)
     ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
 
-    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
+    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter\\|github\\.com")))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
