@@ -99,30 +99,30 @@ gitrcp () {
     RHOST=`echo "$1" | sed -e 's/\(:.*\)$//'`
     RGRP=$2
     if [ -d .git ] ; then
-	if [ -n "$RHOST" ] && [ -n "$RDIR" ] && [ -n "$RGRP" ] ; then
-	    rsync -r .git/ "$RHOST:$RDIR" && \
-		ssh "$RHOST" \
-		"cd $RDIR && chmod -R g+w . && find . -type d -exec chmod g+s '{}' ';' && chgrp -R $RGRP . && git config core.bare true"
-	else
-	    echo "Usage: gitrcp REMOTE-HOST:REMOTE-DIR.git REMOTE-GROUP"
-	fi
+        if [ -n "$RHOST" ] && [ -n "$RDIR" ] && [ -n "$RGRP" ] ; then
+            rsync -r .git/ "$RHOST:$RDIR" && \
+                ssh "$RHOST" \
+                "cd $RDIR && chmod -R g+w . && find . -type d -exec chmod g+s '{}' ';' && chgrp -R $RGRP . && git config core.bare true"
+        else
+            echo "Usage: gitrcp REMOTE-HOST:REMOTE-DIR.git REMOTE-GROUP"
+        fi
     else
-	echo "No .git here"
+        echo "No .git here"
     fi
 }
 
 bglisp () {
     if [ ! -d ~/.bglisp ] ; then
-	mkdir ~/.bglisp  || return 1
+        mkdir ~/.bglisp  || return 1
     fi
     detachtty                                          \
-	--pid-file ~/.bglisp/pid                       \
-	--dribble-file ~/.bglisp/dribble               \
-	~/.bglisp/socket                               \
-	/usr/bin/env sbcl  --eval '(require :swank)'   \
+        --pid-file ~/.bglisp/pid                       \
+        --dribble-file ~/.bglisp/dribble               \
+        ~/.bglisp/socket                               \
+        /usr/bin/env sbcl  --eval '(require :swank)'   \
         --eval '(swank:swank-require :swank-arglists)' \
-	--eval '(swank:create-server :dont-close t)'   \
-	|| return 1
+        --eval '(swank:create-server :dont-close t)'   \
+        || return 1
 }
 
 cpugov () {
@@ -245,8 +245,8 @@ fi
 ntd_ros_load_shell () {
     case $SHELL in
         /bin/zsh)
-	    source $ROS_ROOT/tools/rosbash/roszsh
-	    ;;
+            source $ROS_ROOT/tools/rosbash/roszsh
+            ;;
     esac
 }
 
