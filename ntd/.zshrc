@@ -6,7 +6,12 @@
 
 
 ## Print the fancy status line
-ST_FLAG=''
+if [ -f /chroot-name ]; then
+    ST_FLAG="[`cat /chroot-name`]"
+else
+    ST_FLAG=''
+fi
+
 function precmd {
     if [ "$TERM" = xterm -o "$TERM" = linux -o "$TERM" = eterm-color ]; then
         local BLACK="%{\033[0;30m%}"
@@ -138,7 +143,7 @@ function hcd {
 compctl -K hcomplete hcd
 
 function zgitls {
-    find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+    find ~/git -name .git -prune -print | sed -e 's!/.git$!!'
 }
 
 function zgitcomplete {
