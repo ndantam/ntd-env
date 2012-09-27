@@ -706,12 +706,11 @@
                  `((,(concatenate 'string
                                   "\\(^\\|[^a-zA-Z0-9]\\)\\("
                                   word "\\)[^a-zA-Z]")
-                    (0 (progn (princ (buffer-substring (match-beginning 2)
-                                                       (match-end 2)))
-                              (compose-region (match-beginning 2)
-                                              (match-end 2)
-                                              ,greek-char)
-                              nil)))))))))
+                    (0 (progn
+                         (compose-region (match-beginning 2)
+                                         (match-end 2)
+                                         ,greek-char)
+                         nil)))))))))
 
 (define-minor-mode pretty-greek-mode
   "Displays greek characters")
