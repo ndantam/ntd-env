@@ -1,0 +1,45 @@
+#!/bin/sh
+
+btrroot_bind () {
+    mount -o bind /proc $1/proc
+    mount -o bind /dev $1/dev
+    mount -o bind /dev/pts $1/dev/pts
+    mount -o bind /dev/shm $1/dev/shm
+    mount -o bind /home $1/home
+    mount -o bind /tmp $1/tmp
+}
+
+
+btrroot_unbind () {
+    umount $1/proc
+    umount $1/dev/pts
+    umount $1/dev/shm
+    umount $1/dev
+    umount $1/home
+    umount $1/tmp
+}
+
+btrroot_cp () {
+    btrfs subvolume snapshot $1 $2
+    btrroot_bind $2
+}
+
+btrroot_rm () {
+    btrroot_unbind $1
+    btrfs subvolume delete $1
+}
+
+case $1 in
+    bind)
+        btrroot_bind $2
+        ;;
+    unbind)
+        btrroot_unbind $2
+        ;;
+    cp)
+        btrroot_cp $2 $3
+        ;;
+    rm)
+        btrroot_rm $2
+        ;;
+esac
