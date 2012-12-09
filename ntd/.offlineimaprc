@@ -20,7 +20,7 @@ nametrans = makelocaltrans('gt')
 [Repository gatech-remote]
 type = IMAP
 ssl = yes
-holdconnectionopen = yes
+#holdconnectionopen = yes
 remotehost = mail.gatech.edu
 remoteuser = ndantam3
 nametrans = makeimaptrans('gt')
