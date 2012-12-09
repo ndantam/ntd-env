@@ -196,9 +196,11 @@ HISTFILE=~/.zsh_history
 SAVEHIST=4096
 
 # These options seem to help ZSH play nice on NFS
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt HIST_FCNTL_LOCK
+if [ ! -e /chroot-name ]; then
+    setopt APPEND_HISTORY
+    setopt SHARE_HISTORY
+    setopt HIST_FCNTL_LOCK
+fi
 
 ## ROS SETUP  ##
 if [ -e "$HOME/ros/setup.zsh" ]; then
