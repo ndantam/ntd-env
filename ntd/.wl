@@ -52,12 +52,14 @@
 (setq wl-message-ignored-field-list '("^.*:")
       ;; ..but these five
       wl-message-visible-field-list '("^From:"
+                                      "^Newsgroups:"
                                       "^Subject:"
                                       "^Date:"
                                       "^To:"
                                       "^Cc:"
                                       "^User-Agent:")
       wl-message-sort-field-list '("^From:"
+                                   "^Newsgroups:"
                                    "^Subject:"
                                    "^Date:"
                                    "^To:"

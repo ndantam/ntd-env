@@ -142,10 +142,10 @@ if [ -d /usr/lib/ccache/ ] ; then
     alias debuild="debuild  --prepend-path=/usr/lib/ccache"
 fi
 
-if [ "$HOST" = "daneel"  ]; then
-    export DISTCC_HOSTS="talos vasilia localhost"
-    export CCACHE_PREFIX="distcc"
-fi
+#if [ "$HOST" = "daneel"  ]; then
+    #export DISTCC_HOSTS="donovan talos jander vasilia donovan localhost"
+    #export CCACHE_PREFIX="distcc"
+#fi
 
 ##############
 ## PER-HOST ##
@@ -173,14 +173,12 @@ fi
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
-    export DISTSCPPATH=acme:tarballs
     alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     # alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
-    alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
-    export PATH=$PATH:~/src/other/depot_tools
+    alias make="make -j 5"
 fi
 
 if [ "$HOST" = "chetter"  ]; then

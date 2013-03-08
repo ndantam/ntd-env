@@ -119,6 +119,7 @@
 ;; quick compile
 (global-set-key [f1] (lambda ()
                            (interactive)
+                           (save-buffer)
                            ;(command-execute 'save-buffer)
                            (command-execute 'recompile)))
 (global-set-key [f2] 'compile)
@@ -386,6 +387,8 @@
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
+
+(load (expand-file-name "~/.quicklisp/slime-helper.el"))
 (autoload 'slime "slime" "slime" t)
 (autoload 'slime-connect "slime" "slime" t)
 
@@ -511,7 +514,7 @@
     bbdb-offer-save 1                        ;; 1 means save-without-asking
 
 
-    bbdb-use-pop-up nil                        ;; allow popups for addresses
+    bbdb-use-pop-up nil                      ;; allow popups for addresses
     bbdb-electric-p t                        ;; be disposable with SPC
     bbdb-popup-target-lines  1               ;; very small
 
@@ -539,7 +542,8 @@
     ;; NOTE: there can be only one entry per header (such as To, From)
     ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
 
-    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter\\|github\\.com")))
+    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter\\|github\\.com\\|from\\|From")
+      ( "To"   . "Recipient")))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
@@ -563,6 +567,7 @@
 ;;setq load-path (cons "/home/mechsoph/src/elisp" load-path))
 ;;autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
 ;;setq auto-mode-alist (cons '("\.html$" . html-helper-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\.md$" . markdown-mode) auto-mode-alist))
 
 ;;;;;;;;;;;
 ;; UTF-8 ;;
@@ -671,6 +676,7 @@
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
+ '(safe-local-variable-values (quote ((Readtable . PY-AST-USER-READTABLE) (Package . CLPYTHON) (Package . CL-WHO) (Package . CL-USER) (Package . DOCUMENTATION-TEMPLATE) (Base . 10) (Package . CL-PPCRE) (Syntax . COMMON-LISP) (Package . CL-User) (Syntax . ANSI-Common-Lisp) (Package . FSet) (org-export-html-postamble))))
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
 
@@ -718,8 +724,8 @@
 (add-hook 'pretty-greek-mode-hook 'pretty-greek)
 
 
-(add-hook 'lisp-mode-hook 'pretty-greek-mode)
-(add-hook 'f90-mode-hook 'pretty-greek-mode)
+;(add-hook 'lisp-mode-hook 'pretty-greek-mode)
+;(add-hook 'f90-mode-hook 'pretty-greek-mode)
 
 ;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
 

@@ -2,6 +2,7 @@
 accounts = gatech, gmail-mechsoph, gmail-ntd
 pythonfile=~/.offlineimap.py
 #ui = TTY.TTYUI
+ui =  Blinkenlights
 maxsyncaccounts = 6
 
 

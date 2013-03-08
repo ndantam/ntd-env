@@ -1,4 +1,6 @@
-;; load quicklisp
+(require 'asdf)
+
+;; ;; load quicklisp
 (let ((ql0 (merge-pathnames "quicklisp/setup.lisp"
                             (user-homedir-pathname)))
       (ql1 (merge-pathnames ".quicklisp/setup.lisp"
@@ -9,7 +11,7 @@
     ((probe-file ql1)
      (load ql1))))
 
-(require 'sb-sprof)
+;(require 'sb-sprof)
 
 ;; My Src
 (pushnew '(merge-pathnames "src/lisp/systems/"
@@ -22,4 +24,4 @@
          asdf:*central-registry*
          :test #'equal)
 
-(setq *read-default-float-format* 'double-float)
+;(setq *read-default-float-format* 'double-float)

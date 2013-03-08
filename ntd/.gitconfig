@@ -5,5 +5,3 @@
 [user]
         name = Neil T. Dantam
         email = ntd@gatech.edu
-[http]
-        sslcainfo = /home/ntd/.gitcerts
