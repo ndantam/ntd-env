@@ -1,6 +1,5 @@
-***********
-* NTD-ENV *
-***********
+NTD-ENV
+=======
 
 This directory contains various dotfiles used by Neil Dantam.  The
 actual files live under ./ntd.  This is online mostly for my own
@@ -9,4 +8,3 @@ convenience, but other folks may find some of it interesting.
 To install the files on a new machine, run `make' in the repo root to
 create symlinks from $HOME to the files here.  WARNING: `make clean'
 will DELETE the symlinks or copies of these files under $HOME.
-
