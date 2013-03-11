@@ -55,7 +55,7 @@ function precmd {
 
 
     if [ $HOST = "hesh" -o $HOST = "leela" ]; then
-        local battery=`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`
+        local battery="`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`"
         if [  "${battery}" -gt 60   ]; then
             local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
         elif [  "${battery}" -eq 00  ]; then
