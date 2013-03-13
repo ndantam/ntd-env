@@ -328,19 +328,18 @@
 ;;  C  ;;
 ;;;;;;;;;
 
-;; Other people are annoyed by emacs 2-space default
-(setq c-basic-offset 4)                 ; I've written to much java,
-                                        ; but then so have many other people...
-(setq c-default-style "linux")
+(c-add-style "ros-cc-style"
+             '("k&r"
+               (c-basic-offset . 2)
+               (c-offsets-alist . ((innamespace . [0])
+                                   (member-init-intro . [0])))))
 
-(defconst ros-cc-style
-  '("k&r"
-    (c-basic-offset . 2)
-    (c-offsets-alist . ((innamespace . [0])
-                        (member-init-intro . [0])))))
+(c-add-style "user"
+             '("linux"
+               (c-basic-offset . 4)
+               (c-offsets-alist . ((inextern-lang . 0)))))
 
-(c-add-style "ros-cc-style" ros-cc-style)
-
+(setq c-default-style "user")
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
