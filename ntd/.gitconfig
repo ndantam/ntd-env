@@ -2,6 +2,9 @@
         excludesfile = /home/ntd/.gitignore
         autocrlf = input
 
+[color]
+        ui = auto
+
 [user]
         name = Neil T. Dantam
         email = ntd@gatech.edu
