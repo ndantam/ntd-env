@@ -143,7 +143,9 @@ function hcd {
 compctl -K hcomplete hcd
 
 function zgitls {
-    find ~/git -name .git -prune -print | sed -e 's!/.git$!!'
+    find -L ~/git -name .git -prune -print | sed -e 's!/.git$!!'
+    #find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+    #'ls' -d ~/git/**/.git |  sed -e 's!/.git$!!'
 }
 
 function zgitcomplete {
