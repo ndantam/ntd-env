@@ -9,7 +9,6 @@
 ##########
 
 export EDITOR=vim
-export DOXRSYNCSSH="thebrain:~humanoids/public_html/doc"
 export DEBEMAIL="ntd@gatech.edu"
 export DEBFULLNAME="Neil Dantam"
 export CDPATH="$CDPATH:$HOME:$HOME/src"
@@ -20,17 +19,7 @@ export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 ## ALIASES ##
 #############
 alias rscp="rsync --recursive --partial --perms --progress --times"
-alias ec="emacsclient -nw"
 alias lp-duplex='lp -o sides=two-sided-long-edge'
-alias cu-thebrain="cu -lttyS0 --parity=none -s38400 --nostop"
-alias cu-packbot="cu -lttyS0 --parity=none -s115200 --nostop"
-alias mount-cc="sshfs killerbee4: ~/mnt/cc"
-alias mount-acme="sshfs acme: ~/mnt/prism"
-alias mount-ccwww="sshfs killerbee4:/net/www/grads/n/ndantam3 ~/www-cc"
-alias mount-virjay="sshfs virjay: ~/mnt/virjay"
-alias mount-brain="sshfs thebrain: ~/mnt/thebrain"
-alias mount-humanoids-ssh="sshfs ntd@thebrain.cc.gt.atl.ga.us:/home/humanoids ~/mnt/humanoids"
-alias mount-daneel="sshfs daneel: ~/mnt/daneel"
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 
 
@@ -64,30 +53,6 @@ start-emacs () {
     XAUTHORITY=/tmp/xauth.emacs:$USER@$HOST emacs --daemon
 }
 
-
-webcp () {
-    pushd ~/www
-    rsync --links --progress --recursive --times \
-        index.html lisp.html android.html web img \
-        killerbee3:www
-    popd
-}
-
-rdebi () {
-    scp "$2" "$1":/tmp/ && ssh $1 "sudo dpkg -i /tmp/$2; rm /tmp/$2"
-}
-
-make_common_dist () {
-    make clean && make && make deb && pushdeb $(ls *.deb | sort | tail -n 1) && make dist
-}
-
-
-hmake() {
-    pushd $HUMROOT/$1
-    shift
-    for i in $@; do make $i; done
-    popd
-}
 
 
 pdfcat() {
@@ -173,16 +138,11 @@ fi
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
-    alias kermit-sparky="kermit -l /dev/ttyS0 -b 115200 -8"
     export TEXINPUTS=:$HOME/src/ntd-latex:$TEXINPUTS
     # alias cu-sparky="cu -lttyS0 --parity=none -s9600 --nostop"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias make="make -j 5"
-fi
-
-if [ "$HOST" = "chetter"  ]; then
-    alias mount-humaniods="sudo mount -t cifs -o username=ntd,acl,uid=ntd,gid=ntd //thebrain/humanoids /mnt/humanoids"
 fi
 
 ## LL
