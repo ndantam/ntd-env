@@ -33,6 +33,13 @@ if [ `uname` = Linux ]; then
     # limit virtual memory to 1GB because linux sucks
     # (and I sometimes write memory leaks)
     ulimit -m 1024000
+
+    # Explicitly resize serial consoles
+    case "$TTY" in
+        /dev/ttyS*)
+            resize
+            ;;
+    esac
 fi
 
 ## BSD
