@@ -72,7 +72,7 @@ function precmd {
     fi
 
     case $HOST in
-	# Robots
+        # Robots
         krang|calvin|*hubo*)
             local HOSTCOLOR=${LIGHT_RED}
             ;;
@@ -144,8 +144,8 @@ function hcd {
 compctl -K hcomplete hcd
 
 function zgitls {
-    find -L ~/git -name .git -prune -print | sed -e 's!/.git$!!'
-    #find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+    #find -L ~/git -name .git -prune -print | sed -e 's!/.git$!!'
+    find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
     #'ls' -d ~/git/**/.git |  sed -e 's!/.git$!!'
 }
 
