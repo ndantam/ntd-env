@@ -44,6 +44,25 @@ if [ `uname` = FreeBSD ]; then
     fi
 fi
 
+
+####################
+## Local Packages ##
+####################
+
+MY_LOCAL=''
+
+if [ -d "$HOME/local" -o -L "$HOME/local" ]; then
+    MY_LOCAL="$HOME/local"
+fi
+
+if [ -n "$MY_LOCAL" ]; then
+    local-config () {
+        echo "--prefix=$MY_LOCAL"  "CPPFLAGS=-I$MY_LOCAL/include" "LDFLAGS=-L$MY_LOCAL/lib"
+    }
+    export PATH="$MY_LOCAL/bin:$PATH"
+    export LD_LIBRARY_PATH="$MY_LOCAL/lib:$LD_LIBRARY_PATH"
+fi
+
 ###############
 ## FUNCTIONS ##
 ###############
