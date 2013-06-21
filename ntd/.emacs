@@ -388,7 +388,11 @@
 ;; SLIME  ;;
 ;;;;;;;;;;;;
 
-(load (expand-file-name "~/.quicklisp/slime-helper.el"))
+(let ((file (expand-file-name "~/.quicklisp/slime-helper.el")))
+  (when (file-exists-p file)
+    (load file)))
+
+
 (autoload 'slime "slime" "slime" t)
 (autoload 'slime-connect "slime" "slime" t)
 
