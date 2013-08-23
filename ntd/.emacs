@@ -412,12 +412,11 @@
              (clisp ("/usr/bin/clisp"))
              (ccl ("ccl"))
              (ecl ("/usr/bin/ecl"))))
-
      (setq slime-default-lisp 'sbcl)
      (let ((path (concatenate 'string
                               temporary-file-directory (user-login-name) "-slime-fasl/")))
        (make-directory path t)
-       (setq slime-compile-file-options `(:fasl-directory ,path))))
+       (setq slime-compile-file-options `(:fasl-directory ,path)))))
 
 (when-host ("daneel" "leela")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
