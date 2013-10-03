@@ -230,3 +230,19 @@ ntd_ros_load_shell () {
 if [ -d "$HOME/ros/pkg" ]; then
     ROS_PACKAGE_PATH="$HOME/ros/pkg:$ROS_PACKAGE_PATH"
 fi
+
+#######
+# ACE #
+#######
+
+if [ -d /usr/local/ace ] ; then
+    export ACE_ROOT=/usr/local/ace
+fi
+
+if [ -n "$ACE_ROOT" ] ; then
+    if [ -d "$ACE_ROOT/TAO" ] ; then
+        export TAO_ROOT="$ACE_ROOT/TAO"
+    fi
+
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH$ACE_ROOT/lib:"
+fi
