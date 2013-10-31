@@ -253,3 +253,16 @@ if [ -n "$ACE_ROOT" ] ; then
 
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH$ACE_ROOT/lib:"
 fi
+
+
+##################
+## Video encode ##
+##################
+trans264() {
+    for i in 1 2; do
+        mencoder $1 \
+            -ovc x264 -x264encopts bitrate=$3:pass=$i \
+            -oac mp3lame -lameopts abr:br=$4 \
+            -o $2
+    done;
+}
