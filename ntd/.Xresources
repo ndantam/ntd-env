@@ -1,2 +1,6 @@
-.emacs.pane.menubar.foreground: white
-.emacs.pane.menubar.background: #333
+.emacs.*.foreground: white
+.emacs.*.background: #333
+.emacs23.*.foreground: white
+.emacs23.*.background: #333
+.emacs-24_3*.*.foreground: white
+.emacs-24_3*.*.background: #333
