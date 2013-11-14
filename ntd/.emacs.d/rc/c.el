@@ -19,6 +19,7 @@
 (c-add-style "user"
              '("linux"
                (c-basic-offset . 4)
-               (c-offsets-alist . ((inextern-lang . 0)))))
+               (c-offsets-alist . ((innamespace . [0])
+                                   (inextern-lang . [0])))))
 
 (setq c-default-style "user")
