@@ -124,6 +124,28 @@ cpugov () {
     done
 }
 
+# input-file, output-file, video-bitrate (kbps), audio-bitrate (kbps)
+
+trans264() {
+    ffmpeg -i $1 -pass 1 -vcodec libx264 -b:v $((1024 * $3)) -an -f rawvideo -y /dev/null
+    ffmpeg -i $1 -pass 2 -vcodec libx264 -b:v $((1024 * $3)) -b:a $((1024 * $4)) -y $2
+}
+
+# trans264() {
+#     for i in 1 2; do
+#         mencoder $1 \
+#             -ovc x264 -x264encopts bitrate=$3:pass=$i \
+#             -oac mp3lame -lameopts abr:br=$4 \
+#             -o $2
+#     done;
+# }
+
+# input-file, output-file, video-bitrate (kbps), audio-quality (1-10)
+transvp8() {
+    ffmpeg -i $1 -pass 1 -vcodec libvpx -b:v $((1024 * $3)) -an -f rawvideo -y /dev/null
+    ffmpeg -i $1 -pass 2 -vcodec libvpx -b:v $((1024 * $3)) -acodec libvorbis -qscale:a $4 -y $2
+}
+
 #################
 ## Compilation ##
 #################
@@ -253,16 +275,3 @@ if [ -n "$ACE_ROOT" ] ; then
 
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH$ACE_ROOT/lib:"
 fi
-
-
-##################
-## Video encode ##
-##################
-trans264() {
-    for i in 1 2; do
-        mencoder $1 \
-            -ovc x264 -x264encopts bitrate=$3:pass=$i \
-            -oac mp3lame -lameopts abr:br=$4 \
-            -o $2
-    done;
-}
