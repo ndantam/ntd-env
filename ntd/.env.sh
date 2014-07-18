@@ -131,19 +131,45 @@ trans264() {
     ffmpeg -i $1 -pass 2 -vcodec libx264 -b:v $((1024 * $3)) -b:a $((1024 * $4)) -y $2
 }
 
-# trans264() {
-#     for i in 1 2; do
-#         mencoder $1 \
-#             -ovc x264 -x264encopts bitrate=$3:pass=$i \
-#             -oac mp3lame -lameopts abr:br=$4 \
-#             -o $2
-#     done;
-# }
+trans264n() {
+    avconv -i $1 -pass 1 -codec:v libx264 -b:v ${3}k -an -f rawvideo -y /dev/null
+    avconv -i $1 -pass 2 -codec:v libx264 -b:v ${3}k -an -y $2
+}
+
+trans264mn() {
+    for i in 1 2; do
+        mencoder $1 \
+            -ovc x264 -x264encopts bitrate=$3:pass=$i \
+            -nosound \
+            -o $2
+    done;
+}
 
 # input-file, output-file, video-bitrate (kbps), audio-quality (1-10)
+transvp8_1() {
+    avconv -i $1 -pass 1 -codec:v libvpx -b:v ${3}k -an -f rawvideo -y /dev/null
+}
+transvp8_2() {
+    avconv -i $1 -pass 2 -codec:v libvpx -b:v ${3}k -acodec libvorbis -qscale:a $4 -y $2
+}
+
+transvp8_2n() {
+    avconv -i $1 -pass 2 -codec:v libvpx -b:v ${3}k -an -y $2
+}
+
 transvp8() {
-    ffmpeg -i $1 -pass 1 -vcodec libvpx -b:v $((1024 * $3)) -an -f rawvideo -y /dev/null
-    ffmpeg -i $1 -pass 2 -vcodec libvpx -b:v $((1024 * $3)) -acodec libvorbis -qscale:a $4 -y $2
+    transvp8_1 $@
+    transvp8_2 $@
+}
+
+transvp8n() {
+    transvp8_1 $@
+    transvp8_2n $@
+}
+
+transtheoran() {
+    avconv -i $1 -pass 1 -codec:v libtheora -b:v ${3}k -an -f rawvideo -y /dev/null
+    avconv -i $1 -pass 2 -codec:v libtheora -b:v ${3}k -an  -y $2
 }
 
 #################
