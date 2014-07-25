@@ -50,6 +50,7 @@
   (loadit "whitespace")
 
   (loadit "el-get")
+  (loadit "maximarc")
 
   (try-load "~/.quicklisp" "slime-helper")
   )
