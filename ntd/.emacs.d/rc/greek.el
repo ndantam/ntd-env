@@ -57,6 +57,12 @@
                       (interactive)
                       (insert (make-string 1 code))))))
 
+(defun def-capital-greek (key name)
+  (lexical-let ((code (ucs-code (concat "GREEK CAPITAL LETTER " (upcase name)))))
+    (global-set-key (concat "\C-cg" key)
+                    (lambda ()
+                      (interactive)
+                      (insert (make-string 1 code))))))
 
 (let ((greeks '(("a" "alpha")
                 ("b" "beta")
@@ -84,6 +90,16 @@
                 ("w" "omega"))))
   (loop for (key name) in greeks
         do (def-small-greek key name)))
+
+(def-capital-greek "G" "gamma")
+(def-capital-greek "J" "theta")
+(def-capital-greek "L" "lambda")
+(def-capital-greek "X" "xi")
+(def-capital-greek "P" "pi")
+(def-capital-greek "S" "sigma")
+(def-capital-greek "F" "phi")
+(def-capital-greek "Q" "psi")
+(def-capital-greek "W" "omega")
 
 
 ;(add-hook 'lisp-mode-hook 'pretty-greek-mode)
