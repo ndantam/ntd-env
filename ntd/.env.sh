@@ -18,7 +18,7 @@ export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 #############
 ## ALIASES ##
 #############
-alias rscp="rsync --recursive --partial --perms --progress --times"
+alias rscp="rsync --recursive --partial --perms --progress --times --links"
 alias lp-duplex='lp -o sides=two-sided-long-edge'
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 
