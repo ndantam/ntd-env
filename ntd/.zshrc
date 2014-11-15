@@ -13,7 +13,7 @@ else
 fi
 
 function precmd {
-    if [ "$TERM" = xterm -o "$TERM" = linux -o "$TERM" = eterm-color ]; then
+    if [ "$TERM" = xterm -o "$TERM" = linux -o "$TERM" = eterm-color -o "$TERM" = screen ]; then
         local BLACK="%{\033[0;30m%}"
         local RED="%{\033[0;31m%}"
         local LIGHT_RED="%{\033[1;31m%}"
@@ -72,7 +72,8 @@ function precmd {
     fi
 
     case $HOST in
-        krang)
+        # Robots
+        krang|calvin|*hubo*)
             local HOSTCOLOR=${LIGHT_RED}
             ;;
         leela)
@@ -143,8 +144,8 @@ function hcd {
 compctl -K hcomplete hcd
 
 function zgitls {
-    find -L ~/git -name .git -prune -print | sed -e 's!/.git$!!'
-    #find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
+    #find -L ~/git -name .git -prune -print | sed -e 's!/.git$!!'
+    find -L ~/git -type d -exec test -e  '{}'/.git ';' -prune -print
     #'ls' -d ~/git/**/.git |  sed -e 's!/.git$!!'
 }
 

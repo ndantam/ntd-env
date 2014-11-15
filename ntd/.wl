@@ -7,6 +7,12 @@
 
 (require 'mime-w3m)
 
+(setq wl-icon-directory "~/.emacs.d/pixmaps/")
+
+
+(defun bbdb-offer-save () (bbdb-save))
+(defun bbdb-flush-all-caches () )
+
 (setq mime-view-type-subtype-score-alist
   '(((text . plain) . 4)
     ((text . enriched) . 3)

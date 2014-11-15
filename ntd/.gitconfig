@@ -8,3 +8,5 @@
 [user]
         name = Neil T. Dantam
         email = ntd@gatech.edu
+[push]
+	default = simple

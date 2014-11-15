@@ -6,194 +6,63 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
-
-;;;;;;;;;;;;;
-;;  VIPER  ;;
-;;;;;;;;;;;;;
-;; Get viper first
-(setq viper-mode t)
-(require 'viper)
-(setq viper-always t)
-(setq viper-vi-state-cursor-color "green")
-
-(when (boundp 'viper-emacs-state-mode-list)
-  (mapc (lambda (mode)
-          (add-to-list 'viper-emacs-state-mode-list mode))
-        '(magit-key-mode slime-connection-list-mode)))
-
-;;;;;;;;;;;;
-;;  DEFS  ;;
-;;;;;;;;;;;;
-
 (require 'cl)
 
 (labels ((try-add-dir (dir)
            (when (file-exists-p dir)
-             (add-to-list 'load-path dir))))
-  (try-add-dir "~/.emacs.d")
-  (try-add-dir "~/.emacs.d/imaxima")
-  (try-add-dir "~/share/emacs/site-lisp/"))
+             (add-to-list 'load-path dir)))
+         (try-add-site (dir)
+           (when (file-exists-p dir)
+             (add-to-list 'load-path dir)
+             (let ((default-directory dir))
+               (normal-top-level-add-subdirs-to-load-path)))))
+  (try-add-site "~/.emacs.d/site-lisp")
+  (try-add-site "/usr/share/emacs/site-lisp/bbdb/")
+  (try-add-site "~/share/emacs/site-lisp")
+  )
 
+;;;;;;;;;;;
+;; LOADS ;;
+;;;;;;;;;;;
+(labels ((try-load (prefix name)
+                   (when (file-exists-p prefix)
+                     (load (concat prefix "/" name ".el"))))
+         (loadit (name)
+                 (or (try-load "~/.emacs.d/rc" name )
+                     (try-load "~/git/ntd-env/ntd/.emacs.d/rc" name))))
+  (loadit "packages")
+  (loadit "viper")
+  (loadit "defs")
 
-(let ((default-directory "~/.emacs.d/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
+  (loadit "auctex")
+  (loadit "bbdb")
+  (loadit "c")
+  (loadit "cl")
+  (loadit "compilation")
+  (loadit "erc")
+  (loadit "font")
+  (loadit "fortran")
+  (loadit "greek")
+  (loadit "magit")
+  (loadit "org")
+  (loadit "keys")
+  (loadit "pgp")
+  (loadit "whitespace")
 
+  (loadit "el-get")
+  (loadit "maximarc")
 
-(defun all (args)
-  (cond
-   ((null args) t)
-   ((car args) (all (cdr args)))
-   (t nil)))
+  (try-load "~/.quicklisp" "slime-helper")
+  )
 
-(defun any (args)
-  (cond
-   ((null args) nil)
-   ((car args) t)
-   (t (any (cdr args)))))
-
-(defun host-match (name)
-  (string-match (concat "^" (regexp-quote "daneel") ".*")
-                (system-name)))
-
-(defmacro if-host (name then-clause &optional else-clause)
-  `(if ,(if (atom name)
-            `(host-match  ,name)
-          `(any (mapcar 'host-match
-                        (quote ,name))))
-     ,then-clause
-     ,else-clause))
-
-(defmacro when-host (name &rest forms)
-  (declare (indent 1))
-  `(if-host ,name
-            (progn ,@forms)))
-
-
-(defmacro unless-host (name &rest forms)
-  (declare (indent 1))
-  `(if-host ,name nil (progn ,@forms)))
-
-
-;;;;;;;;;;;;;;;;;;;
-;;  Compilation  ;;
-;;;;;;;;;;;;;;;;;;;
-
-(setq my-compile-command "make -kj2")
-
-(defun get-closest-makefile-dir ()
-  (let ((root (expand-file-name "/")))
-    (loop
-     for d = ".." then (concat "../" d)
-     if (file-exists-p (expand-file-name "Makefile" d))
-     return d
-     if (equal (expand-file-name d) root)
-     return nil)))
-
-
-(defun closest-makefile-hook ()
-  (set (make-local-variable 'compile-command)
-       (if (file-exists-p (expand-file-name "Makefile" default-directory))
-           my-compile-command
-         (format "cd %s && %s" (get-closest-makefile-dir)
-                 my-compile-command))))
-
-(add-hook 'c-mode-hook 'closest-makefile-hook)
-(add-hook 'c++-mode-hook 'closest-makefile-hook)
-(add-hook 'f90-mode-hook 'closest-makefile-hook)
-(add-hook 'f77-mode-hook 'closest-makefile-hook)
-(add-hook 'org-mode-hook 'closest-makefile-hook)
-
-
-;;;;;;;;;;;;;;;;;;;
-;;  GLOBAL KEYS  ;;
-;;;;;;;;;;;;;;;;;;;
-
-;; woman
-(global-set-key "\C-cm" (lambda () (interactive)
-                          (if (one-window-p) (split-window))
-                          (let ((buf (current-buffer)))
-                            (other-window 1)
-                            (switch-to-buffer buf))
-                          (woman)))
-
-;; quick compile
-(global-set-key [f1] (lambda ()
-                           (interactive)
-                           (save-buffer)
-                           ;(command-execute 'save-buffer)
-                           (command-execute 'recompile)))
-(global-set-key [f2] 'compile)
-
-(global-set-key "\C-ctK" 'tramp-compile)
-
-;; commenting
-(global-set-key "\C-cX" 'comment-region)
-(global-set-key "\C-cU" 'uncomment-region)
-(global-set-key "\C-cL" 'longlines-mode)
-
-;; expand
-(global-set-key "\M-\\" 'hippie-expand)
-
-;; version control
-(global-set-key "\C-xvp" 'vc-update)
-(global-set-key "\C-xve" 'ediff-revision)
-(global-set-key "\C-cc" 'magit-status)
-
-(global-set-key "\C-cvl" 'magit-display-log)
-(global-set-key "\C-cvL"  'magit-log-long)
-
-(global-set-key "\C-cv=" 'magit-diff-working-tree)
-
-
-;; toggle meubar
-(global-set-key "\C-cM" (lambda () (interactive)
-                           (if menu-bar-mode
-                               (menu-bar-mode -1)
-                             (menu-bar-mode 1))))
-;; Window switching
-(global-set-key "\C-co" 'other-window)
-(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
-
-;; These seem unhelpful
-;;(global-set-key "\C-ch" 'windmove-left)
-;;(global-set-key "\C-cl" 'windmove-right)
-;;(global-set-key "\C-ck" 'windmove-up)
-;;(global-set-key "\C-cj" 'windmove-down)
-
-(global-set-key "\C-ci" 'other-frame)
-
-;; Encryption
-(global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)
-(global-set-key "\C-ceS" 'pgg-encrypt-symmetric)
-(global-set-key "\C-ced" 'pgg-decrypt-region)
-(global-set-key "\C-ceD" 'pgg-decrypt)
-(global-set-key "\C-cea" 'pgg-encrypt-region)
-(global-set-key "\C-ceA" 'pgg-encrypt)
-
-;; server (just use daemon mode)
-;;(global-set-key "\C-cS" 'server-start)
-
-;; from the emacswiki
-(defun toggle-fullscreen (&optional f)
-  (interactive)
-  (let ((current-value (frame-parameter nil 'fullscreen)))
-    (set-frame-parameter nil 'fullscreen
-                         (if (equal 'fullboth current-value)
-                             (if (boundp 'old-fullscreen) old-fullscreen nil)
-                           (progn (setq old-fullscreen current-value)
-                                  'fullboth)))))
-(global-set-key [f11] 'toggle-fullscreen)
-
-
-;; reload file
-(global-set-key [f6] 'wl-folder-check-all)
-
-;; reload file
-(global-set-key [f5] 'revert-buffer)
 
 ;;;;;;;;;;
 ;; MISC ;;
 ;;;;;;;;;;
+
+;; maybe speeds up wanderlust?
+(setq-default bidi-display-reordering nil)
+
 (setq confirm-kill-emacs 'yes-or-no-p)
 (desktop-save-mode 1)
 
@@ -220,127 +89,6 @@
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
-;;;;;;;;;;;;;;;;
-;; WHITESPACE ;;
-;;;;;;;;;;;;;;;;
-(require 'whitespace)
-
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 8)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(setq ntd-whitespace-cleanup-modes
-      '(org-mode
-        latex-mode
-        html-mode xml-mode
-        c-mode c++-mode
-        conf-space-mode
-        sh-mode
-        markdown-mode
-        lisp-mode emacs-lisp-mode))
-
-(defun ntd-whitespace-cleanup ()
-  (interactive)
-  (when (find major-mode ntd-whitespace-cleanup-modes)
-    (if whitespace-mode
-        (whitespace-cleanup)
-      (progn
-        (whitespace-mode 1)
-        (whitespace-cleanup)
-        (whitespace-mode 0)))))
-
-(add-hook 'before-save-hook
-          'ntd-whitespace-cleanup)
-
-;;;;;;;;;;;
-;; MAGIT ;;
-;;;;;;;;;;;
-(autoload 'magit-status "magit" "" t)
-
-(eval-after-load 'magit
-  '(progn
-     (require 'magit-key-mode)
-     (require 'magit-svn)
-     (add-hook 'magit-mode-hook 'turn-on-magit-svn)
-     (add-hook 'magit-mode-hook 'magit-load-config-extensions)
-  ))
-
-;;;;;;;;;;;;;;;;;;;
-;;  Remote File  ;;
-;;;;;;;;;;;;;;;;;;;
-(setq tramp-default-method "ssh")
-;;require 'tramp-util)
-
-;;add-to-list 'tramp-remote-path "~/bin")
-;;pushnew "/opt/csw/bin" tramp-remote-path) ;niagara path to cvs
-
-;;;;;;;;;;;;
-;;  FONT  ;;
-;;;;;;;;;;;;
-
-(set-face-background 'region               "#555555")
-(set-face-foreground 'modeline             "white")
-(set-face-background 'modeline             "#333333")
-
-(set-face-background 'default              "black")
-(set-face-foreground 'default              "green")
-
-
-(add-to-list 'default-frame-alist '(background-mode . dark))
-
-(mouse-wheel-mode t)
-(global-font-lock-mode t)
-(setq font-lock-maximum-decoration t)
-
-;;;;;;;;;
-;; ORG ;;
-;;;;;;;;;
-(setq org-export-email-info nil)
-(setq org-export-html-preamble nil)
-(setq org-export-html-validation-link nil)
-(setq org-publish-project-alist
-      `(("web"
-         :base-directory ,(expand-file-name "~/org/web")
-         :publishing-function org-publish-org-to-html
-         :base-extension "org"
-         :style "<link rel=\"stylesheet\"
-                     href=\"web/org.css\"
-                     type=\"text/css\"/>
-                 <script src=\"web/org.js\"
-                     type=\"text/javascript\"></script>"
-         :email ""
-         :publishing-directory ,(expand-file-name "~/www/"))
-        ("web.static"
-         :base-directory ,(expand-file-name "~/org/")
-         :publishing-function org-publish-attachment
-         :base-extension "css|js"
-         :recursive t
-         :include ("web/org.css" "web/org.js"
-                   "img/droidmacs.jpeg"
-                   "img/yama.jpeg" "img/ntd-lwa3-chess.jpeg"
-                   "img/hydrocar.jpeg")
-         :email ""
-         :publishing-directory ,(expand-file-name "~/www/"))))
-
-
-;;;;;;;;;
-;;  C  ;;
-;;;;;;;;;
-
-(c-add-style "ros-cc-style"
-             '("k&r"
-               (c-basic-offset . 2)
-               (c-offsets-alist . ((innamespace . [0])
-                                   (member-init-intro . [0])))))
-
-(c-add-style "user"
-             '("linux"
-               (c-basic-offset . 4)
-               (c-offsets-alist . ((inextern-lang . 0)))))
-
-(setq c-default-style "user")
-
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
 ;;;;;;;;;;;;;;
@@ -362,27 +110,6 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
-
-
-
-;;TeX-PDF-mode)
-
-;;;;;;;;;;;;;
-;; AUCTeX  ;;
-;;;;;;;;;;;;;
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
-
-;; make "C-c C-c" save buffer first
-(add-hook 'LaTeX-mode-hook
-          '(lambda()
-             (local-set-key "\C-c\C-c"
-                            (lambda ()
-                              (interactive)
-                              (command-execute 'save-buffer)
-                              (command-execute 'TeX-command-master)))))
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -416,20 +143,15 @@
              (clisp ("/usr/bin/clisp"))
              (ccl ("ccl"))
              (ecl ("/usr/bin/ecl"))))
-
-     (setq slime-default-lisp 'sbcl)))
+     (setq slime-default-lisp 'sbcl)
+     (let ((path (concatenate 'string
+                              temporary-file-directory (user-login-name) "-slime-fasl/")))
+       (make-directory path t)
+       (setq slime-compile-file-options `(:fasl-directory ,path)))))
 
 (when-host ("daneel" "leela")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
-
-
-;;;;;;;;;;;;
-;; CL  ;;
-;;;;;;;;;;;;
-(push '("\\.sbclrc$" . lisp-mode)  auto-mode-alist )
-(push '("\\.asdf-install$" . lisp-mode) auto-mode-alist )
-(push '("\\.asd$" . lisp-mode) auto-mode-alist )
 
 
 ;;;;;;;;;;;;
@@ -507,48 +229,6 @@
 
 
 
-;;;;;;;;;;
-;; BBDB ;;
-;;;;;;;;;;
-
-(setq bbdb-file "~/.emacs.d/bbdb")           ;; keep ~/ clean; set before loading
-(require 'bbdb)
-(bbdb-initialize)
-(setq
-    bbdb-offer-save 1                        ;; 1 means save-without-asking
-
-
-    bbdb-use-pop-up nil                      ;; allow popups for addresses
-    bbdb-electric-p t                        ;; be disposable with SPC
-    bbdb-popup-target-lines  1               ;; very small
-
-    bbdb-dwim-net-address-allow-redundancy t ;; always use full name
-    bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
-
-    bbdb-always-add-address t                ;; add new addresses to existing...
-                                             ;; ...contacts automatically
-    bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
-
-    bbdb-completion-type nil                 ;; complete on anything
-
-    bbdb-complete-name-allow-cycling t       ;; cycle through matches
-                                             ;; this only works partially
-
-    bbbd-message-caching-enabled t           ;; be fast
-    bbdb-use-alternate-names t               ;; use AKA
-
-
-    bbdb-elided-display t                    ;; single-line addresses
-
-    ;; auto-create addresses from mail
-    bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
-    bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
-    ;; NOTE: there can be only one entry per header (such as To, From)
-    ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-
-    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter\\|github\\.com\\|from\\|From")
-      ( "To"   . "Recipient")))
-
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
 ;;;;;;;;;;;;;;;;;;
@@ -562,6 +242,14 @@
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+
+(defun my-wl-summary-sort-hook ()
+  (wl-summary-rescan "date"))
+
+(add-hook 'wl-summary-prepared-hook 'my-wl-summary-sort-hook)
+
+
+
 
 ;; SEE ALSO: ~/.wl
 
@@ -587,67 +275,6 @@
 ;; SHELL ;;
 ;;;;;;;;;;;
 (setq explicit-shell-file-name "/bin/zsh" )
-
-;;;;;;;;;;;;;
-;; FORTRAN ;;
-;;;;;;;;;;;;;
-(defun f90-return( ) (interactive) (f90-indent-line) (newline-and-indent))
-
-(add-hook 'f90-mode-hook
-          '(lambda()
-             (local-set-key [13] 'f90-return)    ; RET with automatic indent
-             (imenu-add-to-menubar "Program-Units") ; Add index of func. to menu bar
-             ))
-
-;;;;;;;;;;;;;
-;; OCTAVE  ;;
-;;;;;;;;;;;;;
-(autoload 'run-octave "octave-inf" nil t)
-(add-hook 'inferior-octave-mode-hook
-          (lambda ()
-            (abbrev-mode 1)
-            (auto-fill-mode 1)
-            (if (eq window-system 'x)
-                (font-lock-mode 1))
-                                        ;(turn-on-font-lock)
-            (define-key inferior-octave-mode-map [up]
-              'comint-previous-input)
-            (define-key inferior-octave-mode-map [down]
-              'comint-next-input)))
-(add-hook 'octave-mode-hook
-          'viper-mode)
-
-(setq auto-mode-alist
-      (cons '("\\.m$" . octave-mode) auto-mode-alist))
-
-(setq inferior-octave-startup-args `("-q"))
-
-;;;;;;;;;;;;;;;;;;;
-;; EMACS SERVER  ;;
-;;;;;;;;;;;;;;;;;;;
-(add-hook 'server-switch-hook
-          (lambda nil
-            (let ((server-buf (current-buffer)))
-              (bury-buffer)
-              (switch-to-buffer-other-frame server-buf))))
-(add-hook 'server-done-hook 'delete-frame)
-(add-hook 'server-done-hook (lambda nil (kill-buffer nil)))
-
-;;;;;;;;;;;;;
-;; MAXIMA  ;;
-;;;;;;;;;;;;;
-(when-host ("daneel" "leela")
-  (add-to-list 'load-path "/usr/share/maxima/5.22.1/emacs/")
-  (add-to-list 'load-path "/usr/share/maxima/5.24.0/emacs/"))
-
-(autoload 'maxima-mode "maxima" "Maxima mode" t)
-(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
-(autoload 'maxima "maxima" "Maxima interaction" t)
-(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
-(setq imaxima-use-maxima-mode-flag t)
-
-(setq imaxima-fnt-size "Large")
-(setq auto-mode-alist (cons '("\.mac$" . maxima-mode) auto-mode-alist))
 
 
 ;;;;;;;;;;;
@@ -680,74 +307,11 @@
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
- '(safe-local-variable-values (quote ((Readtable . PY-AST-USER-READTABLE) (Package . CLPYTHON) (Package . CL-WHO) (Package . CL-USER) (Package . DOCUMENTATION-TEMPLATE) (Base . 10) (Package . CL-PPCRE) (Syntax . COMMON-LISP) (Package . CL-User) (Syntax . ANSI-Common-Lisp) (Package . FSet) (org-export-html-postamble))))
+ '(safe-local-variable-values (quote ((c-file-offsets (innamespace . 0)) (Readtable . PY-AST-USER-READTABLE) (Package . CLPYTHON) (Package . CL-WHO) (Package . CL-USER) (Package . DOCUMENTATION-TEMPLATE) (Base . 10) (Package . CL-PPCRE) (Syntax . COMMON-LISP) (Package . CL-User) (Syntax . ANSI-Common-Lisp) (Package . FSet) (org-export-html-postamble))))
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
 
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Display greek characters ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Based on pretty-greek by of BenignoUria
-;; ΣΤΥΦΧΨΩ
-(defun pretty-greek ()
-  (let ((greek '("alpha" "beta" "gamma" "delta"
-                 "epsilon" "zeta" "eta" "theta"
-                 "iota" "kappa" "lambda" "mu" "nu"
-                 "xi" "omicron" "pi" "rho" "varsigma"
-                 "sigma" "tau" "upsilon" "phi" "chi" "psi"
-                 "omega")))
-    (loop for word in greek
-                                        ;for code = 97 then (+ 1 code)
-          for greek-char across "αβγδεζηθικλμνξοπρςστυφχψω"
-          do  (progn
-                (font-lock-add-keywords
-                 nil
-                 `((,(concatenate 'string
-                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
-                                  word "\\)[a-zA-Z]")
-                    (0 (progn (decompose-region (match-beginning 2)
-                                                (match-end 2))
-                              nil)))))
-                (font-lock-add-keywords
-                 nil
-                 `((,(concatenate 'string
-                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
-                                  word "\\)[^a-zA-Z]")
-                    (0 (progn
-                         (compose-region (match-beginning 2)
-                                         (match-end 2)
-                                         ,greek-char)
-                         nil)))))))))
-
-(define-minor-mode pretty-greek-mode
-  "Displays greek characters")
-
-(add-hook 'pretty-greek-mode-hook 'pretty-greek)
-
-
-;(add-hook 'lisp-mode-hook 'pretty-greek-mode)
-;(add-hook 'f90-mode-hook 'pretty-greek-mode)
-
-;;(add-hook 'emacs-lisp-mode-hook 'pretty-greek-mode)
-
-
-;;;;;;;;;
-;; ERC ;;
-;;;;;;;;;
-
-(autoload 'erc-tls "erc")
-
-(defun irobot-erc ()
-  (interactive)
-  (erc-tls :server  "leprosy.wardrobe.irobot.com" :port 6667
-           :nick "ndantam" :full-name "Neil Dantam")
-  (erc-join-channel "#research"))
-
-(setq erc-autojoin-channels-alist '(("leprosy.wardrobe.irobot.com"
-                                     "#research")))
 
 ;;;;;;;;;;;;;;
 ;;  BROWSE  ;;
@@ -874,19 +438,6 @@
 ;;                  '(project unloaded system recursive))
 ;; (setq-mode-local c++-mode semanticdb-find-default-throttle
 ;;                  '(project unloaded system recursive))
-
-
-;;;;;;;;;
-;; PGP ;;
-;;;;;;;;;
-
-(autoload 'pgg-encrypt-region "pgg" "Encrypt the current region." t)
-(autoload 'pgg-encrypt-symmetric-region "pgg" "Encrypt the current region with symmetric algorithm." t)
-(autoload 'pgg-decrypt-region "pgg" "Decrypt the current region." t)
-(autoload 'pgg-sign-region "pgg" "Sign the current region." t)
-(autoload 'pgg-verify-region "pgg" "Verify the current region." t)
-(autoload 'pgg-insert-key "pgg" "Insert the ASCII armored public key." t)
-(autoload 'pgg-snarf-keys-region "pgg" "Import public keys in the current region." t)
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
