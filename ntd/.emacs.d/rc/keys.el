@@ -19,12 +19,22 @@
                           (woman)))
 
 ;; quick compile
-(global-set-key [f1] (lambda ()
-                           (interactive)
-                           (save-buffer)
-                           ;(command-execute 'save-buffer)
-                           (command-execute 'recompile)))
+(defun my-recompile ()
+  (interactive)
+  (save-buffer)
+  (command-execute 'compile))
+
+(global-set-key [f1] 'my-recompile)
+
 (global-set-key [f2] 'compile)
+
+(defun my-recompile-hook ()
+  (local-set-key (kbd "C-c C-c") 'my-recompile))
+
+(add-hook 'autoconf-mode-hook 'my-recompile-hook)
+(add-hook 'automake-mode-hook 'my-recompile-hook)
+(add-hook 'c-mode-hook 'my-recompile-hook)
+(add-hook 'c++-mode-hook 'my-recompile-hook)
 
 (global-set-key "\C-ctK" 'tramp-compile)
 
