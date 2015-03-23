@@ -171,6 +171,10 @@ function gcd {
 
 compctl -K zgitcomplete gcd
 
+
+# set function path
+fpath=($HOME/.zsh.d $fpath)
+
 ## enable autocomplete
 autoload -U compinit #promptinit
 compinit
