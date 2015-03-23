@@ -177,8 +177,21 @@ transtheoran() {
 #################
 
 if [ -d /usr/lib/ccache/ ] ; then
+    # Add ccache to path
     PATH="/usr/lib/ccache:$PATH"
+
+    # Store cache in /tmp
+    export CCACHE_DIR="/tmp/ntd-cache/ccache/cache"
+    export CCACHE_TEMPDIR="/tmp/ntd-cache/ccache/tmp"
+    export CCACHE_COMPRESS="yes"
     alias debuild="debuild  --prepend-path=/usr/lib/ccache"
+
+    # Create cache directories
+    if [ ! -d "$CCACHE_DIR" ]; then
+        mkdir -p "$CCACHE_DIR"
+        # Limit cache size
+        ccache -M 256M
+    fi
 fi
 
 #if [ "$HOST" = "daneel"  ]; then
