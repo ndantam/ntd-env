@@ -22,7 +22,7 @@
    (t (any (cdr args)))))
 
 (defun host-match (name)
-  (string-match (concat "^" (regexp-quote "daneel") ".*")
+  (string-match (concat "^" (regexp-quote name) ".*")
                 (system-name)))
 
 (defmacro if-host (name then-clause &optional else-clause)

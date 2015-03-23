@@ -137,17 +137,18 @@
      (global-set-key "\C-cs" 'slime-selector)
 
      (setq slime-lisp-implementations
-           `((sbcl ,(if-host "daneel"
-                             '("sbcl" "--dynamic-space-size" "12GB")
-                             '("sbcl")))
+           `((sbcl ,(cond
+                     ((host-match "apollo")
+                      '("sbcl" "--dynamic-space-size" "8GB"))
+                     (t '("sbcl"))))
              (clisp ("/usr/bin/clisp"))
              (ccl ("ccl"))
              (ecl ("/usr/bin/ecl"))))
      (setq slime-default-lisp 'sbcl)
      (let ((path (concatenate 'string
-                              temporary-file-directory (user-login-name) "-slime-fasl/")))
+                              temporary-file-directory (user-login-name) "-cache/slime/")))
        (make-directory path t)
-       (setq slime-compile-file-options `(:fasl-directory ,path)))))
+       (setq slime-compile-file-options `(:fasl-directory ,path))))
 
 (when-host ("daneel" "leela")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))

@@ -14,14 +14,15 @@
 ;(require 'sb-sprof)
 
 ;; My Src
-(pushnew '(merge-pathnames "src/lisp/systems/"
-           (user-homedir-pathname))
-         asdf:*central-registry*
-         :test #'equal)
+;; (pushnew '(merge-pathnames "src/lisp/systems/"
+;;            (user-homedir-pathname))
+;;          asdf:*central-registry*
+;;          :test #'equal)
 
-(pushnew '(merge-pathnames ".asdf/systems/"
-           (user-homedir-pathname))
-         asdf:*central-registry*
-         :test #'equal)
+;; (pushnew '(merge-pathnames ".asdf/systems/"
+;;            (user-homedir-pathname))
+;;          asdf:*central-registry*
+;         :test #'equal)
 
 ;(setq *read-default-float-format* 'double-float)
+;(setq asdf:*user-cache* '(:home "tmp/ntd-cache/common-lisp" :IMPLEMENTATION))

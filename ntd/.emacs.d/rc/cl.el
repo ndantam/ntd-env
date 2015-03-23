@@ -9,6 +9,6 @@
 ;;;;;;;;;
 ;; CL  ;;
 ;;;;;;;;;
-(push '("\\.sbclrc$" . lisp-mode)  auto-mode-alist )
-(push '("\\.asdf-install$" . lisp-mode) auto-mode-alist )
-(push '("\\.asd$" . lisp-mode) auto-mode-alist )
+(add-to-list 'auto-mode-alist '("\\.sbclrc$" . lisp-mode))
+(add-to-list 'auto-mode-alist '("\\.asdf-install$" . lisp-mode))
+(add-to-list 'auto-mode-alist '("\\.asd$" . lisp-mode))
