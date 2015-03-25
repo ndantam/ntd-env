@@ -282,10 +282,49 @@ if [ "$HOST" = "IRBT-2914" ]; then
     }
 fi
 
+# RICE
 
 #######
 # ROS #
 #######
+
+ros_env() {
+    if test "x$ROS_ROOT" = x; then
+        if test -d /opt/ros/indigo; then
+            export ROS_ROOT=/opt/ros/indigo
+        else
+            echo "No ROS_ROOT"
+        fi
+    fi
+    export PATH=$ROS_ROOT/bin:$PATH
+    export PYTHONPATH=$ROS_ROOT/core/roslib/src:$PYTHONPATH
+    if [ ! "$ROS_MASTER_URI" ]; then
+        export ROS_MASTER_URI=http://localhost:11311
+    fi
+    #export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg:~/src/ros/ros_experimental/tags/boxturtle
+
+
+    case $SHELL in
+        *zsh)
+            x=zsh
+            ;;
+        *bash)
+            x=bash
+            ;;
+        *)
+            x=sh
+            ;;
+    esac
+
+    source $ROS_ROOT/setup.$x
+
+    if [ -d "$HOME/ros_ws/src" ]; then
+        ROS_PACKAGE_PATH="$HOME/ros_ws/src:$ROS_PACKAGE_PATH"
+    fi
+
+    ST_FLAG=${ST_FLAG}"(ROS-$ROS_DISTRO)"
+}
+
 
 ntd_ros_load_shell () {
     case $SHELL in
