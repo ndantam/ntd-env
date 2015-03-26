@@ -102,18 +102,32 @@ gitrcp () {
     fi
 }
 
-bglisp () {
-    if [ ! -d ~/.bglisp ] ; then
-        mkdir ~/.bglisp  || return 1
-    fi
-    detachtty                                          \
-        --pid-file ~/.bglisp/pid                       \
-        --dribble-file ~/.bglisp/dribble               \
-        ~/.bglisp/socket                               \
-        /usr/bin/env sbcl  --eval '(require :swank)'   \
+cl-core() {
+    mkdir -p "$HOME/.cache/common-lisp/"
+    sbcl --script <<EOF
+;; Load userinit
+(load "$HOME/.sbclrc")
+;; Load common libraries
+(require :swank)
+(require :cffi)
+(require :alexandria)
+(require :cl-ppcre)
+(require :sb-sprof)
+(sb-ext:save-lisp-and-die "$HOME/.cache/common-lisp/sbcl.core"
+                          :executable t
+                          :save-runtime-options nil)
+
+EOF
+}
+
+cl-run() {
+    "$HOME/.cache/common-lisp/sbcl.core" \
+        --dynamic-space-size 8GB \
+        --control-stack-size 32MB  \
+        --eval '(sb-ext:enable-debugger)' \
+        --eval '(setq swank:*communication-style* :fd-handler)' \
         --eval '(swank:swank-require :swank-arglists)' \
-        --eval '(swank:create-server :dont-close t)'   \
-        || return 1
+        --eval '(swank:create-server :dont-close t)'
 }
 
 cpugov () {
@@ -301,22 +315,18 @@ ros_env() {
     if [ ! "$ROS_MASTER_URI" ]; then
         export ROS_MASTER_URI=http://localhost:11311
     fi
-    #export ROS_PACKAGE_PATH=~/src/ros/stacks:~/src/research/projects/ros_pkg:~/src/ros/ros_experimental/tags/boxturtle
-
 
     case $SHELL in
         *zsh)
-            x=zsh
+            source $ROS_ROOT/setup.zsh
             ;;
         *bash)
-            x=bash
+            source $ROS_ROOT/setup.bash
             ;;
         *)
-            x=sh
+            source $ROS_ROOT/setup.sh
             ;;
     esac
-
-    source $ROS_ROOT/setup.$x
 
     if [ -d "$HOME/ros_ws/src" ]; then
         ROS_PACKAGE_PATH="$HOME/ros_ws/src:$ROS_PACKAGE_PATH"
