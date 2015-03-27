@@ -108,11 +108,12 @@ cl-core() {
 ;; Load userinit
 (load "$HOME/.sbclrc")
 ;; Load common libraries
-(require :swank)
-(require :cffi)
-(require :alexandria)
-(require :cl-ppcre)
-(require :sb-sprof)
+(ql:quickload :swank)
+(ql:quickload :cffi)
+(ql:quickload :alexandria)
+(ql:quickload :cl-ppcre)
+(ql:quickload :sb-sprof)
+(ql:quickload :clpython)
 (sb-ext:save-lisp-and-die "$HOME/.cache/common-lisp/sbcl.core"
                           :executable t
                           :save-runtime-options nil)
