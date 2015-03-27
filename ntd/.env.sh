@@ -125,6 +125,7 @@ cl-run() {
     "$HOME/.cache/common-lisp/sbcl.core" \
         --dynamic-space-size 8GB \
         --control-stack-size 32MB  \
+        --eval '(asdf:clear-source-registry)' \
         --eval '(sb-ext:enable-debugger)' \
         --eval '(setq swank:*communication-style* :fd-handler)' \
         --eval '(swank:swank-require :swank-arglists)' \
