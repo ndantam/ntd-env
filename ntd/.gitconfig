@@ -1,4 +1,4 @@
-[core]
+
         excludesfile = /home/ntd/.gitignore
         autocrlf = input
 
@@ -8,5 +8,5 @@
 [user]
         name = Neil T. Dantam
         email = ntd@gatech.edu
-[push]
-	default = simple
+#[push]
+	#default = simple
