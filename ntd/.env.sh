@@ -102,18 +102,34 @@ gitrcp () {
     fi
 }
 
-bglisp () {
-    if [ ! -d ~/.bglisp ] ; then
-        mkdir ~/.bglisp  || return 1
-    fi
-    detachtty                                          \
-        --pid-file ~/.bglisp/pid                       \
-        --dribble-file ~/.bglisp/dribble               \
-        ~/.bglisp/socket                               \
-        /usr/bin/env sbcl  --eval '(require :swank)'   \
+cl-core() {
+    mkdir -p "$HOME/.cache/common-lisp/"
+    sbcl --script <<EOF
+;; Load userinit
+(load "$HOME/.sbclrc")
+;; Load common libraries
+(ql:quickload :swank)
+(ql:quickload :cffi)
+(ql:quickload :alexandria)
+(ql:quickload :cl-ppcre)
+(ql:quickload :sb-sprof)
+(ql:quickload :clpython)
+(sb-ext:save-lisp-and-die "$HOME/.cache/common-lisp/sbcl.core"
+                          :executable t
+                          :save-runtime-options nil)
+
+EOF
+}
+
+cl-run() {
+    "$HOME/.cache/common-lisp/sbcl.core" \
+        --dynamic-space-size 8GB \
+        --control-stack-size 32MB  \
+        --eval '(asdf:clear-source-registry)' \
+        --eval '(sb-ext:enable-debugger)' \
+        --eval '(setq swank:*communication-style* :fd-handler)' \
         --eval '(swank:swank-require :swank-arglists)' \
-        --eval '(swank:create-server :dont-close t)'   \
-        || return 1
+        --eval '(swank:create-server :dont-close t)'
 }
 
 cpugov () {
@@ -177,8 +193,21 @@ transtheoran() {
 #################
 
 if [ -d /usr/lib/ccache/ ] ; then
+    # Add ccache to path
     PATH="/usr/lib/ccache:$PATH"
+
+    # Store cache in /tmp
+    export CCACHE_DIR="/tmp/ntd-cache/ccache/cache"
+    export CCACHE_TEMPDIR="/tmp/ntd-cache/ccache/tmp"
+    export CCACHE_COMPRESS="yes"
     alias debuild="debuild  --prepend-path=/usr/lib/ccache"
+
+    # Create cache directories
+    if [ ! -d "$CCACHE_DIR" ]; then
+        mkdir -p "$CCACHE_DIR"
+        # Limit cache size
+        ccache -M 256M
+    fi
 fi
 
 #if [ "$HOST" = "daneel"  ]; then
@@ -269,10 +298,45 @@ if [ "$HOST" = "IRBT-2914" ]; then
     }
 fi
 
+# RICE
 
 #######
 # ROS #
 #######
+
+ros_env() {
+    if test "x$ROS_ROOT" = x; then
+        if test -d /opt/ros/indigo; then
+            export ROS_ROOT=/opt/ros/indigo
+        else
+            echo "No ROS_ROOT"
+        fi
+    fi
+    export PATH=$ROS_ROOT/bin:$PATH
+    export PYTHONPATH=$ROS_ROOT/core/roslib/src:$PYTHONPATH
+    if [ ! "$ROS_MASTER_URI" ]; then
+        export ROS_MASTER_URI=http://localhost:11311
+    fi
+
+    case $SHELL in
+        *zsh)
+            source $ROS_ROOT/setup.zsh
+            ;;
+        *bash)
+            source $ROS_ROOT/setup.bash
+            ;;
+        *)
+            source $ROS_ROOT/setup.sh
+            ;;
+    esac
+
+    if [ -d "$HOME/ros_ws/src" ]; then
+        ROS_PACKAGE_PATH="$HOME/ros_ws/src:$ROS_PACKAGE_PATH"
+    fi
+
+    ST_FLAG=${ST_FLAG}"(ROS-$ROS_DISTRO)"
+}
+
 
 ntd_ros_load_shell () {
     case $SHELL in

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#export XAUTHORITY=/home/ntd-all/.Xauthority
+#exec sudo -u ntd-chrome google-chrome --proxy-server="http=192.168.1.2:8118,ftp="
+
+exec google-chrome --proxy-server="http=127.0.0.1:8118,ftp=" \
+                   --proxy-bypass-list="127.0.0.1,test.neil.dantam.name" \
+                   --disk-cache-dir="/tmp/$USER-cache/google-chrome"  \
+                   --disk-cache-size=104857600
+#exec google-chrome --proxy-server=192.168.1.2:8118 $@
+#exec google-chrome  $@
