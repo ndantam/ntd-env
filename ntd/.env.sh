@@ -218,19 +218,10 @@ fi
 ##############
 ## PER-HOST ##
 ##############
+alias make="make -j 2"
 
 ## My
 if [ "$HOST" = "leela"  ]; then
-    fanlevel() {
-        echo level $1 | sudo tee /proc/acpi/ibm/fan
-    }
-    alias ff32="schroot -p iceweasel -- -P 32 -no-remote"
-    alias fanlow='fanlevel 2'
-    alias fanmed='fanlevel 4'
-    alias fanmax='fanlevel 7'
-    alias fanauto='fanlevel auto'
-    alias fandis='fanlevel disengaged'
-    export DOXRSYNCSSH=acme:public_html/docs
 fi
 
 if [ "$HOST" = "leela-susan"  ]; then
@@ -238,6 +229,9 @@ if [ "$HOST" = "leela-susan"  ]; then
     alias pkg_add="sudo pkg_add -rv"
 fi
 
+if [ "$HOST" = "apollo"  ]; then
+    alias make="make -j 5"
+fi
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
@@ -246,32 +240,6 @@ if [ "$HOST" = "daneel"  ]; then
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias openarena="(unset LIBGL_ALWAYS_INDIRECT & openarena); xrandr --output DVI-0 --right-of DVI-1"
     alias make="make -j 5"
-fi
-
-## LL
-if [ "$HOST" = olivaw ]; then
-    export ROS_ROOT=~/src/ros
-    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src:~/src/indoor-packbot/software/python:
-    export PATH=$ROS_ROOT/bin:$PATH
-    export ROS_MASTER_URI=http://localhost:11311
-    export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src:$ROS_ROOT/core/rospy/src
-    export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct/octave
-fi
-
-if [ "$HOST" = "SuperSloth" ] || [ "$HOST" = "babel"  ]; then
-    export ROS_ROOT=~/src/ros
-    export ROS_PACKAGE_PATH=~/src/ros-pkg:~/src/indoor-packbot
-    export ROS_MASTER_URI=http://192.168.1.2:11311/
-    export ROS_IP=192.168.1.2
-    export PATH=$PATH:$ROS_ROOT/bin
-    export PYTHONPATH=$PYTHONPATH:$ROS_ROOT/core/roslib/src
-    export OCTAVE_PATH=$OCTAVE_PATH:$ROS_ROOT/core/experimental/rosoct
-    ntd_ros_load_shell
-fi
-
-if [ "$HOST" = "babel" ]; then
-    alias wifion="sudo ifdown eth0 && sudo ifup wlan0"
-    alias wifioff="sudo ifdown wlan0 && sudo ifup eth0"
 fi
 
 # iRobot
