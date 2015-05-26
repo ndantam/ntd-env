@@ -18,3 +18,6 @@
   (mapc (lambda (mode)
           (add-to-list 'viper-emacs-state-mode-list mode))
         '(magit-key-mode slime-connection-list-mode)))
+
+(if (equal viper-ESC-key [escape])
+    (define-key input-decode-map [?\e] [escape])
