@@ -17,6 +17,13 @@
 (global-set-key "\C-cll" 'slime-load-system)
 (global-set-key "\C-clr" 'slime-reload-system)
 
+(defun local-slime-connect ()
+  (interactive)
+  (slime-connect "localhost" 4005))
+
+(global-set-key "\C-clc" 'local-slime-connect)
+(global-set-key "\C-cld" 'slime-disconnect)
+
 ;;;;;;;;;;;;
 ;; SLIME  ;;
 ;;;;;;;;;;;;
