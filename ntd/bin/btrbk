@@ -1,0 +1,52 @@
+#!/bin/sh
+
+## CONFIG ##
+BK_MOUNT_POINT=/mnt/tmp
+BK_DIR=bk
+SRC_DIRS="bin archive class dat pic doc src .maildir pro"
+## END CONFIG ##
+
+
+BK_ROOT=${BK_MOUNT_POINT}/${BK_DIR}
+BK_TODAY=`date +%Y-%m-%d`
+BK_PREV=$(basename `ls -l ${BK_ROOT}/current | cut -d '>' -f 2`)
+
+
+cd ${HOME}
+
+# Checks
+if [ -e ${BK_ROOT} ]; then
+    true;
+else
+    echo no backup root: ${BK_ROOT}
+    exit 255
+fi
+
+if [ -d ${BK_ROOT}/${BK_PREV} ]; then
+    true;
+else
+    echo no current backup link: ${BK_ROOT}
+    exit 255
+fi
+
+if [ -e ${BK_ROOT}/${BK_TODAY} ]; then
+    echo Current back already exists: ${BK_ROOT}/${BK_TODAY}
+    exit 255
+fi
+
+# Link previous backup
+echo Snapshoting previous ${BK_ROOT}/${BK_PREV} to current ${BK_ROOT}/${BK_TODAY}
+sudo btrfs subvolume snapshot ${BK_ROOT}/${BK_PREV} ${BK_ROOT}/${BK_TODAY}
+
+# make new backup
+echo Backing up ${SRC_DIRS} to ${BK_ROOT}/${BK_TODAY}
+rsync \
+  --whole-file --archive --delete --recursive \
+  --one-file-system \
+  ${SRC_DIRS} \
+  ${BK_ROOT}/${BK_TODAY}
+
+# change current link
+echo Setting current symlink to ${BK_ROOT}/${BK_TODAY}
+rm ${BK_ROOT}/current
+ln -vs ${BK_ROOT}/${BK_TODAY} ${BK_ROOT}/current
