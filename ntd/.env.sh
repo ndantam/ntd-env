@@ -197,16 +197,21 @@ if [ -d /usr/lib/ccache/ ] ; then
     PATH="/usr/lib/ccache:$PATH"
 
     # Store cache in /tmp
-    export CCACHE_DIR="/tmp/ntd-cache/ccache/cache"
-    export CCACHE_TEMPDIR="/tmp/ntd-cache/ccache/tmp"
-    export CCACHE_COMPRESS="yes"
+    #export CCACHE_DIR="/tmp/ntd-cache/ccache/cache"
+    #export CCACHE_TEMPDIR="/tmp/ntd-cache/ccache/tmp"
+    #export CCACHE_COMPRESS="yes"
+
+    export CCACHE_DIR="${HOME}/git/.ccache"
+    export CCACHE_HARDLINK="yes"
+    export CCACHE_BASEDIR="${HOME}/git"
+
     alias debuild="debuild  --prepend-path=/usr/lib/ccache"
 
     # Create cache directories
     if [ ! -d "$CCACHE_DIR" ]; then
         mkdir -p "$CCACHE_DIR"
         # Limit cache size
-        ccache -M 256M
+        ccache -M 1G
     fi
 fi
 
