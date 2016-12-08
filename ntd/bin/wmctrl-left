@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. ~/.env.sh
+
+h=$((`x11_height`-25))
+w=$((`x11_width`/2))
+x=`x11_xoff`
+y=0
+
+wmctrl -r :ACTIVE: -e 0,$x,$y,$w,$h

@@ -51,6 +51,23 @@ if [ `uname` = FreeBSD ]; then
     fi
 fi
 
+########
+## X11 #
+########
+
+if [ -n "$DISPLAY" ] ; then
+    # TODO: compute height
+
+    x11_height() {
+        echo 1200
+    }
+    x11_width () {
+        echo 1920
+    }
+    x11_xoff () {
+        echo 1600
+    }
+fi
 
 ####################
 ## Local Packages ##
@@ -63,7 +80,7 @@ if [ -d "$HOME/local" -o -L "$HOME/local" ]; then
 fi
 
 if [ -n "$MY_LOCAL" ]; then
-    local-config () {
+    local_config () {
         echo "--prefix=$MY_LOCAL"  "CPPFLAGS=-I$MY_LOCAL/include" "LDFLAGS=-L$MY_LOCAL/lib"
     }
     export PATH="$MY_LOCAL/bin:$PATH"
@@ -74,7 +91,7 @@ fi
 ## FUNCTIONS ##
 ###############
 
-start-emacs () {
+start_emacs () {
     ## Emacs, no slave to X sessions, gets its own xauthority
     XAUTHORITY=/tmp/xauth.emacs:$USER@$HOST emacs --daemon
 }
@@ -83,6 +100,11 @@ start-emacs () {
 
 pdfcat() {
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
+}
+pdfcompress() {
+    F=`tempfile`
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$F" "$1"
+    mv "$F" "$1"
 }
 
 gitrcp () {
@@ -102,7 +124,7 @@ gitrcp () {
     fi
 }
 
-cl-core() {
+cl_core() {
     mkdir -p "$HOME/.cache/common-lisp/"
     sbcl --script <<EOF
 ;; Load userinit
@@ -121,7 +143,7 @@ cl-core() {
 EOF
 }
 
-cl-run() {
+cl_run() {
     "$HOME/.cache/common-lisp/sbcl.core" \
         --dynamic-space-size 8GB \
         --control-stack-size 32MB  \
@@ -223,20 +245,22 @@ fi
 ##############
 ## PER-HOST ##
 ##############
-alias make="make -j 2"
 
-## My
-if [ "$HOST" = "leela"  ]; then
+# if [ "$HOST" = "leela-susan"  ]; then
+#     alias vi=vim
+#     alias pkg_add="sudo pkg_add -rv"
+# fi
+if [ `nproc` -le 2 ]; then
+    alias make="make -j $((2*`nproc`))"
+else
+    alias make="make -j $((3*`nproc`/2))"
 fi
 
-if [ "$HOST" = "leela-susan"  ]; then
-    alias vi=vim
-    alias pkg_add="sudo pkg_add -rv"
-fi
+xrandr_dock () {
+    xrandr --output DP3 --auto --right-of LVDS1
+    xrandr --output DP2 --auto  --right-of DP3
+}
 
-if [ "$HOST" = "apollo"  ]; then
-    alias make="make -j 5"
-fi
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
@@ -304,7 +328,7 @@ ros_env() {
     esac
 
     if [ -d "$HOME/ros_ws/src" ]; then
-        ROS_PACKAGE_PATH="$HOME/ros_ws/src:$ROS_PACKAGE_PATH"
+        ROS_PACKAGE_PATH="$ROS_PACKAGE_PATH:$HOME/ros_ws/src"
     fi
 
     ST_FLAG=${ST_FLAG}"(ROS-$ROS_DISTRO)"
