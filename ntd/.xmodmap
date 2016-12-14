@@ -1,0 +1,28 @@
+
+! Keysum       | Keycode
+! -------------+---------
+! Control_L    |  37
+! Caps         |  66
+! Menu         | 135
+! Delete       | 119
+! Escape       |   9
+! Pause        | 127
+! Scroll_Lock  |  78
+
+! Caps
+keycode 66 =  Control_L
+
+! Control_L
+keycode 37 = Escape
+
+! Menu
+keycode 135 = Super_R
+
+! Delete
+keycode 119 = Escape
+
+! Scroll_Lock
+keycode 78 = Caps_Lock
+
+! Pause
+keycode 127 = Multi_key
