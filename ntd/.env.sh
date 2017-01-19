@@ -59,13 +59,13 @@ if [ -n "$DISPLAY" ] ; then
     # TODO: compute height
 
     x11_height() {
-        echo 1200
+        echo $((1200-75))
     }
     x11_width () {
         echo 1920
     }
     x11_xoff () {
-        echo 1600
+        echo 1920
     }
 fi
 
@@ -276,13 +276,22 @@ else
 fi
 
 xrandr_dock () {
-    xrandr --output DP3 --auto --right-of LVDS1
-    xrandr --output DP2 --auto  --right-of DP3
+    xrandr --output LVDS1 --off
+    xrandr --output DP2 --auto \
+           --output DP3 --auto  --left-of DP2 \
+           --output HDMI1 --auto --right-of DP2
 }
 
 if [ "$HOST" = "apollo"  ]; then
     alias make="make -j 12"
 fi
+
+xrandr_mobile () {
+    xrandr --output DP2 --off \
+           --output DP3 --off \
+           --output HDMI1 --off
+    xrandr --output LVDS1 --auto
+}
 
 ## GT
 if [ "$HOST" = "daneel"  ]; then
