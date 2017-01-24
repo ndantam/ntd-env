@@ -108,6 +108,7 @@ cl-core() {
 ;; Load userinit
 (load "$HOME/.sbclrc")
 ;; Load common libraries
+(ql:quickload :sb-posix)
 (ql:quickload :swank)
 (ql:quickload :cffi)
 (ql:quickload :alexandria)
@@ -116,20 +117,31 @@ cl-core() {
 (ql:quickload :clpython)
 (sb-ext:save-lisp-and-die "$HOME/.cache/common-lisp/sbcl.core"
                           :executable t
+                          :compression t
                           :save-runtime-options nil)
 
 EOF
 }
 
-cl-run() {
+
+lisp-local () {
     "$HOME/.cache/common-lisp/sbcl.core" \
         --dynamic-space-size 8GB \
-        --control-stack-size 32MB  \
+        --control-stack-size 32MB \
+        --eval '(asdf:clear-source-registry)' \
+        $@
+
+}
+
+cl-run() {
+    lisp-local \
         --eval '(asdf:clear-source-registry)' \
         --eval '(sb-ext:enable-debugger)' \
-        --eval '(setq swank:*communication-style* :fd-handler)' \
         --eval '(swank:swank-require :swank-arglists)' \
-        --eval '(swank:create-server :dont-close t)'
+        --eval '(swank:create-server :dont-close t)' \
+        $@
+
+        #--eval '(setq swank:*communication-style* :fd-handler)' \
 }
 
 cpugov () {
@@ -220,6 +232,14 @@ fi
     #export CCACHE_PREFIX="distcc"
 #fi
 
+###########
+## EMSDK ##
+###########
+
+if [ -d /usr/local/emsdk_portable/ ] ; then
+    source /usr/local/emsdk_portable/emsdk_env.sh > /dev/null
+fi
+
 ##############
 ## PER-HOST ##
 ##############
@@ -235,7 +255,7 @@ if [ "$HOST" = "leela-susan"  ]; then
 fi
 
 if [ "$HOST" = "apollo"  ]; then
-    alias make="make -j 5"
+    alias make="make -j 12"
 fi
 
 ## GT
@@ -277,7 +297,24 @@ fi
 # ROS #
 #######
 
+ros_src_file() {
+    if test -d $1; then
+        case $SHELL in
+            *zsh)
+                source $1/setup.zsh
+                ;;
+            *bash)
+                source $1/setup.bash
+                ;;
+            *)
+                source $1/setup.sh
+                ;;
+        esac
+    fi
+}
+
 ros_env() {
+
     if test "x$ROS_ROOT" = x; then
         if test -d /opt/ros/indigo; then
             export ROS_ROOT=/opt/ros/indigo
@@ -291,17 +328,8 @@ ros_env() {
         export ROS_MASTER_URI=http://localhost:11311
     fi
 
-    case $SHELL in
-        *zsh)
-            source $ROS_ROOT/setup.zsh
-            ;;
-        *bash)
-            source $ROS_ROOT/setup.bash
-            ;;
-        *)
-            source $ROS_ROOT/setup.sh
-            ;;
-    esac
+    ros_src_file "$ROS_ROOT"
+    ros_src_file "$HOME/ros_ws/devel"
 
     if [ -d "$HOME/ros_ws/src" ]; then
         ROS_PACKAGE_PATH="$HOME/ros_ws/src:$ROS_PACKAGE_PATH"
