@@ -22,3 +22,10 @@
                               (interactive)
                               (command-execute 'save-buffer)
                               (command-execute 'TeX-command-master)))))
+
+
+(require 'auctex-latexmk)
+(auctex-latexmk-setup)
+(setq auctex-latexmk-inherit-TeX-PDF-mode t)
+
+(setq LaTeX-item-indent 0)
