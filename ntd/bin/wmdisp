@@ -1,0 +1,17 @@
+#!/bin/sh
+
+N=$1
+
+
+GEO=`xrandr | grep 'connected.*+' | cut -f 3 -d ' ' | sed -e 's/\([0-9x]*\)+\(.*\)/\2,\1/' | sort -n | head -n $N | tail -n 1`
+POS=`echo $GEO | cut -f 1 -d ','`
+DIM=`echo $GEO | cut -f 2 -d ','`
+
+X=`echo $POS | cut -f 1 -d '+'`
+Y=`echo $POS | cut -f 2 -d '+'`
+W=`echo $DIM | cut -f 1 -d 'x'`
+H=`echo $DIM | cut -f 2 -d 'x'`
+
+#echo "($X,$Y)"
+
+wmctrl -r :ACTIVE:  -e 0,$X,$Y,$W,$H
