@@ -11,6 +11,7 @@ set encoding=utf-8
 "autocmd FileType make imap <tab> <tab>
 
 augroup filetype
+        au! BufRead,BufNewFile *.urdf,*.xacro    set filetype=xml
         au! BufRead,BufNewFile *.jm4    set filetype=java
         "au! BufRead,BufNewFile *.ho,*.m    set filetype=objc
         au! BufRead,BufNewFile *.m      set filetype=matlab
