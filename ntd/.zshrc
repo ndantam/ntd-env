@@ -13,7 +13,7 @@ else
 fi
 
 function precmd {
-    if [ "$TERM" = xterm -o "$TERM" = linux -o "$TERM" = eterm-color -o "$TERM" = screen ]; then
+    if [ "$TERM" = xterm -o "$TERM" = xterm-256color -o "$TERM" = linux -o "$TERM" = eterm-color -o "$TERM" = screen ]; then
         local BLACK="%{\033[0;30m%}"
         local RED="%{\033[0;31m%}"
         local LIGHT_RED="%{\033[1;31m%}"
