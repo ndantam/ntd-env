@@ -23,3 +23,5 @@
 (mouse-wheel-mode t)
 (global-font-lock-mode t)
 (setq font-lock-maximum-decoration t)
+
+(set-face-attribute 'default nil :height 120)

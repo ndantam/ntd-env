@@ -79,6 +79,9 @@ function precmd {
         leela)
             local HOSTCOLOR=${LIGHT_PURPLE}
             ;;
+        farnsworth)
+            local HOSTCOLOR=${LIGHT_CYAN}
+            ;;
         *)
             local HOSTCOLOR=${GREEN}
             ;;
