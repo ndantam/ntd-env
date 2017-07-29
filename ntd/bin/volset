@@ -1,6 +1,20 @@
 #!/bin/sh
 
-SINK=0
+HOST=`hostname`
+
+case "$HOST" in
+    farnsworth)
+        CARD="alsa_card.pci-0000_00_1f.3"
+        SINK="alsa_output.pci-0000_00_1f.3.iec958-stereo"
+        PROFILE="output:iec958-stereo"
+        ;;
+    *)
+        echo "ERROR: unknown host '$HOST'"
+        exit
+    ;;
+esac
+
+pactl set-card-profile "$CARD" "$PROFILE"
 
 case $1 in
 up)
