@@ -1,0 +1,19 @@
+#!/bin/sh
+
+SINK=0
+
+case $1 in
+up)
+    pactl set-sink-volume "$SINK" '+10%'
+    ;;
+down)
+    pactl set-sink-volume "$SINK" '-10%'
+    ;;
+mute)
+    pactl set-sink-mute "$SINK" true
+    ;;
+unmute)
+    pactl set-sink-mute "$SINK" false
+    ;;
+
+esac
