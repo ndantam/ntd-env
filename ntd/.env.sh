@@ -31,9 +31,9 @@ if [ `uname` = Linux ]; then
     else
         alias ls="ls -F --color=auto"
     fi
-    # limit virtual memory to 1GB because linux sucks
+    # limit RSS to 4GB because linux sucks
     # (and I sometimes write memory leaks)
-    ulimit -m 1024000
+    ulimit -m 4096000
 
     # Explicitly resize serial consoles
     case "$TTY" in
