@@ -277,10 +277,9 @@ else
 fi
 
 xrandr_dock () {
-    xrandr --output LVDS1 --off
-    xrandr --output DP2 --auto \
-           --output DP3 --auto  --left-of DP2 \
-           --output HDMI1 --auto --right-of DP2
+    xrandr --output VGA-1 --off
+    xrandr --output DP-2 --auto --right-of LVDS-1 \
+           --output DP-3 --auto --right-of DP-2
 }
 
 if [ "$HOST" = "apollo"  ]; then
