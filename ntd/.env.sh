@@ -282,21 +282,24 @@ else
     alias make="make -j $((3*`nproc`/2))"
 fi
 
-xrandr_dock () {
+leela_dock () {
     xrandr --output VGA-1 --off
     xrandr --output DP-2 --auto --right-of LVDS-1 \
            --output DP-3 --auto --right-of DP-2
+
+    setxkbmap -option "ctrl:nocaps"
+    xmodmap ~/.xmodmap
 }
 
 if [ "$HOST" = "apollo"  ]; then
     alias make="make -j 12"
 fi
 
-xrandr_mobile () {
-    xrandr --output DP2 --off \
-           --output DP3 --off \
-           --output HDMI1 --off
-    xrandr --output LVDS1 --auto
+leela_undock () {
+    xrandr --output DP-2 --off \
+           --output DP-3 --off \
+           --output HDMI-1 --off
+    xrandr --output LVDS-1 --auto
 }
 
 ## GT
