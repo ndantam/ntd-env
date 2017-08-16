@@ -52,6 +52,12 @@ if [ `uname` = FreeBSD ]; then
     fi
 fi
 
+fix_pa_volume () {
+    for sink in ` pactl list sinks short | sed -e 's/[[:alnum:]]\+[[:blank:]]\+\([[:graph:]]\+\).*/\1/'`; do
+        pactl set-sink-volume $sink '100%'
+    done
+}
+
 ########
 ## X11 #
 ########
