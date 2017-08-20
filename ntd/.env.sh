@@ -31,9 +31,9 @@ if [ `uname` = Linux ]; then
     else
         alias ls="ls -F --color=auto"
     fi
-    # limit virtual memory to 1GB because linux sucks
+    # limit RSS to 4GB because linux sucks
     # (and I sometimes write memory leaks)
-    ulimit -m 1024000
+    ulimit -m 4096000
 
     # Explicitly resize serial consoles
     case "$TTY" in
@@ -51,6 +51,12 @@ if [ `uname` = FreeBSD ]; then
         alias ls="ls -FG"
     fi
 fi
+
+fix_pa_volume () {
+    for sink in ` pactl list sinks short | sed -e 's/[[:alnum:]]\+[[:blank:]]\+\([[:graph:]]\+\).*/\1/'`; do
+        pactl set-sink-volume $sink '100%'
+    done
+}
 
 ########
 ## X11 #
@@ -276,22 +282,24 @@ else
     alias make="make -j $((3*`nproc`/2))"
 fi
 
-xrandr_dock () {
-    xrandr --output LVDS1 --off
-    xrandr --output DP2 --auto \
-           --output DP3 --auto  --left-of DP2 \
-           --output HDMI1 --auto --right-of DP2
+leela_dock () {
+    xrandr --output VGA-1 --off
+    xrandr --output DP-2 --auto --right-of LVDS-1 \
+           --output DP-3 --auto --right-of DP-2
+
+    setxkbmap -option "ctrl:nocaps"
+    xmodmap ~/.xmodmap
 }
 
 if [ "$HOST" = "apollo"  ]; then
     alias make="make -j 12"
 fi
 
-xrandr_mobile () {
-    xrandr --output DP2 --off \
-           --output DP3 --off \
-           --output HDMI1 --off
-    xrandr --output LVDS1 --auto
+leela_undock () {
+    xrandr --output DP-2 --off \
+           --output DP-3 --off \
+           --output HDMI-1 --off
+    xrandr --output LVDS-1 --auto
 }
 
 ## GT
