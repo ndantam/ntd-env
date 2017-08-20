@@ -1,4 +1,4 @@
-
+[core]
         excludesfile = /home/ntd/.gitignore
         autocrlf = input
 
