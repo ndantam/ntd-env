@@ -22,7 +22,9 @@ alias rscp="rsync --recursive --partial --perms --progress --times --links"
 alias lp-duplex='lp -o sides=two-sided-long-edge'
 alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,ServerAliveInterval=60"
 
-alias npr="vlc -I dummy 'https://stream.houstonpublicmedia.org/news-aac-128.m3u'"
+#alias npr="vlc -I dummy 'https://stream.houstonpublicmedia.org/news-aac-128.m3u'"
+alias npr="vlc -I dummy 'http://livestream.cprnetwork.org/pls/live_newsinfo_aac.pls'"
+
 
 ## Linux specific
 if [ `uname` = Linux ]; then

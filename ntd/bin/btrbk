@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ## CONFIG ##
-BK_MOUNT_POINT=/mnt/tmp
+BK_MOUNT_POINT=/media/ntd/ntd_bk_btr1/
 BK_DIR=bk
 SRC_DIRS="bin archive class dat pic doc src .maildir pro"
 ## END CONFIG ##

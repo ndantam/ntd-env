@@ -18,8 +18,13 @@ keycode 37 = Escape
 ! Menu
 keycode 135 = Super_R
 
+! Alt_R
+clear Mod1
+keycode 108 = Super_R
+add Mod1 = Alt_L
+
 ! Delete
-keycode 119 = Escape
+keycode 119 = Delete
 
 ! Scroll_Lock
 keycode 78 = Caps_Lock
