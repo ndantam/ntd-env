@@ -244,7 +244,9 @@ if [ -d /usr/lib/ccache/ ] ; then
     #export CCACHE_COMPRESS="yes"
 
     export CCACHE_DIR="${HOME}/git/.ccache"
-    export CCACHE_HARDLINK="yes"
+    ## hardlinks break make, automake, etc. Do not hardlink!
+    #export CCACHE_HARDLINK="yes"
+    export CCACHE_NOHARDLINK="yes"
     export CCACHE_BASEDIR="${HOME}/git"
 
     alias debuild="debuild  --prepend-path=/usr/lib/ccache"
