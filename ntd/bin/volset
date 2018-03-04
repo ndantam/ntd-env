@@ -20,9 +20,15 @@ case "$HOST" in
         #SINK="alsa_output.usb-Creative_Technology_USB_Sound_Blaster_HD_00000SZ8-00.iec958-stereo"
         ;;
     leela)
+        ## Behringer UCA
         CARD="alsa_card.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00"
         SINK="alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00.analog-stereo"
         PROFILE="output:analog-stereo+input:analog-stereo"
+
+        ## Internal
+        #CARD="alsa_card.pci-0000_00_1b.0"
+        #SINK="alsa_output.pci-0000_00_1b.0.analog-stereo"
+        #PROFILE="output:analog-stereo"
         ;;
     *)
         echo "ERROR: unknown host '$HOST'"

@@ -11,6 +11,8 @@ fi
 exec google-chrome --disk-cache-dir="/run/user/$UID/cache/google-chrome"  \
                    --disk-cache-size=104857600 $@
 
+# exec google-chrome --disk-cache-dir="/tmp/$USER-cache/google-chrome"  \
+
 # --proxy-server="http=127.0.0.1:8118,ftp=" \
 # --proxy-bypass-list="127.0.0.1,test.neil.dantam.name,wikipedia.org,landsend.com,amazon.com" \
 

@@ -288,8 +288,9 @@ fi
 
 leela_dock () {
     xrandr --output VGA-1 --off
-    xrandr --output DP-2 --auto --right-of LVDS-1 \
-           --output DP-3 --auto --right-of DP-2
+    xrandr --output LVDS-1 --auto \
+           --output DP-3 --auto --right-of LVDS-1 \
+           --output DP-2 --auto --right-of DP-3
 
     setxkbmap -option "ctrl:nocaps"
     xmodmap ~/.xmodmap

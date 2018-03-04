@@ -291,6 +291,9 @@
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
+ '(package-selected-packages
+   (quote
+    (yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((Package . CHUNGA)
