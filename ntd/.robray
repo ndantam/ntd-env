@@ -45,6 +45,9 @@
   (setq *render-host-alist*
         '(("localhost" :jobs 2 :threads 2 :nice 1))))
 
+(when (string= "farnsworth" (machine-instance))
+  (setq *render-host-alist*
+        '(("localhost" :jobs 5 :threads 2 :nice 1))))
 
 ;;;; Local Variables:
 ;;;; mode: lisp
