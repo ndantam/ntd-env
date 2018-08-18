@@ -28,6 +28,8 @@
   (try-add-site "~/share/emacs/site-lisp")
   )
 
+(setq visible-bell 1)
+
 ;;;;;;;;;;;
 ;; LOADS ;;
 ;;;;;;;;;;;
@@ -286,17 +288,31 @@
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
- '(imaxima-fnt-size "LARGE" t)
+ '(imaxima-fnt-size "LARGE")
  '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
  '(package-selected-packages
    (quote
-    (yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
+    (pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
  '(safe-local-variable-values
    (quote
-    ((Package . CHUNGA)
+    ((Package . CLPYTHON\.MODULE\.MATH)
+     (package . rune-dom)
+     (Package . CXML)
+     (Syntax . Common-Lisp)
+     (readtable . runes)
+     (package . puri)
+     (Package . CLPYTHON\.MODULE\.THREAD)
+     (Package . CLPYTHON\.MODULE\._SOCKET)
+     (Package . CLPYTHON\.MODULE\.ITERTOOLS)
+     (readtable . py-user-readtable)
+     (package . clpython)
+     (Readtable . PY-USER-READTABLE)
+     (Package . CL-FAD)
+     (Package . CLPYTHON\.PARSER)
+     (Package . CHUNGA)
      (Package . CL-INTERPOL)
      (Package . CL-UNICODE)
      (Package . DRAKMA)
