@@ -11,9 +11,10 @@
 export EDITOR=vim
 export DEBEMAIL="ntd@gatech.edu"
 export DEBFULLNAME="Neil Dantam"
-export CDPATH="$CDPATH:$HOME:$HOME/src"
+export CDPATH="$CDPATH:$HOME:$HOME/git"
 export PATH=~/bin:$PATH
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
+export NPROC=`nproc`
 
 #############
 ## ALIASES ##
@@ -25,6 +26,15 @@ alias sshfs="sshfs -o readdir_ino,workaround=rename,reconnect,TCPKeepAlive=yes,S
 #alias npr="vlc -I dummy 'https://stream.houstonpublicmedia.org/news-aac-128.m3u'"
 alias npr="vlc -I dummy 'http://livestream.cprnetwork.org/pls/live_newsinfo_aac.pls'"
 
+
+if [ "$NPROC" -ge 2 ]; then
+    alias xz="xz --threads=0"
+fi
+
+if which lbzip2 > /dev/null; then
+    alias bzip2="lbzip2"
+    alias bunzip2="lbuzip2"
+fi
 
 ## Linux specific
 if [ `uname` = Linux ]; then
@@ -365,7 +375,9 @@ ros_src_file() {
 ros_env() {
 
     if test "x$ROS_ROOT" = x; then
-        if test -d /opt/ros/indigo; then
+        if test -d /opt/ros/lunar; then
+            export ROS_ROOT=/opt/ros/lunar
+        elif test -d /opt/ros/indigo; then
             export ROS_ROOT=/opt/ros/indigo
         else
             echo "No ROS_ROOT"
@@ -384,7 +396,11 @@ ros_env() {
         ROS_PACKAGE_PATH="$ROS_PACKAGE_PATH:$HOME/ros_ws/src"
     fi
 
+    if test -z "$ROS_DISTRO"; then
+        ROS_DISTRO=`basename "$ROS_ROOT"`
+    fi
     ST_FLAG=${ST_FLAG}"(ROS-$ROS_DISTRO)"
+    #ST_FLAG=${ST_FLAG}"(ROS)"
 }
 
 
