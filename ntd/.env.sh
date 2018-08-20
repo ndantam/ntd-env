@@ -29,12 +29,21 @@ alias npr="vlc -I dummy 'http://livestream.cprnetwork.org/pls/live_newsinfo_aac.
 
 if [ "$NPROC" -ge 2 ]; then
     alias xz="xz --threads=0"
+    alias txz="tar -I 'xz -T 0'"
+
+    if which lbzip2 > /dev/null; then
+        alias bzip2="lbzip2"
+        alias bunzip2="lbuzip2"
+        alias tbz2="tar -I 'lbzip2'"
+    else
+        alias tbz2="tar -j"
+    fi
+
+else
+    alias txz="tar -J"
+    alias tbz2="tar -j"
 fi
 
-if which lbzip2 > /dev/null; then
-    alias bzip2="lbzip2"
-    alias bunzip2="lbuzip2"
-fi
 
 ## Linux specific
 if [ `uname` = Linux ]; then
