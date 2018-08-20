@@ -1,0 +1,42 @@
+FROM debian:stretch
+
+# Add user
+RUN adduser ntd \
+      --gecos ntd \
+      --disabled-password  \
+    && \
+    adduser ntd sudo
+
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV NTD_DOCKER 2018-08-18_0
+
+RUN apt-get -y update
+
+# Packages
+RUN apt-get install -y \
+  zsh \
+  emacs24-lucid \
+  firefox-esr
+
+RUN apt-get install -y \
+  wget \
+  file \
+  curl \
+  bzip2 \
+  gzip \
+  xz-utils \
+  zstd
+
+RUN curl -L -o /tmp/firefox.dl 'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US'
+
+RUN cd /opt && tar xavf /tmp/firefox.dl
+
+RUN apt-get install -y pulseaudio
+RUN apt-get install -y pavucontrol
+
+
+RUN usermod -a -G audio,video ntd
+
+USER ntd
+ENV HOME /home/ntd

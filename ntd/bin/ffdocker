@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+if [ -z "$UID" ]; then
+    UID=`id -u`
+fi
+
+exec docker run -ti --rm \
+       -e DISPLAY=$DISPLAY \
+       --volume /tmp/.X11-unix:/tmp/.X11-unix \
+       --volume "/run/user/$UID/pulse:/run/user/$UID/pulse" \
+       -e "PULSE_SERVER=unix:/run/user/$UID/pulse/native" \
+       --shm-size 2G \
+       ntd:base /opt/firefox/firefox -no-remote
