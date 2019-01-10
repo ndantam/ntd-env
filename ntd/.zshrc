@@ -119,9 +119,12 @@ case $TERM in
         PS1="$(print '%?,%!%# ')"
         #PS1="$(print '%n@%m://%~ %# ')"
         ;;
-    xterm|linux|eterm-color*)
+    xterm-*|linux|eterm-color*)
         PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
         #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
+        ;;
+    tramp)
+        unsetopt zle && PS1='$ '
         ;;
     *)
         PS1="$(print '%!%# ')"
