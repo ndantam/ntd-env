@@ -386,6 +386,8 @@ ros_env() {
     if test "x$ROS_ROOT" = x; then
         if test -d /opt/ros/lunar; then
             export ROS_ROOT=/opt/ros/lunar
+        elif test -d /opt/ros/kinetic; then
+            export ROS_ROOT=/opt/ros/kinetic
         elif test -d /opt/ros/indigo; then
             export ROS_ROOT=/opt/ros/indigo
         else

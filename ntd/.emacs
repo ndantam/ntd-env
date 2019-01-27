@@ -303,6 +303,13 @@
      (Package . CXML)
      (Syntax . Common-Lisp)
      (readtable . runes)
+    (js2-mode pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
+ '(safe-local-variable-values
+   (quote
+    ((package . rune-dom)
+     (readtable . runes)
+     (Package . CXML)
+     (Syntax . Common-Lisp)
      (package . puri)
      (Package . CLPYTHON\.MODULE\.THREAD)
      (Package . CLPYTHON\.MODULE\._SOCKET)
