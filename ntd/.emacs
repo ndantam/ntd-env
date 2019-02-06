@@ -295,7 +295,7 @@
  '(js2-mirror-mode nil)
  '(package-selected-packages
    (quote
-    (pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
+    (js2-mode pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((Package . CLPYTHON\.MODULE\.MATH)
@@ -303,10 +303,7 @@
      (Package . CXML)
      (Syntax . Common-Lisp)
      (readtable . runes)
-    (js2-mode pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
- '(safe-local-variable-values
-   (quote
-    ((package . rune-dom)
+     (package . rune-dom)
      (readtable . runes)
      (Package . CXML)
      (Syntax . Common-Lisp)
@@ -336,8 +333,8 @@
      (Syntax . COMMON-LISP)
      (Package . CL-User)
      (Syntax . ANSI-Common-Lisp)
-     (Package . FSet)
-     (org-export-html-postamble))))
+     (Package . FSet))))
+ '(org-export-html-postamble)
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
 
