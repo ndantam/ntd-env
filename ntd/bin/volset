@@ -5,6 +5,9 @@ HOST=`hostname`
 CARD_LEELA="behringer"
 #CARD_LEELA="internal"
 
+#CARD_1X="behringer"
+CARD_1X="internal"
+
 case "$HOST" in
     farnsworth)
         ## Built In
@@ -35,6 +38,24 @@ case "$HOST" in
                 CARD="alsa_card.pci-0000_00_1b.0"
                 SINK="alsa_output.pci-0000_00_1b.0.analog-stereo"
                 PROFILE="output:analog-stereo"
+                ;;
+            *)
+                echo "ERROR: unknown card '$CARD_LEELA'"
+                exit
+                ;;
+        esac
+        ;;
+    1x)
+        case "$CARD_1X" in
+            behringer)
+                CARD="alsa_card.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00"
+                SINK="alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00.analog-stereo"
+                PROFILE="output:analog-stereo+input:analog-stereo"
+                ;;
+            internal)
+                CARD="alsa_card.pci-0000_00_1f.3"
+                SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
+                PROFILE="output:analog-stereo+input:analog-stereo"
                 ;;
             *)
                 echo "ERROR: unknown card '$CARD_LEELA'"
