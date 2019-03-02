@@ -56,7 +56,7 @@ function precmd {
     esac
 
 
-    if [ $HOST = "hesh" -o $HOST = "leela" ]; then
+    if [ $HOST = "1x" -o $HOST = "leela" ]; then
         local battery="`acpi -b | sed -e 's/.*\(..\)%.*/\1/'`"
         if [  "${battery}" -gt 60   ]; then
             local battery="[${LIGHT_GREEN}${battery}%%${NO_COLOR}]"
@@ -80,6 +80,9 @@ function precmd {
             ;;
         leela)
             local HOSTCOLOR=${LIGHT_PURPLE}
+            ;;
+        1x)
+            local HOSTCOLOR=${LIGHT_GRAY}
             ;;
         farnsworth)
             local HOSTCOLOR=${LIGHT_CYAN}
