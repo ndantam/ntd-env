@@ -1,4 +1,4 @@
-##  ~/.zshrc
+
 ## by Neil T. Dantam
 ##
 ## This work hereby released into the public domain
@@ -82,6 +82,9 @@ function precmd {
             local HOSTCOLOR=${LIGHT_PURPLE}
             ;;
         1x)
+            local HOSTCOLOR=${LIGHT_GRAY}
+            ;;
+        bender)
             local HOSTCOLOR=${LIGHT_GRAY}
             ;;
         farnsworth)

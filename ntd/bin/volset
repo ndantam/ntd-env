@@ -1,4 +1,4 @@
-#!/bin/sh
+
 
 HOST=`hostname`
 
@@ -7,6 +7,9 @@ CARD_LEELA="umc204hd"
 
 #CARD_1X="behringer"
 CARD_1X="internal"
+
+
+CARD_BENDER="umc204hd"
 
 case "$HOST" in
     farnsworth)
@@ -52,6 +55,31 @@ case "$HOST" in
                 ;;
         esac
         ;;
+    bender)
+        case "$CARD_BENDER" in
+            uca202)
+                CARD="alsa_card.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00"
+                SINK="alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00.analog-stereo"
+                PROFILE="output:analog-stereo+input:analog-stereo"
+                ;;
+
+            umc204hd)
+                CARD="alsa_card.usb-BEHRINGER_UMC204HD_192k-00"
+                SINK="alsa_output.usb-BEHRINGER_UMC204HD_192k-00.analog-surround-40"
+                PROFILE="analog-surround-40+input:analog-stereo"
+
+                ;;
+            internal)
+                CARD="alsa_card.pci-0000_00_1b.0"
+                SINK="alsa_output.pci-0000_00_1b.0.analog-stereo"
+                PROFILE="output:analog-stereo"
+                ;;
+            *)
+                echo "ERROR: unknown card '$CARD_BENDER'"
+                exit
+                ;;
+        esac
+        ;;
     1x)
         case "$CARD_1X" in
             behringer)
@@ -65,7 +93,7 @@ case "$HOST" in
                 PROFILE="output:analog-stereo+input:analog-stereo"
                 ;;
             *)
-                echo "ERROR: unknown card '$CARD_LEELA'"
+                echo "ERROR: unknown card '$CARD_1X'"
                 exit
                 ;;
         esac
