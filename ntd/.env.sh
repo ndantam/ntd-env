@@ -262,7 +262,8 @@ if [ -d /usr/lib/ccache/ ] ; then
     #export CCACHE_TEMPDIR="/tmp/ntd-cache/ccache/tmp"
     #export CCACHE_COMPRESS="yes"
 
-    export CCACHE_DIR="${HOME}/git/.ccache"
+    #export CCACHE_DIR="${HOME}/git/.ccache"
+    export CCACHE_DIR="${HOME}/.cache/ccache"
     ## hardlinks break make, automake, etc. Do not hardlink!
     #export CCACHE_HARDLINK="yes"
     export CCACHE_NOHARDLINK="yes"
