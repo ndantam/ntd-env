@@ -23,6 +23,10 @@
                               (command-execute 'save-buffer)
                               (command-execute 'TeX-command-master)))))
 
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+             (visual-line-mode 1)
+             (auto-fill-mode 0)))
 
 (require 'auctex-latexmk)
 (auctex-latexmk-setup)
