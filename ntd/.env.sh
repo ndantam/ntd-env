@@ -28,6 +28,9 @@ alias npr="vlc -I dummy 'http://livestream.cprnetwork.org/pls/live_newsinfo_aac.
 
 
 if [ "$NPROC" -ge 2 ]; then
+    # Use as many threads as CPU cores
+    export XZ_OPT="--threads=0"
+
     alias xz="xz --threads=0"
     alias txz="tar -I 'xz -T 0'"
 
@@ -43,7 +46,6 @@ else
     alias txz="tar -J"
     alias tbz2="tar -j"
 fi
-
 
 ## Linux specific
 if [ `uname` = Linux ]; then
