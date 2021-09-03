@@ -7,9 +7,13 @@ if test x = "x$UID"; then
     UID=`id -u`
 fi
 
+#exec google-chrome --proxy-pac-url="file:///home/ntd/git/ntd-env/proxy.pac"
+exec google-chrome --proxy-pac-url='data:application/x-javascript-config;base64,'$(base64 -w0 "$HOME/git/ntd-env/proxy.js")
 
-exec google-chrome --disk-cache-dir="/run/user/$UID/cache/google-chrome"  \
-                   --disk-cache-size=104857600 $@
+#exec google-chrome --proxy-server="socks://localhost:1080"
+
+# exec google-chrome --disk-cache-dir="/run/user/$UID/cache/google-chrome"  \
+#                    --disk-cache-size=104857600 $@
 
 # exec google-chrome --disk-cache-dir="/tmp/$USER-cache/google-chrome"  \
 
