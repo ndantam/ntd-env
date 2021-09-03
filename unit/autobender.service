@@ -1,0 +1,10 @@
+[Unit]
+Description=Keeps a tunnel to 'bender' open
+After=network.target
+
+[Service]
+User=ntd
+ExecStart=/usr/bin/autossh -NT autobender
+
+[Install]
+WantedBy=multi-user.target
