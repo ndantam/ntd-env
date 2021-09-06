@@ -4,6 +4,8 @@ After=network.target
 
 [Service]
 User=ntd
+Restart=always
+RestartSec=15
 ExecStart=/usr/bin/autossh -NT autobender
 
 [Install]
