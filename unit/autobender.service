@@ -11,7 +11,7 @@ ExecStartPre=/bin/sh -c \
     "while [ ! -S /home/ntd/.ssh/master-ndantam@jumpbox.mines.edu:22 ];  \
         do sleep 1; \
     done"
-ExecStart=/usr/bin/ssh -NT autobender
+ExecStart=/usr/bin/ssh -T autobender "ssh -NT autofarnsworth"
 
 [Install]
 WantedBy=multi-user.target
