@@ -1,0 +1,12 @@
+[Unit]
+Description=Keeps a tunnel to 'jumpbox' open
+After=network.target
+
+[Service]
+User=ntd
+Restart=always
+RestartSec=15
+ExecStart=/usr/bin/autossh -NT autojump
+
+[Install]
+WantedBy=multi-user.target
