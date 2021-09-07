@@ -6,7 +6,7 @@ After=network.target
 User=ntd
 Restart=always
 RestartSec=15
-ExecStart=/usr/bin/autossh -NT autojump
+ExecStart=/usr/bin/ssh -NT autojump
 
 [Install]
 WantedBy=multi-user.target
