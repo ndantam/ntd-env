@@ -22,11 +22,16 @@
 (defun my-recompile ()
   (interactive)
   (save-buffer)
-  (command-execute 'compile))
+  (command-execute 'recompile))
+
 
 (global-set-key [f1] 'my-recompile)
-
 (global-set-key [f2] 'compile)
+;(global-set-key (kbd "C-c C")  'compile)
+;(global-set-key (kbd "C-c k")  'my-recompile)
+
+
+;;(global-set-key [f1] 'my-recompile)
 
 (defun my-recompile-hook ()
   (local-set-key (kbd "C-c C-c") 'my-recompile))
@@ -41,7 +46,7 @@
 ;; commenting
 (global-set-key "\C-cX" 'comment-region)
 (global-set-key "\C-cU" 'uncomment-region)
-(global-set-key "\C-cL" 'longlines-mode)
+;(global-set-key "\C-cL" 'longlines-mode)
 
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
@@ -59,12 +64,13 @@
 
 ;; toggle meubar
 (global-set-key "\C-cM" (lambda () (interactive)
-                           (if menu-bar-mode
-                               (menu-bar-mode -1)
-                             (menu-bar-mode 1))))
+                          (if menu-bar-mode
+                              (menu-bar-mode -1)
+                            (menu-bar-mode 1))))
 ;; Window switching
 (global-set-key "\C-co" 'other-window)
-(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
+(global-set-key "\C-cO" (lambda () (interactive) (other-window -1)))
+;(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
 
 ;; These seem unhelpful
 ;;(global-set-key "\C-ch" 'windmove-left)
@@ -72,7 +78,13 @@
 ;;(global-set-key "\C-ck" 'windmove-up)
 ;;(global-set-key "\C-cj" 'windmove-down)
 
+;; Tab Switching
+(global-set-key "\C-c to" 'tab-next)
+(global-set-key "\C-ctO" (lambda () (interactive) (tab-next -1)))
+
+;; Frame Switching
 (global-set-key "\C-ci" 'other-frame)
+(global-set-key "\C-cI" (lambda () (interactive) (other-frame -1)))
 
 ;; Encryption
 (global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)

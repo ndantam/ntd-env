@@ -51,7 +51,7 @@
   (loadit "erc")
   (loadit "font")
   (loadit "fortran")
-  (loadit "greek")
+  ;;(loadit "greek")
   (loadit "magit")
   (loadit "org")
   (loadit "keys")
@@ -123,15 +123,16 @@
 ;;;;;;;;;;;;
 ;;  js2   ;;
 ;;;;;;;;;;;;
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.jixrc$" . js2-mode))
 
-(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+;; (autoload 'js2-mode "js2" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-(add-hook 'js2-mode-hook 'js2-custom-setup)
-(defun js2-custom-setup ()
-  (moz-minor-mode 1))
+;(add-to-list 'auto-mode-alist '("\\.jixrc$" . js2-mode))
+;(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+;; (add-hook 'js2-mode-hook 'js2-custom-setup)
+;; (defun js2-custom-setup ()
+;;   (moz-minor-mode 1))
 
 ;;;;;;;;;;;
 ;;  m3   ;;
@@ -288,14 +289,15 @@
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
- '(imaxima-fnt-size "LARGE")
+ '(imaxima-fnt-size "LARGE" t)
  '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
+ '(org-export-html-postamble nil)
  '(package-selected-packages
    (quote
-    (js2-mode pov-mode yaml-mode markdown-mode magit-svn graphviz-dot-mode dockerfile-mode auctex-latexmk)))
+    (markdown-mode+ tuareg auctex magit js-comint htmlize js2-mode yaml-mode markdown-mode graphviz-dot-mode dockerfile-mode auctex-latexmk)))
  '(safe-local-variable-values
    (quote
     ((Package . CLPYTHON\.MODULE\.MATH)
@@ -334,7 +336,6 @@
      (Package . CL-User)
      (Syntax . ANSI-Common-Lisp)
      (Package . FSet))))
- '(org-export-html-postamble)
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
 

@@ -13,7 +13,7 @@
 (eval-after-load 'magit
   '(progn
      ;;(require 'magit-key-mode)
-     (require 'magit-svn)
-     (add-hook 'magit-mode-hook 'turn-on-magit-svn)
+     ;(require 'magit-svn)
+     ;(add-hook 'magit-mode-hook 'turn-on-magit-svn)
      (add-hook 'magit-mode-hook 'magit-load-config-extensions)
   ))

@@ -9,10 +9,10 @@
 ;;;;;;;;;;;;;
 ;; AUCTeX  ;;
 ;;;;;;;;;;;;;
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
+;(setq TeX-auto-save t)
+;(setq TeX-parse-self t)
+;(setq-default TeX-master nil)
+;(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
 ;; make "C-c C-c" save buffer first
 (add-hook 'LaTeX-mode-hook
@@ -25,8 +25,9 @@
 
 (add-hook 'LaTeX-mode-hook
           (lambda ()
-             (visual-line-mode 1)
-             (auto-fill-mode 0)))
+             ;(visual-line-mode nil)
+             (auto-fill-mode 1)))
+
 
 (require 'auctex-latexmk)
 (auctex-latexmk-setup)

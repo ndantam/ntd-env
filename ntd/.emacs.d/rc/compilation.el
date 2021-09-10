@@ -9,27 +9,30 @@
 ;;  Compilation  ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(setq my-compile-command "make -kj2")
+(setq my-compile-command
+      (concat "make -kj"
+              (substring (shell-command-to-string "nproc")
+                         0 -1)))
 
-(defun get-closest-makefile-dir ()
-  (let ((root (expand-file-name "/")))
-    (loop
-     for d = ".." then (concat "../" d)
-     if (file-exists-p (expand-file-name "Makefile" d))
-     return d
-     if (equal (expand-file-name d) root)
-     return nil)))
-
+(defun get-closest-makefile-dir (d)
+  (let ((d (expand-file-name d)))
+    (cond
+     ((file-exists-p (expand-file-name "Makefile" d))
+      d)
+     ((equal d "/")
+      nil)
+     (t
+      (get-closest-makefile-dir (concat d "/.."))))))
 
 (defun closest-makefile-hook ()
   (set (make-local-variable 'compile-command)
-       (if (file-exists-p (expand-file-name "Makefile" default-directory))
-           my-compile-command
-         (format "cd %s && %s" (get-closest-makefile-dir)
-                 my-compile-command))))
+       (format "%s -C %s"
+               my-compile-command
+               (get-closest-makefile-dir default-directory))))
 
 (add-hook 'c-mode-hook 'closest-makefile-hook)
 (add-hook 'c++-mode-hook 'closest-makefile-hook)
 (add-hook 'f90-mode-hook 'closest-makefile-hook)
 (add-hook 'f77-mode-hook 'closest-makefile-hook)
 (add-hook 'org-mode-hook 'closest-makefile-hook)
+(add-hook 'markdown-mode-hook 'closest-makefile-hook)
