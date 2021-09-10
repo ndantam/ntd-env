@@ -5,7 +5,14 @@ function FindProxyForURL (url, host) {
         '.mines.edu',
         // Proxy publication sites to get Mines access
         'scholar.google.com',
-        'ieeexplore.ieee.org'
+        'ieeexplore.ieee.org',
+        'sciencedirect.com',
+        'onlinelibrary.wiley.com',
+        'dl.acm.org',
+        'journals.sagepub.com',
+        'link.springer.com',
+        'science.org',
+        'nature.com'
     ];
 
     if (domains.find( domain => dnsDomainIs(host, domain))) {
