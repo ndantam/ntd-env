@@ -10,3 +10,5 @@
         email = ndantam@mines.edu
 #[push]
 	#default = simple
+[credential]
+	helper = store
