@@ -251,6 +251,23 @@ transtheoran() {
     avconv -i $1 -pass 2 -codec:v libtheora -b:v ${3}k -an  -y $2
 }
 
+
+# cloudbk() {
+#     if [ "$HOST" != farnsworth ] ; then
+#         >&2 echo "Refusing to copy from current host"
+#         return 1;
+#     fi
+#     rclone sync --progress --dry-run \
+#            "$HOME/pro" \
+#            --filter='- teaching/pl/video/*/out/**' \
+#            --filter='- teaching/pl/video/*/rec/**' \
+#            --filter='- teaching/pl/video/*/clip/**' \
+#            --filter='+ teaching/pl/video/basics/**' \
+#            --filter='- *' \
+#            onedrive:pro
+# }
+
+
 #################
 ## Compilation ##
 #################
