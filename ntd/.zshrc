@@ -1,4 +1,3 @@
-
 ## by Neil T. Dantam
 ##
 ## This work hereby released into the public domain
@@ -126,7 +125,13 @@ case $TERM in
         #PS1="$(print '%n@%m://%~ %# ')"
         ;;
     xterm-*|linux|eterm-color*)
-        PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
+        # Number
+        # print history number
+        #PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%},%{\e[1;32m%}%!%#%{\e[0m%} ')"
+
+        # omit history number
+        PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%} %{\e[1;32m%}%#%{\e[0m%} ')"
+
         #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
         ;;
     tramp)
