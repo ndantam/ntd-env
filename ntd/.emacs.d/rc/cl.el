@@ -47,7 +47,7 @@
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-use-autodoc-mode t)
      (slime-setup '(slime-fancy slime-asdf))
-     (global-set-key "\C-cs" 'slime-selector)
+     (global-set-key "\C-cls" 'slime-selector)
 
      (let ((path (concatenate 'string
                               temporary-file-directory (user-login-name) "-cache/slime/")))

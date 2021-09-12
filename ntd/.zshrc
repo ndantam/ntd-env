@@ -142,8 +142,12 @@ case $TERM in
         ;;
 esac
 
-
-
+## Tell emacs where we are
+if [ -n "$INSIDE_EMACS" ]; then
+    chpwd() {
+        print -P "\032/$(pwd)"
+    }
+fi
 
 if [ `hostname` = vasilia -o `hostname` = kelden ] ; then
     export HUMROOT=~/mnt/daneel-src/humanoids/src/common

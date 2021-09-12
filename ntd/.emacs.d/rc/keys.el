@@ -79,8 +79,8 @@
 ;;(global-set-key "\C-cj" 'windmove-down)
 
 ;; Tab Switching
-(global-set-key "\C-c to" 'tab-next)
-(global-set-key "\C-ctO" (lambda () (interactive) (tab-next -1)))
+;(global-set-key "\C-cu" 'tab-next)
+;(global-set-key "\C-cU" (lambda () (interactive) (tab-next -1)))
 
 ;; Frame Switching
 (global-set-key "\C-ci" 'other-frame)
@@ -114,3 +114,8 @@
 
 ;; reload file
 (global-set-key [f5] 'revert-buffer)
+
+
+;; Shells
+(global-set-key "\C-css" #'ntd-term-zsh)
+(global-set-key "\C-csr" #'ntd-term-ssh)
