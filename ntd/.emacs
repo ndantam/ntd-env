@@ -43,6 +43,7 @@
   (loadit "viper")
   (loadit "defs")
 
+  (loadit "docview")
   (loadit "auctex")
   ;(loadit "bbdb")
   (loadit "c")
