@@ -117,5 +117,5 @@
 
 
 ;; Shells
-(global-set-key "\C-css" #'ntd-term-zsh)
-(global-set-key "\C-csr" #'ntd-term-ssh)
+(global-set-key "\C-css" #'ntd/term-zsh)
+(global-set-key "\C-csr" #'ntd/term-ssh)

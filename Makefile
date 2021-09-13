@@ -11,7 +11,7 @@ list:
 
 $(HOME)/%: ntd/%
 	@mkdir -p `dirname $@`
-	@if [ ! -L $@ ] ; then ln -s `pwd`/$< $@; fi
+	@if [ ! -L $@ ] ; then ln -vs `pwd`/$< $@; fi
 
 clean:
 	rm -f $(HOME_FILES)

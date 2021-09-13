@@ -17,4 +17,7 @@
 (when (boundp 'viper-emacs-state-mode-list)
   (mapc (lambda (mode)
           (add-to-list 'viper-emacs-state-mode-list mode))
-        '(magit-key-mode slime-connection-list-mode)))
+        '(magit-key-mode
+          slime-connection-list-mode
+          term-mode
+          term-line-mode)))

@@ -11,7 +11,7 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
+;; (package-initialize)
 
 (require 'cl)
 
@@ -54,6 +54,7 @@
   ;;(loadit "greek")
   (loadit "magit")
   (loadit "org")
+  (loadit "term")
   (loadit "keys")
   (loadit "pgp")
   (loadit "whitespace")
@@ -470,4 +471,5 @@
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
 ;;;;;;;;;;;;;;;
-(eshell)
+;; (eshell)
+;; (ntd-term-zsh) ; breaks when run as a daemon
