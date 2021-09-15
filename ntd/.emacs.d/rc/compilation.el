@@ -9,12 +9,10 @@
 ;;  Compilation  ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(setq my-compile-command
-      (concat "make -kj"
-              (substring (shell-command-to-string "nproc")
-                         0 -1)))
 
-(defun get-closest-makefile-dir (d)
+
+
+(defun ntd/get-closest-makefile-dir (d)
   (let ((d (expand-file-name d)))
     (cond
      ((file-exists-p (expand-file-name "Makefile" d))
@@ -22,17 +20,48 @@
      ((equal d "/")
       nil)
      (t
-      (get-closest-makefile-dir (concat d "/.."))))))
+      (ntd/get-closest-makefile-dir (concat d "/.."))))))
 
-(defun closest-makefile-hook ()
-  (set (make-local-variable 'compile-command)
-       (format "%s -C %s"
-               my-compile-command
-               (get-closest-makefile-dir default-directory))))
+(defvar ntd/base-compile-command
+  (format "make -kj%d"
+          (let ((n (string-to-number (shell-command-to-string "nproc"))))
+            (if (<= n 4)
+                (* n 2)
+              (/ (* 3 n )
+                 2)))))
 
-(add-hook 'c-mode-hook 'closest-makefile-hook)
-(add-hook 'c++-mode-hook 'closest-makefile-hook)
-(add-hook 'f90-mode-hook 'closest-makefile-hook)
-(add-hook 'f77-mode-hook 'closest-makefile-hook)
-(add-hook 'org-mode-hook 'closest-makefile-hook)
-(add-hook 'markdown-mode-hook 'closest-makefile-hook)
+(defvar ntd/compile-command nil)
+(defun ntd/compile-command ()
+  (or ntd/compile-command
+      (let ((dir (ntd/get-closest-makefile-dir default-directory)))
+        (if dir
+            (format "%s -C %s" ntd/base-compile-command dir)
+          ntd/base-compile-command))))
+
+(defun ntd/closest-makefile-hook ()
+  (let ((cmd (ntd/compile-command)))
+    (set (make-local-variable 'compile-command)
+         cmd)
+    (set (make-local-variable 'ntd/compile-command)
+         cmd)))
+
+(defun ntd/compile (cmd)
+  (interactive (list (read-from-minibuffer "Compile Command: "
+                                           (ntd/compile-command))))
+  (when buffer-file-name
+    (save-buffer)
+    (set (make-local-variable 'ntd/compile-command) cmd))
+  (compile cmd))
+
+(defun ntd/recompile ()
+  (interactive)
+  (when buffer-file-name
+    (save-buffer))
+  (command-execute 'recompile))
+
+(add-hook 'c-mode-hook 'ntd/closest-makefile-hook)
+(add-hook 'c++-mode-hook 'ntd/closest-makefile-hook)
+(add-hook 'f90-mode-hook 'ntd/closest-makefile-hook)
+(add-hook 'f77-mode-hook 'ntd/closest-makefile-hook)
+(add-hook 'org-mode-hook 'ntd/closest-makefile-hook)
+(add-hook 'markdown-mode-hook 'ntd/closest-makefile-hook)

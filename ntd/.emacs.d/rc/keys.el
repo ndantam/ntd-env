@@ -18,15 +18,11 @@
                             (switch-to-buffer buf))
                           (woman)))
 
-;; quick compile
-(defun my-recompile ()
-  (interactive)
-  (save-buffer)
-  (command-execute 'recompile))
 
 
-(global-set-key [f1] 'my-recompile)
-(global-set-key [f2] 'compile)
+
+(global-set-key [f1] 'ntd/recompile)
+(global-set-key [f2] 'ntd/compile)
 ;(global-set-key (kbd "C-c C")  'compile)
 ;(global-set-key (kbd "C-c k")  'my-recompile)
 

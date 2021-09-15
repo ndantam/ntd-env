@@ -24,7 +24,7 @@
   (kill-process))
 
 (defun ntd/term-setup ()
-  (term-line-mode)
+  (term-char-mode)
   (local-set-key (kbd "C-c <C-backspace>") 'ntd/term-kill))
 
 
