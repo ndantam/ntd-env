@@ -4,6 +4,9 @@
 ## NO WARRANTY EXPRESSED OR IMPLIED
 
 
+# Be dumb for tramp
+[[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ ' && return
+
 ## Print the fancy status line
 if [ -f /chroot-name ]; then
     ST_FLAG="[`cat /chroot-name`]"
@@ -133,9 +136,6 @@ case $TERM in
         PS1="$(print '%(?..%{\e[0;31m%})%?%{\e[0m%} %{\e[1;32m%}%#%{\e[0m%} ')"
 
         #PS1="$(print '%{\e[1;32m%}%!%#%{\e[0m%} ')"
-        ;;
-    tramp)
-        unsetopt zle && PS1='$ '
         ;;
     *)
         PS1="$(print '%!%# ')"

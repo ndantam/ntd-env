@@ -56,11 +56,12 @@
   (loadit "magit")
   (loadit "org")
   (loadit "term")
+  (loadit "tramp")
   (loadit "keys")
   (loadit "pgp")
   (loadit "whitespace")
 
-  (loadit "el-get")
+  ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
 
   (try-load "~/.quicklisp" "slime-helper")
@@ -92,9 +93,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-(setq vc-handled-backends '(Git SVN))
-
-
+(setq vc-handled-backends '(Git))
 (setq vc-follow-symlinks t)
 
 
