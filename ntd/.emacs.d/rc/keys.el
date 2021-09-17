@@ -113,5 +113,20 @@
 
 
 ;; Shells
-(global-set-key "\C-css" #'ntd/term-zsh)
-(global-set-key "\C-csr" #'ntd/term-ssh)
+(global-set-key "\C-cs" #'ntd/term-zsh)
+(global-set-key "\C-cr" #'ntd/term-ssh)
+
+
+;; Lisp
+(eval-after-load "slime"
+  '(progn
+     (global-set-key "\C-cl" 'slime-selector)
+
+     (global-set-key "\C-cLs" 'slime)
+     (global-set-key "\C-cLq" 'slime-quit-lisp)
+
+     (global-set-key "\C-cLc" 'local-slime-connect)
+     (global-set-key "\C-cLl" 'slime-load-system)
+     (global-set-key "\C-cLr" 'slime-reload-system)
+
+     (global-set-key "\C-cLd" 'slime-disconnect)))

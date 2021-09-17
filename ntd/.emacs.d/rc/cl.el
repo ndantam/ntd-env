@@ -14,15 +14,11 @@
 (add-to-list 'auto-mode-alist '("\\.asd$" . lisp-mode))
 
 
-(global-set-key "\C-cll" 'slime-load-system)
-(global-set-key "\C-clr" 'slime-reload-system)
 
 (defun local-slime-connect ()
   (interactive)
   (slime-connect "localhost" 4005))
 
-(global-set-key "\C-clc" 'local-slime-connect)
-(global-set-key "\C-cld" 'slime-disconnect)
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -47,7 +43,6 @@
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-use-autodoc-mode t)
      (slime-setup '(slime-fancy slime-asdf))
-     (global-set-key "\C-cls" 'slime-selector)
 
      (let ((path (concatenate 'string
                               temporary-file-directory (user-login-name) "-cache/slime/")))
@@ -67,3 +62,10 @@
         (ecl ("/usr/bin/ecl"))))
 
 (setq slime-default-lisp 'sbcl)
+
+
+;; (defun auto-slime-hook ()
+;;   (unless (slime-connected-p)
+;;     (save-excursion (slime))))
+
+;; (add-hook 'slime-mode-hook 'auto-slime-hook)
