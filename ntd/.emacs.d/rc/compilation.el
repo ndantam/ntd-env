@@ -16,7 +16,10 @@
   (let ((d (expand-file-name d)))
     (cond
      ((file-exists-p (expand-file-name "Makefile" d))
-      d)
+      (let ((r (file-remote-p d)))
+        (if r
+          (subseq d (length r)) ; strip remote prefix
+          d)))
      ((equal d "/")
       nil)
      (t
