@@ -49,7 +49,7 @@
        (make-directory path t)
        (setq slime-compile-file-options `(:fasl-directory ,path)))))
 
-(when-host ("daneel" "leela")
+(when (file-exists-p "/usr/share/doc/hyperspec/")
   (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
 (setq slime-lisp-implementations
