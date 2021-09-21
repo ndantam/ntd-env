@@ -15,6 +15,12 @@ function FindProxyForURL (url, host) {
         'nature.com'
     ];
 
+    // No proxy on Mines IP addresses
+    // Mines subnets from AS36704 (https://bgpview.io/asn/36704#prefixes-v4)
+    if (isInNet(myIpAddress(), "138.67.0.0", "255.255.0.0")) {
+        return 'DIRECT';
+    }
+
     if (domains.find( domain => dnsDomainIs(host, domain))) {
         return proxy;
     }
