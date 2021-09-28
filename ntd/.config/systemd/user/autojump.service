@@ -1,0 +1,12 @@
+[Unit]
+Description=SSH tunnel to 'jumpbox'
+After=network.service
+After=network-online.target
+
+[Service]
+Restart=on-failure
+RestartSec=15
+ExecStart=/usr/bin/ssh -NT autojump
+
+[Install]
+WantedBy=default.target

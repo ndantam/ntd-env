@@ -30,6 +30,21 @@
 
 (setq visible-bell 1)
 
+;;;;;;;;;;;;;;
+;;  Daemon  ;;
+;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist
+             '("\\.service$" . conf-mode) auto-mode-alist)
+
+(defvar ntd/kill-emacs-hooks nil)
+
+(defun ntd/kill-emacs ()
+  ;; Systemd sends sigterm.  Some race exists when we are already
+  ;; killing emacs.
+  (save-some-buffers t)
+  (mapc #'funcall ntd/kill-emacs-hooks)
+  (kill-emacs))
+
 ;;;;;;;;;;;
 ;; LOADS ;;
 ;;;;;;;;;;;
@@ -160,6 +175,9 @@
              (cons (concat "\\." (regexp-opt '( "xml" "xsd"  "rng" "xslt" "svg" "rss") t) "\\'")
                    'nxml-mode))
 (push '("\\.mxsl$" . nxml-mode) auto-mode-alist )
+
+
+
 
 ;;;;;;;;;;;
 ;;  ADA  ;;

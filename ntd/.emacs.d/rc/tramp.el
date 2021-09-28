@@ -8,3 +8,7 @@
 (setq tramp-default-method "rsync"
       tramp-terminal-type "tramp"
       tramp-use-ssh-controlmaster-options nil)
+
+(eval-after-load 'tramp
+  '(add-to-list 'ntd/kill-emacs-hooks
+                #'tramp-cleanup-all-connections))

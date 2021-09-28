@@ -2,6 +2,11 @@
 
 #### Create a new emacs frame on $DISPLAY, setting xauthority properly
 
+# Ensure emacs is running
+if [ $(systemctl --user is-active emacs.service) != active ]; then
+   systemctl --user start emacs.service
+fi
+
 ### Merge the xauth entry for $DISPLAY into emacs's xauthority
 # scrub out localhost from display, or xauth doesn't list it
 SCRUBBED_DISPLAY=`echo $DISPLAY | sed -e 's/^localhost:/:/'`

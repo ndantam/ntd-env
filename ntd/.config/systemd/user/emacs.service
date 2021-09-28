@@ -1,0 +1,21 @@
+## If your Emacs is installed in a non-standard location, you may need
+## to copy this file to a standard directory, eg ~/.config/systemd/user/ .
+## If you install this file by hand, change the "Exec" lines below
+## to use absolute file names for the executables.
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=notify
+Environment=XAUTHORITY=/tmp/xauth.emacs:%u@%H
+Restart=on-failure
+ExecStart=emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(ntd/kill-emacs)"
+# Why does systemd need to signal? Send something useless.
+KillSignal=SIGCONT
+TimeoutStopSec=5
+TimeoutStopFailureMode=kill
+
+[Install]
+WantedBy=default.target

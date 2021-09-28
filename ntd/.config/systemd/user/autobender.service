@@ -1,0 +1,15 @@
+[Unit]
+Description=SSH  tunnel to 'bender'
+Requires=autojump.service
+
+[Service]
+Restart=on-failure
+RestartSec=30
+ExecStartPre=/bin/sh -c \
+    "while ! ssh -O check jumpbox.mines.edu;  \
+        do sleep 0.1; \
+    done"
+ExecStart=/usr/bin/ssh -T autobender "ssh -NT autofarnsworth"
+
+[Install]
+WantedBy=default.target

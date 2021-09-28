@@ -123,10 +123,13 @@ fi
 
 start_emacs () {
     ## Emacs, no slave to X sessions, gets its own xauthority
-    XAUTHORITY=/tmp/xauth.emacs:$USER@$HOST emacs --daemon
+    # XAUTHORITY=/tmp/xauth.emacs:$USER@$HOST emacs --daemon
+    systemctl --user start emacs.service
 }
 
-
+stop_emacs () {
+    systemctl --user stop emacs.service
+}
 
 pdfcat() {
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
