@@ -78,8 +78,6 @@
 
   ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
-
-  (try-load "~/.quicklisp" "slime-helper")
   )
 
 
