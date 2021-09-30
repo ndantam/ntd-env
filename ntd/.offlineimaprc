@@ -1,68 +1,38 @@
 [general]
-accounts = gatech, gmail-mechsoph, gmail-ntd
-pythonfile=~/.offlineimap.py
-#ui = TTY.TTYUI
+accounts = mines
+#ui = ttyui
 ui =  Blinkenlights
-maxsyncaccounts = 6
+# maxsyncaccounts = 6
 
+[Account mines]
+localrepository = mines-maildir
+remoterepository = mines-imap
+autorefresh = 5
+quick = 288
 
-[Account gatech]
-localrepository = dot-maildir
-remoterepository = gatech-remote
-autorefresh = 3
-quick = 40
-maxconnections = 3
-
-[Repository dot-maildir]
+[Repository mines-maildir]
 type = Maildir
-localfolders = ~/.maildir
-nametrans = makelocaltrans('gt')
+localfolders = ~/.mines-maildir
+folderfilter = lambda folder: folder in ['INBOX']
 
-[Repository gatech-remote]
+[Repository mines-imap]
 type = IMAP
+remotehost = outlook.office365.com
 ssl = yes
-#holdconnectionopen = yes
-remotehost = mail.gatech.edu
-remoteuser = ndantam3
-nametrans = makeimaptrans('gt')
-folderfilter = lambda foldername: foldername in [ 'INBOX' ]
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+remoteport = 993
+folderfilter = lambda folder: folder in ['INBOX']
 
+# Misc
+# usecompression = yes # not supported by MS
 
-[Account gmail-mechsoph]
-localrepository = dot-maildir-gmail-mechsoph
-remoterepository = remote-gmail-mechsoph
-autorefresh = 10
-quick = 6
+# Idle
+maxconnections = 2
+keepalive = 60
+holdconnectionopen = yes
+# Does not work.  Why doesn't IDLE work?
+idlefolders = ['INBOX']
 
-[Repository dot-maildir-gmail-mechsoph]
-type = Maildir
-localfolders = ~/.maildir
-nametrans = makelocaltrans('mechsoph@gmail')
-
-[Repository remote-gmail-mechsoph]
-type = Gmail
-#holdconnectionopen = yes
-remoteuser = mechsoph@gmail.com
-remotepassfile = ~/.password-mechsoph@gmail.com
-nametrans = makeimaptrans('mechsoph@gmail')
-folderfilter = lambda foldername: foldername in [ 'INBOX' ]
-
-
-[Account gmail-ntd]
-localrepository = dot-maildir-gmail-ntd
-remoterepository = remote-gmail-ntd
-autorefresh = 10
-quick = 6
-
-[Repository dot-maildir-gmail-ntd]
-type = Maildir
-localfolders = ~/.maildir
-nametrans = makelocaltrans('ntd@gmail')
-
-[Repository remote-gmail-ntd]
-type = Gmail
-#holdconnectionopen = yes
-remoteuser = neil.dantam@gmail.com
-remotepassfile = ~/.password-neil.dantam@gmail.com
-nametrans = makeimaptrans('ntd@gmail')
-folderfilter = lambda foldername: foldername in [ 'INBOX' ]
+# Don't break stuff
+readonly = true
+realdelete = no
