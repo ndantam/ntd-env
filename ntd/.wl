@@ -79,6 +79,13 @@
       wl-default-spec "..")
 
 
+;; Auto-insert Signature
+(add-hook 'mime-edit-translate-hook 'mime-edit-insert-signature)
+(setq signature-file-name "~/.signature"
+      signature-insert-at-eof t
+      signature-delete-blank-lines-at-eof t)
+
+
 (setq wl-message-ignored-field-list '("^.*:")
       ;; ..but these five
       wl-message-visible-field-list '("^From:"
