@@ -1,0 +1,12 @@
+# mode:-*-conf-*-
+
+# IMAP
+/flag:unread/%INBOX "new"
+/flag:important/%INBOX "starred"
+/since:lastweek/%INBOX "recent"
+
+%INBOX "inbox"
+
+# Local
+..trash "trash"
+..drafts "drafts"

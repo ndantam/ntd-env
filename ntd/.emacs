@@ -75,6 +75,7 @@
   (loadit "keys")
   (loadit "pgp")
   (loadit "whitespace")
+  (loadit "mail")
 
   ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
@@ -213,30 +214,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;
-;;  Wanderlust  ;;
-;;;;;;;;;;;;;;;;;;
-
-(defun ntd-email-addr (a b c)
-  (concatenate 'string a "@" b "." c))
-
-(setq user-mail-address (ntd-email-addr "ntd" "gatech" "edu"))
-(setq wl-user-mail-address-list (list user-mail-address))
-
-(autoload 'wl "wl" "Wanderlust" t)
-(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-
-(defun my-wl-summary-sort-hook ()
-  (wl-summary-rescan "date"))
-
-(add-hook 'wl-summary-prepared-hook 'my-wl-summary-sort-hook)
-
-
-
-
-;; SEE ALSO: ~/.wl
-
 ;;;;;;;;;;;;
 ;;  HTML  ;;
 ;;;;;;;;;;;;
@@ -282,8 +259,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-output-view-style
-   (quote
-    (("^dvi$"
+   '(("^dvi$"
       ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
       "%(o?)dvips -t landscape %d -o && gv %f")
      ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
@@ -301,7 +277,7 @@
      ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
      ("^dvi$" "." "%(o?)xdvi %dS %d")
      ("^pdf$" "." "evince %o %(outpage)")
-     ("^html?$" "." "netscape %o"))))
+     ("^html?$" "." "netscape %o")))
  '(case-fold-search t)
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
@@ -313,11 +289,9 @@
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   (quote
-    (markdown-mode+ tuareg auctex magit js-comint htmlize js2-mode yaml-mode markdown-mode graphviz-dot-mode dockerfile-mode auctex-latexmk)))
+   '(wanderlust htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
  '(safe-local-variable-values
-   (quote
-    ((Package . CLPYTHON\.MODULE\.MATH)
+   '((Package . CLPYTHON\.MODULE\.MATH)
      (package . rune-dom)
      (Package . CXML)
      (Syntax . Common-Lisp)
@@ -352,7 +326,7 @@
      (Syntax . COMMON-LISP)
      (Package . CL-User)
      (Syntax . ANSI-Common-Lisp)
-     (Package . FSet))))
+     (Package . FSet)))
  '(show-paren-mode t nil (paren))
  '(transient-mark-mode t))
 

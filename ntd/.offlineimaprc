@@ -12,7 +12,7 @@ quick = 288
 
 [Repository mines-maildir]
 type = Maildir
-localfolders = ~/.mines-maildir
+localfolders = ~/.mail/mines
 folderfilter = lambda folder: folder in ['INBOX']
 
 [Repository mines-imap]
