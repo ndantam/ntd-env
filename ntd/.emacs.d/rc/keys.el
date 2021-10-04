@@ -30,7 +30,7 @@
 ;;(global-set-key [f1] 'my-recompile)
 
 (defun my-recompile-hook ()
-  (local-set-key (kbd "C-c C-c") 'my-recompile))
+  (local-set-key (kbd "C-c C-c") 'ntd/recompile))
 
 (add-hook 'autoconf-mode-hook 'my-recompile-hook)
 (add-hook 'automake-mode-hook 'my-recompile-hook)
