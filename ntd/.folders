@@ -7,6 +7,8 @@
 
 %INBOX "inbox"
 
+# ..mines.inbox "local-inbox"
+
 # Local
 ..trash "trash"
 ..drafts "drafts"

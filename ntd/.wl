@@ -12,8 +12,6 @@
 ;; - MSGDB is stored under ~/.elmo
 
 
-(setq wl-icon-directory "~/.emacs.d/pixmaps/")
-
 
 
 
@@ -30,7 +28,6 @@
       elmo-imap4-default-stream-type 'ssl
 
       ;; Mines SMTP Setup
-      wl-bcc user-mail-address
       wl-from (ntd/from "Neil T. Dantam" user-mail-address)
       wl-smtp-posting-server "smtp.office365.com"
       wl-local-domain "mines.edu"
@@ -49,23 +46,34 @@
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
-      wl-insert-message-id nil
-      wl-forward-subject-prefix "Fwd: "
-
       wl-summary-width 160
       wl-folder-check-async t
-      wl-draft-always-delete-myself t
       wl-use-scoring nil
       wl-stay-folder-window t
-      wl-draft-use-frame t
       wl-folder-window-width 35
       wl-ask-range nil
       wl-summary-width nil
-      mime-edit-split-message nil
       ;; Prefetch 1 MB
       wl-message-buffer-prefetch-threshold (expt 2 20)
       ;; No confirm for 10 MB
       elmo-message-fetch-threshold (* 10 (expt 2 20))
+      )
+
+;; Try to find the icons
+(let ((d (expand-file-name "icons/"
+                           (file-name-directory (locate-library "wl")))))
+  (when (and (file-exists-p d)
+             (file-accessible-directory-p d))
+    (setq wl-icon-directory d)))
+
+;; Drafts
+(setq wl-forward-subject-prefix "Fwd: "
+      wl-draft-use-frame t
+      wl-bcc user-mail-address
+      wl-draft-always-delete-myself t
+      ;; wl-insert-message-id nil
+      ;; mime-edit-split-message nil
+      ; wl-draft-cite-date-format-string ;; TODO
       )
 
 ;; Folder Setup
