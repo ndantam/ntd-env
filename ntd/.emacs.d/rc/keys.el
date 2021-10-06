@@ -44,6 +44,13 @@
 (global-set-key "\C-cU" 'uncomment-region)
 ;(global-set-key "\C-cL" 'longlines-mode)
 
+;; clang-format
+(defun ntd/clang-format-hook ()
+  (local-set-key (kbd "M-q") 'clang-format-region))
+
+(add-hook 'c-mode-hook 'ntd/clang-format-hook)
+(add-hook 'c++-mode-hook 'ntd/clang-format-hook)
+
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
 
