@@ -108,9 +108,14 @@
 ;; WL reload
 (global-set-key [f6] 'wl-folder-check-all)
 
+(defun ntd/bbdb-popup ()
+  (local-set-key (kbd "C-c b") #'bbdb-mua-display-all-records))
+
+(add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
+(add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
+
 ;; reload file
 (global-set-key [f5] 'revert-buffer)
-
 
 ;; Shells
 (global-set-key "\C-cs" #'ntd/term-zsh)

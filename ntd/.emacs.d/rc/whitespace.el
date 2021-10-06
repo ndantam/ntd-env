@@ -14,7 +14,10 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 8)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(defun ntd/delete-trailing-whitespace ()
+  (delete-trailing-whitespace))
+
+(add-hook 'before-save-hook 'ntd/delete-trailing-whitespace)
 
 (setq ntd-whitespace-cleanup-modes
       '(org-mode

@@ -24,7 +24,6 @@
              (let ((default-directory dir))
                (normal-top-level-add-subdirs-to-load-path)))))
   (try-add-site "~/.emacs.d/site-lisp")
-  (try-add-site "/usr/share/emacs/site-lisp/bbdb/")
   (try-add-site "~/share/emacs/site-lisp")
   )
 
@@ -60,7 +59,7 @@
 
   (loadit "docview")
   (loadit "auctex")
-  ;(loadit "bbdb")
+  (loadit "bbdb")
   (loadit "c")
   (loadit "cl")
   (loadit "compilation")
@@ -289,7 +288,7 @@
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   '(wanderlust htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
+   '(wanderlust markdown-mode+ tuareg auctex js-comint htmlize js2-mode yaml-mode markdown-mode graphviz-dot-mode dockerfile-mode auctex-latexmk))
  '(safe-local-variable-values
    '((Package . CLPYTHON\.MODULE\.MATH)
      (package . rune-dom)

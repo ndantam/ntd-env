@@ -11,7 +11,9 @@
 ;; NOTES:
 ;; - MSGDB is stored under ~/.elmo
 
-
+;; (require 'bbdb)
+;; (bbdb-initialize 'wl)
+;; (bbdb-mua-auto-update-init 'wl)
 
 
 
@@ -52,7 +54,6 @@
       wl-stay-folder-window t
       wl-folder-window-width 35
       wl-ask-range nil
-      wl-summary-width nil
       ;; Prefetch 1 MB
       wl-message-buffer-prefetch-threshold (expt 2 20)
       ;; No confirm for 10 MB
@@ -263,13 +264,13 @@
 ;; ;; WL BBDB ;;
 ;; ;;;;;;;;;;;;;
 
-;; (require 'bbdb-wl)
+(require 'bbdb-wl)
 
-;; (bbdb-wl-setup)
+; (bbdb-wl-setup)
 
 ;; ;; i don't want to store addresses from my mailing folders
 ;; (setq
 ;;  bbdb-wl-folder-regexp    ;; get addresses only from these folders
 ;;  "^\.\.gt$")    ;;
 
-;; (define-key wl-draft-mode-map (kbd "C-c <tab>") 'bbdb-complete-name)
+(define-key wl-draft-mode-map (kbd "C-c <tab>") 'bbdb-complete-mail)
