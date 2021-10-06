@@ -105,6 +105,9 @@
 (global-set-key [f11] 'toggle-fullscreen)
 
 
+;; Browser
+(global-set-key (kbd "C-c b") #'browse-url-at-point)
+
 ;; WL reload
 (global-set-key [f6] 'wl-folder-check-all)
 
@@ -113,6 +116,11 @@
 
 (add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
 (add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
+
+(defun ntd/mail-keys ()
+  (local-set-key (kbd "b") #'browse-url-at-point))
+
+(add-hook 'mime-view-mode-hook #'ntd/mail-keys)
 
 ;; reload file
 (global-set-key [f5] 'revert-buffer)

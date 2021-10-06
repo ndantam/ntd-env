@@ -335,7 +335,9 @@
 ;;  BROWSE  ;;
 ;;;;;;;;;;;;;;
 (autoload 'w3m-brows-url "w3m" "" t)
-(setq browse-url-browser-function 'w3m-browse-url)
+;(setq browse-url-browser-function 'w3m-browse-url)
+(setq browse-url-browser-function 'browse-url-chrome)
+
 
 (eval-after-load "w3m"
   '(setq w3m-use-cookies t
