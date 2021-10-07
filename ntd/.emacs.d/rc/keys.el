@@ -125,7 +125,9 @@
 (add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
 
 (defun ntd/mail-keys ()
-  (local-set-key (kbd "b") #'browse-url-at-point))
+  (local-set-key (kbd "b") #'browse-url-at-point)
+  (local-set-key (kbd "j") #'next-line)
+  (local-set-key (kbd "k") #'previous-line))
 
 (add-hook 'mime-view-mode-hook #'ntd/mail-keys)
 

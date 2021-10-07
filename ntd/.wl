@@ -54,6 +54,7 @@
       wl-stay-folder-window t
       wl-folder-window-width 35
       wl-ask-range nil
+      wl-mime-charset 'utf-8
       ;; Prefetch 1 MB
       wl-message-buffer-prefetch-threshold (expt 2 20)
       ;; No confirm for 10 MB
@@ -88,11 +89,7 @@
       wl-default-spec "..")
 
 
-;; Auto-insert Signature
-(add-hook 'mime-edit-translate-hook 'mime-edit-insert-signature)
-(setq signature-file-name "~/.signature"
-      signature-insert-at-eof t
-      signature-delete-blank-lines-at-eof t)
+
 
 
 (setq wl-message-ignored-field-list '("^.*:")
@@ -113,6 +110,91 @@
                                    "^User-Agent:"))
 
 
+
+;;;;;;;;;;;;;;;
+;; COMPOSING ;;
+;;;;;;;;;;;;;;;
+
+;; Signature Setup
+(setq signature-file-name "~/.signature"
+      signature-insert-at-eof t
+      signature-delete-blank-lines-at-eof t)
+
+;; FORMAT = FLOWED
+
+;; Desired behavior:
+;;  - Add the format=flowed tag
+;;  - Automatically insert flowed spaces when filling paragraphs
+
+
+;; See:
+;; - https://emacs.stackexchange.com/questions/19296/retooling-fill-paragraph-to-append-trailing-spaces
+;; - https://www.reddit.com/r/emacs/comments/7v2b3q/emacs_email_and_format_flowed/
+;; - https://www.emacswiki.org/emacs/WlFormatFlowed
+
+(defun my-soft-flow ()
+  "Turn soft newlines \n\s for format=flowed"
+  (interactive)
+  (save-excursion
+    (mail-text)
+    (while (re-search-forward "[^ ]\n" nil t)
+      (backward-char)
+      (unless (get-text-property (point) 'hard)
+        (insert " ")
+        (forward-char))
+      ;; skip the newline
+      (forward-char))))
+
+(defun my-translate-hook ()
+  ;; format=flowed
+  (my-soft-flow) ; soft \n -> \n\s
+  (save-excursion
+    (mail-text)
+    (mime-edit-insert-tag "text" "plain" "; format=flowed"))
+  ;; Insert Signature
+  (mime-edit-insert-signature))
+
+(add-hook 'mime-edit-translate-hook 'my-translate-hook)
+
+(require 'messages-are-flowing)
+(defun my-mime-edit-hook ()
+  ;; * Maximimum line length from RFC 5322 is 78 chars, plus \r\n.
+  ;; But we add the space for format=flowed.
+  ;;
+  ;; * However, the intarweb says that 66 is better for readability.
+  ;;
+  ;; * But new-fangled mail readers in the browser and phone are gonna
+  ;; screw it all up anyway.
+  (set (make-local-variable 'fill-column) 66)
+
+  (use-hard-newlines nil t)
+  (messages-are-flowing-use-and-mark-hard-newlines)
+  (messages-are-flowing--mark-hard-newlines (mail-text) (point-max)))
+
+(add-hook 'mime-edit-mode-hook 'my-mime-edit-hook)
+(add-hook 'wl-mail-setup-hook 'my-mime-edit-hook)
+
+
+(defun my-mime-view-hook ()
+  ;(whitespace-mode 1)
+  nil)
+
+(add-hook 'mime-view-mode-hook 'my-mime-view-hook)
+
+;;;;;;;;;;;;;
+;; WL BBDB ;;
+;;;;;;;;;;;;;
+
+(require 'bbdb-wl)
+
+; (bbdb-wl-setup)
+
+;; ;; i don't want to store addresses from my mailing folders
+;; (setq
+;;  bbdb-wl-folder-regexp    ;; get addresses only from these folders
+;;  "^\.\.gt$")    ;;
+
+(define-key wl-draft-mode-map (kbd "C-c <tab>") 'bbdb-complete-mail)
 
 
 ;; (defun bbdb-offer-save () (bbdb-save))
@@ -256,21 +338,3 @@
 ;;                           "golemkran"
 ;;                           "humanoids")
 ;;               )))
-
-
-
-
-;; ;;;;;;;;;;;;;
-;; ;; WL BBDB ;;
-;; ;;;;;;;;;;;;;
-
-(require 'bbdb-wl)
-
-; (bbdb-wl-setup)
-
-;; ;; i don't want to store addresses from my mailing folders
-;; (setq
-;;  bbdb-wl-folder-regexp    ;; get addresses only from these folders
-;;  "^\.\.gt$")    ;;
-
-(define-key wl-draft-mode-map (kbd "C-c <tab>") 'bbdb-complete-mail)

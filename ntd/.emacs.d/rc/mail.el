@@ -6,10 +6,14 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
-
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
 ;;;;;;;;;;;;;;;;;;
+
+;; (add-to-list 'load-path
+;;              "~/git/3rdparty/wanderlust/wl/")
+;; (add-to-list 'load-path
+;;              "~/git/3rdparty/wanderlust/elmo/")
 
 (defun ntd-email-addr (a b c)
   (concatenate 'string a "@" b "." c))
