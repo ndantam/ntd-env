@@ -54,12 +54,16 @@
       wl-stay-folder-window t
       wl-folder-window-width 35
       wl-ask-range nil
-      wl-mime-charset 'utf-8
       ;; Prefetch 1 MB
       wl-message-buffer-prefetch-threshold (expt 2 20)
       ;; No confirm for 10 MB
       elmo-message-fetch-threshold (* 10 (expt 2 20))
       )
+
+;; All the would needs to be UTF-8
+(setq wl-mime-charset 'utf-8
+      elmo-mime-charset 'utf-8
+      default-mime-charset 'utf-8)
 
 ;; Try to find the icons
 (let ((d (expand-file-name "icons/"
@@ -150,7 +154,7 @@
   (my-soft-flow) ; soft \n -> \n\s
   (save-excursion
     (mail-text)
-    (mime-edit-insert-tag "text" "plain" "; format=flowed"))
+    (mime-edit-insert-tag "text" "plain" "; format=flowed; charset=UTF-8"))
   ;; Insert Signature
   (mime-edit-insert-signature))
 
