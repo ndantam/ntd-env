@@ -41,10 +41,10 @@
 
 ;; View
 (setq mime-view-type-subtype-score-alist
-  '(((text . plain) . 4)
-    ((text . enriched) . 3)
-    ((text . html) . 2)
-    ((text . richtext) . 1)))
+      '(((text . plain) . 4)
+        ((text . enriched) . 3)
+        ((text . html) . 2)
+        ((text . richtext) . 1)))
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
@@ -79,7 +79,7 @@
       wl-draft-always-delete-myself t
       ;; wl-insert-message-id nil
       ;; mime-edit-split-message nil
-      ; wl-draft-cite-date-format-string ;; TODO
+      ;; wl-draft-cite-date-format-string ;; TODO
       )
 
 ;; Folder Setup
@@ -136,7 +136,7 @@
 ;; - https://www.reddit.com/r/emacs/comments/7v2b3q/emacs_email_and_format_flowed/
 ;; - https://www.emacswiki.org/emacs/WlFormatFlowed
 
-(defun my-soft-flow ()
+(defun ntd/soft-flow ()
   "Turn soft newlines \n\s for format=flowed"
   (interactive)
   (save-excursion
@@ -147,21 +147,65 @@
         (insert " ")
         (forward-char))
       ;; skip the newline
-      (forward-char))))
+      (when (< (point) (point-max))
+        (forward-char)))))
 
-(defun my-translate-hook ()
-  ;; format=flowed
-  (my-soft-flow) ; soft \n -> \n\s
+(defvar ntd/asciify-alist nil)
+(setq ntd/asciify-alist
+      '(;; punctuation
+        (?\  . ?\s)
+        (?\‘ . ?\')
+        (?\’ . ?\')
+        (?\“ . ?\")
+        (?\” . ?\")
+        (?\… . "...")
+        (?\– . "--")   ; en dash
+        (?\— . "---")  ; em dash
+        ;; Todo: emoticons
+        ))
+
+(defun ntd/asciify ()
+  (interactive)
   (save-excursion
     (mail-text)
-    (mime-edit-insert-tag "text" "plain" "; format=flowed; charset=UTF-8"))
-  ;; Insert Signature
-  (mime-edit-insert-signature))
+    (let ((is-ascii t))
+      (while (< (point) (point-max))
+        (let* ((c (char-after))
+               (newtext (alist-get c ntd/asciify-alist)))
+          (cond
+           (newtext
+            (progn
+              (delete-char 1)
+              (insert newtext)))
+           ((and is-ascii
+                 (> c 127))
+            (print (format "Could not asciify character: `%c'" c))
+            (setq is-ascii nil)))
+          (forward-char)))
+      is-ascii)))
 
-(add-hook 'mime-edit-translate-hook 'my-translate-hook)
+(defun ntd/translate-hook ()
+  ;; format=flowed: Wanderlust does something weird to preview the
+  ;; flowed message.
+  (let ((is-ascii (ntd/asciify))) ;; Try to convert to ascii, and check
+    ;; if we could.
+    (ntd/soft-flow) ; soft \n -> \n\s
+    (save-excursion
+      (mail-text)
+      ;; UTF-8 isn't 7bit and quoted-printable is annoying... Use
+      ;; ascii when possible.  Maybe next try to force 8bit/binary
+      ;; encoding.
+      (mime-edit-insert-tag "text" "plain"
+                            (if is-ascii
+                                "; format=flowed"
+                              "; format=flowed; charset=UTF-8")))
+    ;; Insert Signature
+    (mime-edit-insert-signature)))
+
+(add-hook 'mime-edit-translate-hook 'ntd/translate-hook)
 
 (require 'messages-are-flowing)
-(defun my-mime-edit-hook ()
+(defun ntd/mime-edit-hook ()
   ;; * Maximimum line length from RFC 5322 is 78 chars, plus \r\n.
   ;; But we add the space for format=flowed.
   ;;
@@ -175,15 +219,33 @@
   (messages-are-flowing-use-and-mark-hard-newlines)
   (messages-are-flowing--mark-hard-newlines (mail-text) (point-max)))
 
-(add-hook 'mime-edit-mode-hook 'my-mime-edit-hook)
-(add-hook 'wl-mail-setup-hook 'my-mime-edit-hook)
+(add-hook 'mime-edit-mode-hook 'ntd/mime-edit-hook)
+(add-hook 'wl-mail-setup-hook 'ntd/mime-edit-hook)
 
 
-(defun my-mime-view-hook ()
-  ;(whitespace-mode 1)
+(defun ntd/mime-view-hook ()
+  ;; (whitespace-mode 1)
   nil)
 
-(add-hook 'mime-view-mode-hook 'my-mime-view-hook)
+(add-hook 'mime-view-mode-hook 'ntd/mime-view-hook)
+
+
+
+
+
+;; Not working...
+
+;; (setq fill-flowed-display-column 20)
+
+;; (autoload 'fill-flowed "flow-fill")
+;; (defun my-mime-display-text-plain-hook ()
+;;   (when (string= "flowed"
+;;  		 (cdr (assoc "format"
+;;  			     (mime-content-type-parameters
+;;  			      (mime-entity-content-type entity)))))
+;;     (fill-flowed)))
+
+;; (add-hook 'mime-display-text/plain-hook 'my-mime-display-text-plain-hook)
 
 ;;;;;;;;;;;;;
 ;; WL BBDB ;;
