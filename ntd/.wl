@@ -45,7 +45,7 @@
         ((text . enriched) . 3)
         ((text . html) . 2)
         ((text . richtext) . 1)))
-(customize-set-value 'mime-view-buttons-visible t)
+(customize-set-value 'mime-view-buttons-visible nil)
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
