@@ -160,46 +160,23 @@
       (when (< (point) (point-max))
         (forward-char)))))
 
-(defvar ntd/asciify-alist nil)
-(setq ntd/asciify-alist
-      '(;; punctuation
-        (?\  . ?\s)
-        (?\‘ . ?\')
-        (?\’ . ?\')
-        (?\“ . ?\")
-        (?\” . ?\")
-        (?\… . "...")
-        (?\– . "--")   ; en dash
-        (?\— . "---")  ; em dash
-        ;; Todo: emoticons
-        ))
 
 (defun ntd/asciify ()
   (interactive)
   (save-excursion
     (mail-text)
-    (let ((is-ascii t))
-      (while (< (point) (point-max))
-        (let* ((c (char-after))
-               (newtext (alist-get c ntd/asciify-alist)))
-          (cond
-           (newtext
-            (progn
-              (delete-char 1)
-              (insert newtext)))
-           ((and is-ascii
-                 (> c 127))
-            (print (format "Could not asciify character: `%c'" c))
-            (setq is-ascii nil)))
-          (forward-char)))
-      is-ascii)))
+    (ntd/asciify-region (point)
+                        (point-max))))
 
 (defun ntd/translate-hook ()
   ;; format=flowed: Wanderlust does something weird to preview the
   ;; flowed message.
-  (let ((is-ascii (ntd/asciify))) ;; Try to convert to ascii, and check
-    ;; if we could.
-    (ntd/soft-flow) ; soft \n -> \n\s
+  (let ((is-ascii (ntd/asciify))) ; Try to convert to ascii, and
+                                  ; check if we could.
+    ;; TODO: Refilling breaks in the temp buffer.
+    ;; (ntd/fill-mail) ; Re-flow the text.  Asciification can replace on
+                       ; character with many.
+    (ntd/soft-flow)    ; soft \n -> \n\s
     (save-excursion
       (mail-text)
       ;; UTF-8 isn't 7bit and quoted-printable is annoying... Use

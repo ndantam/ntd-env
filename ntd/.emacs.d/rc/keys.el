@@ -157,12 +157,20 @@
 (add-hook 'mime-view-mode-hook #'ntd/mail-keys)
 
 (defun ntd/wl-summary-keys ()
+  ;; Folders
   (local-set-key (kbd "C-c f r")
                  (lambda () (interactive) (ntd/wl-goto-petname "recent")))
   (local-set-key (kbd "C-c f s")
                  (lambda () (interactive) (ntd/wl-goto-petname "starred")))
   (local-set-key (kbd "C-c f n")
-                 (lambda () (interactive) (ntd/wl-goto-petname "new"))))
+                 (lambda () (interactive) (ntd/wl-goto-petname "new")))
+  ;; Navigation
+  ;;(local-set-key (kbd "j") #'wl-summary-jump-to-current-message) bind?
+  (local-set-key (kbd "j") #'next-line)
+  (local-set-key (kbd "k") #'previous-line))
 
 
 (add-hook 'wl-summary-mode-hook #'ntd/wl-summary-keys)
+
+(defun ntd/mime-edit-keys ()
+  (local-set-key (kbd "M-Q") #'ntd/fill-mail))
