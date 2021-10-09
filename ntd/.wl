@@ -43,7 +43,7 @@
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
-      wl-summary-width 160
+      wl-summary-width 155
       wl-folder-check-async t
       wl-use-scoring nil
       wl-stay-folder-window t
@@ -79,7 +79,8 @@
 
 ;; Folder Setup
 (setq elmo-maildir-folder-path "~/.maildir"
-      wl-draft-folder "..drafts"       ; wandlerlust's default is MH format
+      ;;wl-draft-folder "..drafts"       ; wandlerlust's default is MH format
+      wl-draft-folder "%DRAFTS"       ; wandlerlust's default is MH format
       wl-trash-folder "..trash"
       wl-spam-folder  "..trash"
       wl-queue-folder "..queue"        ; we don't use this
