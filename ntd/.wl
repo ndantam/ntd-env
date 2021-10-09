@@ -5,8 +5,9 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
-(require 'w3m)
-(require 'mime-w3m)
+;;(require 'w3m)
+;;(require 'mime-w3m)
+
 
 ;; NOTES:
 ;; - MSGDB is stored under ~/.elmo
@@ -39,13 +40,6 @@
       wl-smtp-posting-user user-mail-address
       )
 
-;; View
-(setq mime-view-type-subtype-score-alist
-      '(((text . plain) . 4)
-        ((text . enriched) . 3)
-        ((text . html) . 2)
-        ((text . richtext) . 1)))
-(customize-set-value 'mime-view-buttons-visible nil)
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
@@ -79,7 +73,7 @@
       wl-bcc user-mail-address
       wl-draft-always-delete-myself t
       ;; wl-insert-message-id nil
-      ;; mime-edit-split-message nil
+      mime-edit-split-message nil
       ;; wl-draft-cite-date-format-string ;; TODO
       )
 
@@ -105,13 +99,15 @@
                                       "^Date:"
                                       "^To:"
                                       "^Cc:"
-                                      "^User-Agent:")
+                                      "^User-Agent:"
+                                      "^Content-Type:")
       wl-message-sort-field-list '("^From:"
                                    "^Newsgroups:"
                                    "^Subject:"
                                    "^Date:"
                                    "^To:"
                                    "^Cc:"
+                                   "Content-Type:"
                                    "^User-Agent:"))
 
 
@@ -124,6 +120,38 @@
   (wl-summary-goto-folder-subr (wl-folder-get-realname petname)
                                'update-entirely))
 
+;; View
+(setq mime-view-type-subtype-score-alist
+      '(((text . plain) . 4)
+        ((text . enriched) . 3)
+        ((text . html) . 2)
+        ((text . richtext) . 1)))
+(customize-set-value 'mime-view-buttons-visible nil)
+
+
+;; Un-distractify html mail
+
+;; Previously 'w3m
+; (setq mime-view-text/html-previewer 'w3m)
+
+;; not working ; (setq mime-view-text/html-previewer 'eww)
+
+(setq mime-view-text/html-previewer 'shr
+      shr-use-colors nil
+      shr-width 80
+      shr-use-fonts nil)
+
+;; https://www.emacswiki.org/emacs/WlFormatFlowed
+;;
+;; Not working
+;; (autoload 'fill-flowed "flow-fill")
+;; (add-hook 'mime-display-text/plain-hook
+;;        (lambda ()
+;;          (when (string= "flowed"
+;;                         (cdr (assoc "format"
+;;                                     (mime-content-type-parameters
+;;                                      (mime-entity-content-type entity)))))
+;;            (fill-flowed))))
 
 ;;;;;;;;;;;;;;;
 ;; COMPOSING ;;
