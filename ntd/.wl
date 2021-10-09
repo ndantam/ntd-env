@@ -1,4 +1,4 @@
-;; mode:-*-emacs-lisp-*-
+;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
 ;; Emacs initialization file for Wanderlust MUA
 ;; Author: Neil Dantam
 ;;
@@ -238,9 +238,16 @@
 (add-hook 'mime-edit-mode-hook 'ntd/mime-edit-hook)
 (add-hook 'wl-mail-setup-hook 'ntd/mime-edit-hook)
 
+(require 'visual-fill-column)
 
 (defun ntd/mime-view-hook ()
   ;; (whitespace-mode 1)
+
+  ;; Long lines are hard to read.  RFCs say max 78+"\r\n", but it's
+  ;; always September.
+  (set (make-local-variable 'fill-column) 80)
+  (visual-line-mode 1)
+  (visual-fill-column-mode 1)
   nil)
 
 (add-hook 'mime-view-mode-hook 'ntd/mime-view-hook)

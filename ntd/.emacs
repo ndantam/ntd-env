@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
 ;; .emacs
 ;; Emacs initialization file
 ;; Author: Neil Dantam
@@ -289,7 +289,7 @@
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   '(messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
+   '(visual-fill-column messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
  '(safe-local-variable-values
    '((Package . CLPYTHON\.MODULE\.MATH)
      (package . rune-dom)
