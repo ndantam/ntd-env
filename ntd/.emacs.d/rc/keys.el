@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -174,3 +174,5 @@
 
 (defun ntd/mime-edit-keys ()
   (local-set-key (kbd "M-Q") #'ntd/fill-mail))
+
+(add-hook 'mime-edit-mode-hook  'ntd/mime-edit-keys)
