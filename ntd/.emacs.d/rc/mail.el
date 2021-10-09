@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
 ;; .emacs
 ;; Emacs initialization file
 ;; Author: Neil Dantam
@@ -45,6 +45,7 @@
          (?\  . ?\s)
          (?\‘ . ?\')
          (?\’ . ?\')
+         (,(aref  "​" 0) . "") ;; zero-width space
          (?\“ . ?\")
          (?\” . ?\")
          (?\… . "...")
@@ -97,19 +98,17 @@
   (let ((is-ascii t))
     (save-excursion
       (goto-char start)
-      (while (< (point) end)
-        (let* ((c (char-after))
-               (newtext (gethash c ntd/asciify-hash)))
-          (cond (newtext
-                 (progn
-                   (delete-char 1)
-                   (insert newtext)))
-                ((and is-ascii
-                      (> c 127))
-                 (print (format "Could not asciify character: `%c'" c))
-                 (setq is-ascii nil)))
-          (forward-char))))
-      is-ascii))
+      (while (re-search-forward (rx nonascii) nil t)
+        (let ((c (char-before)))
+          ;;(print (format "Trying to asciify character: `%c' (%d)" c c))
+          (if-let ((newtext (gethash c ntd/asciify-hash)))
+              (progn
+                (delete-char -1)
+                (insert newtext)
+                (forward-char (length newtext)))
+            (print (format "Could not asciify character: `%c' (%d)" c c))
+            (setq is-ascii nil)))))
+    is-ascii))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
