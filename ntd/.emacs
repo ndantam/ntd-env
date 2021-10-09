@@ -230,6 +230,7 @@
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
+(setq mm-coding-system-priorities '(utf-8))
 
 ;;;;;;;;;;;
 ;; SHELL ;;
@@ -288,7 +289,7 @@
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   '(wanderlust markdown-mode+ tuareg auctex js-comint htmlize js2-mode yaml-mode markdown-mode graphviz-dot-mode dockerfile-mode auctex-latexmk))
+   '(messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
  '(safe-local-variable-values
    '((Package . CLPYTHON\.MODULE\.MATH)
      (package . rune-dom)

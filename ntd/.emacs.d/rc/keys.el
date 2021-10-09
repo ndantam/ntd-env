@@ -115,21 +115,6 @@
 ;; Browser
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
 
-;; WL reload
-(global-set-key [f6] 'wl-folder-check-all)
-
-(defun ntd/bbdb-popup ()
-  (local-set-key (kbd "C-c b") #'bbdb-mua-display-all-records))
-
-(add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
-(add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
-
-(defun ntd/mail-keys ()
-  (local-set-key (kbd "b") #'browse-url-at-point)
-  (local-set-key (kbd "j") #'next-line)
-  (local-set-key (kbd "k") #'previous-line))
-
-(add-hook 'mime-view-mode-hook #'ntd/mail-keys)
 
 ;; reload file
 (global-set-key [f5] 'revert-buffer)
@@ -152,3 +137,32 @@
      (global-set-key "\C-cLr" 'slime-reload-system)
 
      (global-set-key "\C-cLd" 'slime-disconnect)))
+
+;;;;;;;;;;
+;;; WL ;;;
+;;;;;;;;;;
+(global-set-key [f6] 'wl-folder-check-all)
+
+(defun ntd/bbdb-popup ()
+  (local-set-key (kbd "C-c b") #'bbdb-mua-display-all-records))
+
+(add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
+(add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
+
+(defun ntd/mail-keys ()
+  (local-set-key (kbd "b") #'browse-url-at-point)
+  (local-set-key (kbd "j") #'next-line)
+  (local-set-key (kbd "k") #'previous-line))
+
+(add-hook 'mime-view-mode-hook #'ntd/mail-keys)
+
+(defun ntd/wl-summary-keys ()
+  (local-set-key (kbd "C-c f r")
+                 (lambda () (interactive) (ntd/wl-goto-petname "recent")))
+  (local-set-key (kbd "C-c f s")
+                 (lambda () (interactive) (ntd/wl-goto-petname "starred")))
+  (local-set-key (kbd "C-c f n")
+                 (lambda () (interactive) (ntd/wl-goto-petname "new"))))
+
+
+(add-hook 'wl-summary-mode-hook #'ntd/wl-summary-keys)

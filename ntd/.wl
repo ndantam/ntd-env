@@ -45,6 +45,7 @@
         ((text . enriched) . 3)
         ((text . html) . 2)
         ((text . richtext) . 1)))
+(customize-set-value 'mime-view-buttons-visible t)
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
@@ -113,6 +114,15 @@
                                    "^Cc:"
                                    "^User-Agent:"))
 
+
+;;;;;;;;;;;;;
+;; Viewing ;;
+;;;;;;;;;;;;;
+
+(defun ntd/wl-goto-petname (petname)
+  (interactive (list (read-from-minibuffer "Folder: ")))
+  (wl-summary-goto-folder-subr (wl-folder-get-realname petname)
+                               'update-entirely))
 
 
 ;;;;;;;;;;;;;;;
@@ -232,7 +242,6 @@
 
 
 
-
 ;; Not working...
 
 ;; (setq fill-flowed-display-column 20)
@@ -240,9 +249,9 @@
 ;; (autoload 'fill-flowed "flow-fill")
 ;; (defun my-mime-display-text-plain-hook ()
 ;;   (when (string= "flowed"
-;;  		 (cdr (assoc "format"
-;;  			     (mime-content-type-parameters
-;;  			      (mime-entity-content-type entity)))))
+;;               (cdr (assoc "format"
+;;                           (mime-content-type-parameters
+;;                            (mime-entity-content-type entity)))))
 ;;     (fill-flowed)))
 
 ;; (add-hook 'mime-display-text/plain-hook 'my-mime-display-text-plain-hook)
