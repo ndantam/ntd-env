@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -43,7 +43,8 @@
 (setq bbdb-message-all-addresses t)
 
 ;; Auto-Create records
-(setq bbdb-update-records-p 'create)
+(setq bbdb-update-records-p 'create
+      bbdb-ignore-redundant-mails t)
 
 (setq bbdb-ignore-message-alist ;; don't ask about fake addresses
       ;; NOTE: there can be only one entry per header (such as To, From)
