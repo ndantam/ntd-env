@@ -93,6 +93,11 @@
   (dolist (x alist) (puthash (car x) (cdr x) hash))
   (setq ntd/asciify-hash hash))
 
+(defun ntd/strlen (thing)
+  (etypecase thing
+    (integer 1)
+    (string (length thing))))
+
 (defun ntd/asciify-region (start end)
   (interactive)
   (let ((is-ascii t))
@@ -105,7 +110,7 @@
               (progn
                 (delete-char -1)
                 (insert newtext)
-                (forward-char (length newtext)))
+                (forward-char (ntd/strlen newtext)))
             (print (format "Could not asciify character: `%c' (%d)" c c))
             (setq is-ascii nil)))))
     is-ascii))
