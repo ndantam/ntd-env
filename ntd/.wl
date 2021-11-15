@@ -17,6 +17,21 @@
 ;; (bbdb-mua-auto-update-init 'wl)
 
 
+;; Make Wanderlust the default mailer.
+(autoload 'wl-user-agent-compose "wl-draft" nil t)
+(if (boundp 'mail-user-agent)
+    (setq mail-user-agent 'wl-user-agent))
+(if (fboundp 'define-mail-user-agent)
+    (define-mail-user-agent
+      'wl-user-agent
+      'wl-user-agent-compose
+      'wl-draft-send
+      'wl-draft-kill
+      'mail-send-hook))
+
+
+(require 'visual-fill-column)
+
 
 (defun ntd/from (name email-address)
   (concat  name " <" email-address ">"))
@@ -121,14 +136,17 @@
   (wl-summary-goto-folder-subr (wl-folder-get-realname petname)
                                'update-entirely))
 
-;; View
+
+(defvar ntd/mime-view-columns)
+(setq ntd/mime-view-columns 92)
+
+;; HTML
 (setq mime-view-type-subtype-score-alist
       '(((text . plain) . 4)
         ((text . enriched) . 3)
         ((text . html) . 2)
         ((text . richtext) . 1)))
 (customize-set-value 'mime-view-buttons-visible nil)
-
 
 ;; Un-distractify html mail
 
@@ -139,10 +157,26 @@
 
 (setq mime-view-text/html-previewer 'shr
       shr-use-colors nil
-      shr-width 80
+      shr-width ntd/mime-view-columns
       shr-use-fonts nil)
 
 ;; https://www.emacswiki.org/emacs/WlFormatFlowed
+
+(defun ntd/mime-view-hook ()
+  ;; Long lines are hard to read.  RFCs say max 78+"\r\n", but it's
+  ;; always September.
+  (set (make-local-variable 'fill-column)
+       (min (window-total-width) ntd/mime-view-columns))
+  (visual-line-mode t)
+  (visual-fill-column-mode t)
+  nil)
+
+(add-hook 'mime-view-mode-hook #'ntd/mime-view-hook)
+
+(add-hook 'mime-display-text/plain-hook
+          #'ntd/mime-view-hook)
+
+
 ;;
 ;; Not working
 ;; (autoload 'fill-flowed "flow-fill")
@@ -157,6 +191,17 @@
 ;;;;;;;;;;;;;;;
 ;; COMPOSING ;;
 ;;;;;;;;;;;;;;;
+
+;; * Maximimum line length from RFC 5322 is 78 chars, plus \r\n.
+;; But we add the space for format=flowed.
+;;
+;; * However, the intarweb says that 66 is better for readability.
+;;
+;; * But new-fangled mail readers in the browser and phone are gonna
+;; screw it all up anyway.
+
+(defvar ntd/mime-edit-columns)
+(setq ntd/mime-edit-columns 66)
 
 ;; Signature Setup
 (setq signature-file-name "~/.signature"
@@ -222,35 +267,13 @@
 
 (require 'messages-are-flowing)
 (defun ntd/mime-edit-hook ()
-  ;; * Maximimum line length from RFC 5322 is 78 chars, plus \r\n.
-  ;; But we add the space for format=flowed.
-  ;;
-  ;; * However, the intarweb says that 66 is better for readability.
-  ;;
-  ;; * But new-fangled mail readers in the browser and phone are gonna
-  ;; screw it all up anyway.
-  (set (make-local-variable 'fill-column) 66)
-
+  (set (make-local-variable 'fill-column) ntd/mime-edit-columns)
   (use-hard-newlines nil t)
   (messages-are-flowing-use-and-mark-hard-newlines)
   (messages-are-flowing--mark-hard-newlines (mail-text) (point-max)))
 
 (add-hook 'mime-edit-mode-hook 'ntd/mime-edit-hook)
 (add-hook 'wl-mail-setup-hook 'ntd/mime-edit-hook)
-
-(require 'visual-fill-column)
-
-(defun ntd/mime-view-hook ()
-  ;; (whitespace-mode 1)
-
-  ;; Long lines are hard to read.  RFCs say max 78+"\r\n", but it's
-  ;; always September.
-  (set (make-local-variable 'fill-column) 80)
-  (visual-line-mode 1)
-  (visual-fill-column-mode 1)
-  nil)
-
-(add-hook 'mime-view-mode-hook 'ntd/mime-view-hook)
 
 
 
