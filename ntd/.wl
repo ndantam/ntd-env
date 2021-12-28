@@ -267,6 +267,9 @@
 
 (require 'messages-are-flowing)
 (defun ntd/mime-edit-hook ()
+  (ntd/fix-quote-region (mail-text) nil)
+  (ntd/asciify-region (mail-text) nil)
+  (delete-trailing-whitespace (mail-text))
   (set (make-local-variable 'fill-column) ntd/mime-edit-columns)
   (use-hard-newlines nil t)
   (messages-are-flowing-use-and-mark-hard-newlines)

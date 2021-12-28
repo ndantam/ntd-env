@@ -103,7 +103,7 @@
   (let ((is-ascii t))
     (save-excursion
       (goto-char start)
-      (while (re-search-forward (rx nonascii) nil t)
+      (while (re-search-forward (rx nonascii) end t)
         (let ((c (char-before)))
           ;;(print (format "Trying to asciify character: `%c' (%d)" c c))
           (if-let ((newtext (gethash c ntd/asciify-hash)))
@@ -114,6 +114,29 @@
             (print (format "Could not asciify character: `%c' (%d)" c c))
             (setq is-ascii nil)))))
     is-ascii))
+
+
+
+(defun ntd/fix-quote-region (start end)
+  (interactive "r")
+  (save-excursion
+    (goto-char start)
+    (while (re-search-forward "^\\(>+\\) +" end t)
+      (replace-match "\\1")
+      (beginning-of-line))
+    (goto-char start)
+    (while (re-search-forward "^\\(>+\\)" end t)
+      (replace-match "\\1 "))))
+
+
+;; (setq adaptive-fill-regexp
+;;       ;; Default:
+;;        (purecopy "[ \t]*\\([-–!|#%;>*·•‣⁃◦]+[ \t]*\\)*"))
+;;       ;; (rx (seq (regex "[ \t]*")
+;;       ;;          (| (* (seq (regex "[-–!|#%;>*·•‣⁃◦]+")
+;;       ;;                     (regex "[ \t]*")))
+;;       ;;             (regex "[[:alnum:] ]+>[ \t]*")))))
+
 
 ;;;;;;;;;;;;;;;;;;
 ;;  Wanderlust  ;;
