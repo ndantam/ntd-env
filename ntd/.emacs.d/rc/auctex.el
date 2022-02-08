@@ -15,18 +15,27 @@
 ;(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
 ;; make "C-c C-c" save buffer first
-(add-hook 'LaTeX-mode-hook
-          '(lambda()
-             (local-set-key "\C-c\C-c"
-                            (lambda ()
-                              (interactive)
-                              (command-execute 'save-buffer)
-                              (command-execute 'TeX-command-master)))))
+(defun ntd/LaTeX-mode-hook ()
+  (local-set-key "\C-c\C-c"
+                 (lambda ()
+                   (interactive)
+                   (command-execute 'save-buffer)
+                   (command-execute 'TeX-command-master)))
+             ;(visual-line-mode nil)
+  (local-set-key "\C-c\C-g"
+                 (lambda ()
+                   (interactive)
+                   (pdf-sync-forward-search )))
+  (local-set-key "\C-cg"
+                 (lambda ()
+                   (interactive)
+                   (pdf-sync-forward-search)))
+  (auto-fill-mode 1)
+  (TeX-PDF-mode)
+  (TeX-source-correlate-mode))
 
 (add-hook 'LaTeX-mode-hook
-          (lambda ()
-             ;(visual-line-mode nil)
-             (auto-fill-mode 1)))
+          #'ntd/LaTeX-mode-hook)
 
 
 (require 'auctex-latexmk)
@@ -34,3 +43,13 @@
 (setq auctex-latexmk-inherit-TeX-PDF-mode t)
 
 (setq LaTeX-item-indent 0)
+
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
+
+(defun ntd/TeX-after-compilation-finished-functions (file)
+  (TeX-revert-document-buffer file))
+
+;; Update PDF buffers after successful LaTeX runs
+(add-hook 'TeX-after-compilation-finished-functions
+          #'ntd/TeX-after-compilation-finished-functions)

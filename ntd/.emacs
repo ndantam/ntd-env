@@ -79,7 +79,7 @@
   ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
   )
-
+(pdf-tools-install)
 
 ;;;;;;;;;;
 ;; MISC ;;
