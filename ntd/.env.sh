@@ -12,7 +12,7 @@ export EDITOR=vim
 export DEBEMAIL="ntd@gatech.edu"
 export DEBFULLNAME="Neil Dantam"
 export CDPATH="$CDPATH:$HOME:$HOME/git"
-export PATH=~/bin:$PATH
+export PATH=~/bin:~/.local/bin:$PATH
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 export NPROC=`nproc`
 
