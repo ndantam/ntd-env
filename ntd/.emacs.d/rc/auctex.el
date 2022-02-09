@@ -53,3 +53,10 @@
 ;; Update PDF buffers after successful LaTeX runs
 (add-hook 'TeX-after-compilation-finished-functions
           #'ntd/TeX-after-compilation-finished-functions)
+
+
+;; Display the PDF part
+(setq pdf-sync-forward-display-action
+      '(display-buffer-reuse-window
+        (inhibit-same-window . t)
+        (reusable-frames . visible)))
