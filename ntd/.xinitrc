@@ -37,6 +37,12 @@ if [ -n "${NAME}" ]; then
     xinput set-button-map "${NAME}" 1 3 2 4 5 6 7 8 9
 fi
 
+NAME=$(ntd_xinitrc_dev "logitech ergo m575")
+if [ -n "${NAME}" ]; then
+     # echo Found "${NAME}"
+    xinput set-button-map "${NAME}" 1 3 2 4 5 6 7 8 9
+fi
+
 # Kensington Slimblade
 ntd_xinitrc_kes_left() {
     # 'Kensington Kensington Slimblade Trackball'
