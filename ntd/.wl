@@ -41,7 +41,7 @@
       ;; Mines IMAP Setup
       elmo-imap4-default-server "outlook.office365.com"
       elmo-imap4-default-user user-mail-address
-      elmo-imap4-default-authenticate-type 'clear
+      elmo-imap4-default-authenticate-type 'login
       elmo-imap4-default-port 993
       elmo-imap4-default-stream-type 'ssl
 
@@ -90,6 +90,7 @@
       ;; wl-insert-message-id nil
       mime-edit-split-message nil
       ;; wl-draft-cite-date-format-string ;; TODO
+      wl-draft-send-mail-function 'sendmail-send-it
       )
 
 ;; Folder Setup
