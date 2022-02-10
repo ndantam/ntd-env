@@ -14,22 +14,15 @@
 ;(setq-default TeX-master nil)
 ;(setenv "TEXINPUTS" ":/home/ntd/src/ntd-latex:")
 
-;; make "C-c C-c" save buffer first
+
 (defun ntd/LaTeX-mode-hook ()
+  ;; make "C-c C-c" save buffer first
   (local-set-key "\C-c\C-c"
                  (lambda ()
                    (interactive)
                    (command-execute 'save-buffer)
                    (command-execute 'TeX-command-master)))
              ;(visual-line-mode nil)
-  (local-set-key "\C-c\C-g"
-                 (lambda ()
-                   (interactive)
-                   (pdf-sync-forward-search )))
-  (local-set-key "\C-cg"
-                 (lambda ()
-                   (interactive)
-                   (pdf-sync-forward-search)))
   (auto-fill-mode 1)
   (TeX-PDF-mode)
   (TeX-source-correlate-mode))

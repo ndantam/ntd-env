@@ -138,6 +138,50 @@
 
      (global-set-key "\C-cLd" 'slime-disconnect)))
 
+
+;;;;;;;;;;;;;;
+;;; AuCTeX ;;;
+;;;;;;;;;;;;;;
+(defun ntd/tex-view ()
+  (interactive)
+  ;;(TeX-command "View" #'TeX-master-file)
+  (TeX-pdf-tools-sync-view))
+
+(defun ntd/tex-mk ()
+  (interactive)
+  (command-execute 'save-buffer)
+  ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
+  ;; should have a flag to always kill.
+  (TeX-command  "LatexMk"
+                #'TeX-master-file nil))
+
+(define-key tex-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
+(define-key tex-mode-map (kbd "\C-cv") #'ntd/tex-view)
+(define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
+(define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
+
+(define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+(define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+
+(define-key tex-mode-map (kbd "\C-c\C-s") #'save-buffer)
+(define-key LaTeX-mode-map (kbd "\C-c\C-s") #'save-buffer)
+
+(define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
+
+;;;;;;;;;;;
+;;; PDF ;;;
+;;;;;;;;;;;
+
+(define-key pdf-view-mode-map (kbd "g")
+  #'ntd/revert-buffer-dammit)
+
+(define-key pdf-view-mode-map [mouse-2] #'pdf-sync-backward-search-mouse)
+(define-key pdf-view-mode-map [mouse-8] #'pdf-history-backward)
+(define-key pdf-view-mode-map [mouse-9] #'pdf-history-forward)
+
+(define-key pdf-view-mode-map [C-mouse-5] #'pdf-view-shrink)
+(define-key pdf-view-mode-map [C-mouse-4] #'pdf-view-enlarge)
+
 ;;;;;;;;;;
 ;;; WL ;;;
 ;;;;;;;;;;

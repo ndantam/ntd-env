@@ -43,3 +43,9 @@
 (defmacro unless-host (name &rest forms)
   (declare (indent 1))
   `(if-host ,name nil (progn ,@forms)))
+
+
+(defun ntd/revert-buffer-dammit ()
+    "Revert the buffer, dammit!"
+    (interactive)
+    (revert-buffer t t t))
