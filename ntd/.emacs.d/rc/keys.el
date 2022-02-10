@@ -175,9 +175,25 @@
 (define-key pdf-view-mode-map (kbd "g")
   #'ntd/revert-buffer-dammit)
 
+;; (define-key pdf-view-mode-map (kbd "j") #'pdf-view-scroll-up-or-next-page)
+;; (define-key pdf-view-mode-map (kbd "k") #'pdf-view-scroll-down-or-previous-page)
+(define-key pdf-view-mode-map (kbd "j") #'pdf-view-next-line-or-next-page)
+(define-key pdf-view-mode-map (kbd "k") #'pdf-view-previous-line-or-previous-page)
+
+(define-key pdf-history-minor-mode-map (kbd "l") nil)
+(define-key pdf-view-mode-map (kbd "l") #'image-forward-hscroll)
+(define-key pdf-view-mode-map (kbd "h") #'image-backward-hscroll)
+
 (define-key pdf-view-mode-map [mouse-2] #'pdf-sync-backward-search-mouse)
+
 (define-key pdf-view-mode-map [mouse-8] #'pdf-history-backward)
 (define-key pdf-view-mode-map [mouse-9] #'pdf-history-forward)
+
+(define-key pdf-view-mode-map [backspace] #'pdf-history-backward)
+(define-key pdf-view-mode-map [(shift backspace)] #'pdf-history-forward)
+
+(define-key pdf-view-mode-map (kbd "M-<left>")  #'pdf-history-backward)
+(define-key pdf-view-mode-map (kbd "M-<right>") #'pdf-history-forward)
 
 (define-key pdf-view-mode-map [C-mouse-5] #'pdf-view-shrink)
 (define-key pdf-view-mode-map [C-mouse-4] #'pdf-view-enlarge)
