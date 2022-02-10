@@ -47,6 +47,7 @@
 ;;;;;;;;;;;
 ;; LOADS ;;
 ;;;;;;;;;;;
+(pdf-tools-install)
 (labels ((try-load (prefix name)
                    (when (file-exists-p prefix)
                      (load (concat prefix "/" name ".el"))))
@@ -71,15 +72,14 @@
   (loadit "org")
   (loadit "term")
   (loadit "tramp")
-  (loadit "keys")
   (loadit "pgp")
   (loadit "whitespace")
   (loadit "mail")
+  (loadit "keys")
 
   ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
   )
-(pdf-tools-install)
 
 ;;;;;;;;;;
 ;; MISC ;;

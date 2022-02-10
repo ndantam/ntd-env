@@ -155,15 +155,15 @@
   (TeX-command  "LatexMk"
                 #'TeX-master-file nil))
 
-(define-key tex-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
-(define-key tex-mode-map (kbd "\C-cv") #'ntd/tex-view)
+;;(define-key tex-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
+;;(define-key tex-mode-map (kbd "\C-cv") #'ntd/tex-view)
 (define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
 (define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
 
-(define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+;;(define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
 (define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
 
-(define-key tex-mode-map (kbd "\C-c\C-s") #'save-buffer)
+;;(define-key tex-mode-map (kbd "\C-c\C-s") #'save-buffer)
 (define-key LaTeX-mode-map (kbd "\C-c\C-s") #'save-buffer)
 
 (define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
