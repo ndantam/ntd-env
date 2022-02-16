@@ -184,6 +184,9 @@
 (define-key pdf-view-mode-map (kbd "l") #'image-forward-hscroll)
 (define-key pdf-view-mode-map (kbd "h") #'image-backward-hscroll)
 
+(define-key pdf-view-mode-map [(shift mouse-4)] #'image-backward-hscroll)
+(define-key pdf-view-mode-map [(shift mouse-5)] #'image-forward-hscroll)
+
 (define-key pdf-view-mode-map [mouse-2] #'pdf-sync-backward-search-mouse)
 
 (define-key pdf-view-mode-map [mouse-8] #'pdf-history-backward)
