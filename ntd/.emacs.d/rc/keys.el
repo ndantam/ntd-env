@@ -54,16 +54,22 @@
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
 
-;; version control
-(global-set-key "\C-xvp" 'vc-update)
-(global-set-key "\C-xve" 'ediff-revision)
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;;; version control ;;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (global-set-key "\C-xvp" 'vc-update)
+;; (global-set-key "\C-xve" 'ediff-revision)
+;; (global-set-key "\C-cv=" 'magit-diff-working-tree)
+;; (global-set-key "\C-cvl" 'magit-display-log)
+;; (global-set-key "\C-cvL"  'magit-log-long)
+
 (global-set-key "\C-cc" 'magit-status)
 
-(global-set-key "\C-cvl" 'magit-display-log)
-(global-set-key "\C-cvL"  'magit-log-long)
-
-(global-set-key "\C-cv=" 'magit-diff-working-tree)
-
+;;;;;;;;;;;;;;;
+;;; Display ;;;
+;;;;;;;;;;;;;;;
 
 ;; toggle meubar
 (global-set-key "\C-cM" (lambda () (interactive)
@@ -125,19 +131,25 @@
 
 
 ;; Lisp
-(eval-after-load "slime"
-  '(progn
-     (global-set-key "\C-cl" 'slime-selector)
+(with-eval-after-load 'slime
+  (global-set-key "\C-cl" 'slime-selector)
 
-     (global-set-key "\C-cLs" 'slime)
-     (global-set-key "\C-cLq" 'slime-quit-lisp)
+  (global-set-key "\C-cLs" 'slime)
+  (global-set-key "\C-cLq" 'slime-quit-lisp)
 
-     (global-set-key "\C-cLc" 'local-slime-connect)
-     (global-set-key "\C-cLl" 'slime-load-system)
-     (global-set-key "\C-cLr" 'slime-reload-system)
+  (global-set-key "\C-cLc" 'local-slime-connect)
+  (global-set-key "\C-cLl" 'slime-load-system)
+  (global-set-key "\C-cLr" 'slime-reload-system)
 
-     (global-set-key "\C-cLd" 'slime-disconnect)))
+  (global-set-key "\C-cLd" 'slime-disconnect))
 
+
+
+;;;;;;;;;;;;;;;
+;;; Linting ;;;
+;;;;;;;;;;;;;;;
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 ;;;;;;;;;;;;;;
 ;;; AuCTeX ;;;
@@ -172,34 +184,53 @@
 ;;; PDF ;;;
 ;;;;;;;;;;;
 
-(define-key pdf-view-mode-map (kbd "g")
-  #'ntd/revert-buffer-dammit)
+(defun ntd/revert-pdf ()
+  (interactive)
+  ;; TODO: rebuild the PDF if it's from latex
+  ;; (when (fboundp 'TeX-master-file)
+  ;;   (let* ((pdf (TeX-master-file))
+  ;;          (synctex (pdf-sync-locate-synctex-file pdf)))
+  ;;     (print synctex)))
+  ;; Reload
+  (ntd/revert-buffer-dammit))
 
 ;; (define-key pdf-view-mode-map (kbd "j") #'pdf-view-scroll-up-or-next-page)
 ;; (define-key pdf-view-mode-map (kbd "k") #'pdf-view-scroll-down-or-previous-page)
-(define-key pdf-view-mode-map (kbd "j") #'pdf-view-next-line-or-next-page)
-(define-key pdf-view-mode-map (kbd "k") #'pdf-view-previous-line-or-previous-page)
 
-(define-key pdf-history-minor-mode-map (kbd "l") nil)
-(define-key pdf-view-mode-map (kbd "l") #'image-forward-hscroll)
-(define-key pdf-view-mode-map (kbd "h") #'image-backward-hscroll)
+(with-eval-after-load 'pdf-view
+  (define-key pdf-view-mode-map (kbd "g")
+    #'ntd/revert-pdf)
 
-(define-key pdf-view-mode-map [(shift mouse-4)] #'image-backward-hscroll)
-(define-key pdf-view-mode-map [(shift mouse-5)] #'image-forward-hscroll)
+  ;; scrolling
+  (define-key pdf-view-mode-map (kbd "j") #'pdf-view-next-line-or-next-page)
+  (define-key pdf-view-mode-map (kbd "k") #'pdf-view-previous-line-or-previous-page)
 
-(define-key pdf-view-mode-map [mouse-2] #'pdf-sync-backward-search-mouse)
+  (define-key pdf-view-mode-map (kbd "l") #'image-forward-hscroll)
+  (define-key pdf-view-mode-map (kbd "h") #'image-backward-hscroll)
 
-(define-key pdf-view-mode-map [mouse-8] #'pdf-history-backward)
-(define-key pdf-view-mode-map [mouse-9] #'pdf-history-forward)
+  (define-key pdf-view-mode-map [(shift mouse-4)] #'image-backward-hscroll)
+  (define-key pdf-view-mode-map [(shift mouse-5)] #'image-forward-hscroll)
 
-(define-key pdf-view-mode-map [backspace] #'pdf-history-backward)
-(define-key pdf-view-mode-map [(shift backspace)] #'pdf-history-forward)
+  ;; sync
+  (define-key pdf-view-mode-map [mouse-2] #'pdf-sync-backward-search-mouse)
 
-(define-key pdf-view-mode-map (kbd "M-<left>")  #'pdf-history-backward)
-(define-key pdf-view-mode-map (kbd "M-<right>") #'pdf-history-forward)
+  ;; zoom
+  (define-key pdf-view-mode-map [C-mouse-5] #'pdf-view-shrink)
+  (define-key pdf-view-mode-map [C-mouse-4] #'pdf-view-enlarge))
 
-(define-key pdf-view-mode-map [C-mouse-5] #'pdf-view-shrink)
-(define-key pdf-view-mode-map [C-mouse-4] #'pdf-view-enlarge)
+(with-eval-after-load 'pdf-history
+  ;; use l to scroll
+  (define-key pdf-history-minor-mode-map (kbd "l") nil)
+
+  (define-key pdf-history-minor-mode-map [mouse-8] #'pdf-history-backward)
+  (define-key pdf-history-minor-mode-map [mouse-9] #'pdf-history-forward)
+
+  (define-key pdf-history-minor-mode-map [backspace] #'pdf-history-backward)
+  (define-key pdf-history-minor-mode-map [(shift backspace)] #'pdf-history-forward)
+
+  (define-key pdf-history-minor-mode-map (kbd "M-<left>")  #'pdf-history-backward)
+  (define-key pdf-history-minor-mode-map (kbd "M-<right>") #'pdf-history-forward))
+
 
 ;;;;;;;;;;
 ;;; WL ;;;

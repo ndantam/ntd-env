@@ -127,12 +127,6 @@
 ;;add-hook 'python-mode-hook 'whitespace-mode)
 
 
-;;;;;;;;;;;;
-;;  TEXT  ;;
-;;;;;;;;;;;;
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 
 ;;;;;;;;;;;;
 ;;  js2   ;;

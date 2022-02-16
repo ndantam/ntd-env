@@ -23,6 +23,7 @@
                    (command-execute 'save-buffer)
                    (command-execute 'TeX-command-master)))
              ;(visual-line-mode nil)
+  (reftex-mode)
   (auto-fill-mode 1)
   (TeX-PDF-mode)
   (TeX-source-correlate-mode))
