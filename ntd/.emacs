@@ -75,6 +75,7 @@
   (loadit "pgp")
   (loadit "whitespace")
   (loadit "mail")
+  (loadit "text")
   (loadit "keys")
 
   ;; (loadit "el-get") ; don't need this.
