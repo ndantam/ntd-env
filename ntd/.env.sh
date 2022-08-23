@@ -136,9 +136,22 @@ pdfcat() {
 }
 pdfcompress() {
     F=`tempfile`
-    #gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$F" "$1"
-    gs -dCompatibilityLevel=2.0 -dDetectDuplicateImages=true -dNOPAUSE -dBATCH -dQUIET -dCompressFonts=true -dPrinted=false -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile="$F" "$1"
-    mv "$F" "$1"
+    gs \
+        -dCompatibilityLevel=2.0 \
+        -dDetectDuplicateImages=true \
+        -dNOPAUSE \
+        -dBATCH \
+        -dQUIET \
+        -dCompressFonts=true \
+        -dPrinted=false \
+        -dPDFSETTINGS=/prepress \
+        -sDEVICE=pdfwrite \
+        -sOutputFile="$F" "$1"
+    if [ `stat --format="%s" "$1"` -gt `stat --format="%s" "$F"` ]; then \
+        mv "$F" "$1"
+    else
+        rm "$F"
+    fi
 }
 
 gitrcp () {
