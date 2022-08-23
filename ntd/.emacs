@@ -113,6 +113,15 @@
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
+;; backup locations
+
+
+
+(setq backup-directory-alist
+      '(("." . "~/.emacs.d/bk")))
+
+
+
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
 ;;;;;;;;;;;;;;
@@ -253,40 +262,23 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-output-view-style
-   '(("^dvi$"
-      ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
-      "%(o?)dvips -t landscape %d -o && gv %f")
-     ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
-     ("^dvi$"
-      ("^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "^landscape$")
-      "%(o?)xdvi %dS -paper a4r -s 0 %d")
-     ("^dvi$" "^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "%(o?)xdvi %dS -paper a4 %d")
-     ("^dvi$"
-      ("^a5\\(?:comb\\|paper\\)$" "^landscape$")
-      "%(o?)xdvi %dS -paper a5r -s 0 %d")
-     ("^dvi$" "^a5\\(?:comb\\|paper\\)$" "%(o?)xdvi %dS -paper a5 %d")
-     ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
-     ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
-     ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
-     ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
-     ("^dvi$" "." "%(o?)xdvi %dS %d")
-     ("^pdf$" "." "evince %o %(outpage)")
-     ("^html?$" "." "netscape %o")))
  '(case-fold-search t)
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
- '(imaxima-fnt-size "LARGE" t)
+ '(imaxima-fnt-size "LARGE")
  '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   '(visual-fill-column messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
+   '(caml tuareg tabbar session scala-mode popup pod-mode muttrc-mode mutt-alias markdown-mode initsplit async helm-core helm folding eproject diminish csv-mode company color-theme-modern browse-kill-ring boxquote bm bar-cursor apache-mode compat with-editor transient tablist macrostep slime apel oauth2 flim semi pdf-tools dash magit-section git-commit magit js-comint bbdb auctex auctex-latexmk writegood-mode flymake-proselint visual-fill-column messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
+ '(pdf-misc-print-program-executable "/usr/bin/gtklp")
  '(safe-local-variable-values
-   '((Package . CLPYTHON\.MODULE\.MATH)
+   '((Package . FIVEAM)
+     (Syntax . Ansi-Common-Lisp)
+     (Package . CLPYTHON\.MODULE\.MATH)
      (package . rune-dom)
      (Package . CXML)
      (Syntax . Common-Lisp)

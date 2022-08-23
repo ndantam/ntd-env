@@ -55,6 +55,8 @@
 (global-set-key "\M-\\" 'hippie-expand)
 
 
+(global-set-key "\C-ca" 'ntd/asciify-region)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;; version control ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -148,37 +150,48 @@
 ;;;;;;;;;;;;;;;
 ;;; Linting ;;;
 ;;;;;;;;;;;;;;;
-(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
-(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
+;; (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+;; (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 ;;;;;;;;;;;;;;
 ;;; AuCTeX ;;;
 ;;;;;;;;;;;;;;
-(defun ntd/tex-view ()
-  (interactive)
-  ;;(TeX-command "View" #'TeX-master-file)
-  (TeX-pdf-tools-sync-view))
 
-(defun ntd/tex-mk ()
-  (interactive)
-  (command-execute 'save-buffer)
-  ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
-  ;; should have a flag to always kill.
-  (TeX-command  "LatexMk"
-                #'TeX-master-file nil))
 
-;;(define-key tex-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
-;;(define-key tex-mode-map (kbd "\C-cv") #'ntd/tex-view)
-(define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
-(define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
+(with-eval-after-load 'latex
 
-;;(define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
-(define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+  ;; (defun ntd/tex-command-master ()
+  ;;   (interactive)
+  ;;   ;; (command-execute 'save-buffer)
+  ;;   ;;(command-execute 'TeX-save-document)
+  ;;   (command-execute 'TeX-command-master))
+  ;; (define-key LaTeX-mode-map (kbd "\C-c\C-c") #'ntd/tex-command-master)
 
-;;(define-key tex-mode-map (kbd "\C-c\C-s") #'save-buffer)
-(define-key LaTeX-mode-map (kbd "\C-c\C-s") #'save-buffer)
+  ;; Building
+  (defun ntd/tex-mk ()
+    (interactive)
+    (command-execute 'save-buffer)
+    (command-execute 'TeX-save-document)
+    ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
+    ;; should have a flag to always kill.
+    ;(TeX-command  "LatexMk" #'TeX-master-file nil)
+    (TeX-command  "LaTeX" #'TeX-master-file nil))
 
-(define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
+  ;; (define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+  (define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
+  (define-key LaTeX-mode-map (kbd "\C-c\C-s") #'save-buffer)
+
+  ;; Viewing
+  (defun ntd/tex-view ()
+    (interactive)
+    ;;(TeX-command "View" #'TeX-master-file)
+    (TeX-pdf-tools-sync-view))
+
+  (define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
+  (define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
+  ;;(define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
+  (define-key LaTeX-mode-map (kbd "\C-cf") #'ntd/tex-view)
+)
 
 ;;;;;;;;;;;
 ;;; PDF ;;;

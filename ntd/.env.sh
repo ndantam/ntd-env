@@ -9,7 +9,7 @@
 ##########
 
 export EDITOR=vim
-export DEBEMAIL="ntd@gatech.edu"
+export DEBEMAIL="ndantam@mines.edu"
 export DEBFULLNAME="Neil Dantam"
 export CDPATH="$CDPATH:$HOME:$HOME/git"
 export PATH=~/bin:~/.local/bin:$PATH
@@ -136,7 +136,8 @@ pdfcat() {
 }
 pdfcompress() {
     F=`tempfile`
-    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$F" "$1"
+    #gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$F" "$1"
+    gs -dCompatibilityLevel=2.0 -dDetectDuplicateImages=true -dNOPAUSE -dBATCH -dQUIET -dCompressFonts=true -dPrinted=false -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile="$F" "$1"
     mv "$F" "$1"
 }
 
