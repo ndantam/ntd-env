@@ -12,7 +12,8 @@ function FindProxyForURL (url, host) {
         'journals.sagepub.com',
         'link.springer.com',
         'science.org',
-        'nature.com'
+        'nature.com',
+        'cambridge.org'
     ];
 
     // No proxy on Mines IP addresses

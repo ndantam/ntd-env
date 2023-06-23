@@ -251,6 +251,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "black" :foreground "green" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :family "JetBrains Mono"))))
  '(magit-diff-add ((((class color) (background dark)) (:foreground "#ccccff"))))
  '(magit-diff-hunk-header ((t (:inherit magit-header :foreground "#ff00ff" :slant italic))))
  '(magit-item-highlight ((((class color) (background dark)) (:background "#333333"))))
@@ -266,14 +267,14 @@
  '(current-language-environment "English")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))
- '(imaxima-fnt-size "LARGE")
+ '(imaxima-fnt-size "LARGE" t)
  '(imaxima-pt-size 11)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-flag nil)
  '(js2-mirror-mode nil)
  '(org-export-html-postamble nil)
  '(package-selected-packages
-   '(caml tuareg tabbar session scala-mode popup pod-mode muttrc-mode mutt-alias markdown-mode initsplit async helm-core helm folding eproject diminish csv-mode company color-theme-modern browse-kill-ring boxquote bm bar-cursor apache-mode compat with-editor transient tablist macrostep slime apel oauth2 flim semi pdf-tools dash magit-section git-commit magit js-comint bbdb auctex auctex-latexmk writegood-mode flymake-proselint visual-fill-column messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
+   '(cuda-mode caml tuareg tabbar session scala-mode popup pod-mode muttrc-mode mutt-alias markdown-mode initsplit async helm-core helm folding eproject diminish csv-mode company color-theme-modern browse-kill-ring boxquote bm bar-cursor apache-mode compat with-editor transient tablist macrostep slime apel oauth2 flim semi pdf-tools dash magit-section git-commit magit js-comint bbdb auctex auctex-latexmk writegood-mode flymake-proselint visual-fill-column messages-are-flowing "clang-format" clang-format bison-mode rust-mode offlineimap htmlize js2-mode yaml-mode graphviz-dot-mode dockerfile-mode))
  '(pdf-misc-print-program-executable "/usr/bin/gtklp")
  '(safe-local-variable-values
    '((Package . FIVEAM)

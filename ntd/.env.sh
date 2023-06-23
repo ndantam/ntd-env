@@ -137,7 +137,7 @@ pdfcat() {
 pdfcompress() {
     F=`tempfile`
     gs \
-        -dCompatibilityLevel=2.0 \
+        -dCompatibilityLevel=1.7 \
         -dDetectDuplicateImages=true \
         -dNOPAUSE \
         -dBATCH \
