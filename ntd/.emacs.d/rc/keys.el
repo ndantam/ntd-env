@@ -146,6 +146,7 @@
 
   (global-set-key "\C-cLd" 'slime-disconnect))
 
+(global-set-key (kbd "C-c C-;") #'flyspell-check-previous-highlighted-word)
 
 
 ;;;;;;;;;;;;;;;
@@ -173,10 +174,15 @@
     (interactive)
     (command-execute 'save-buffer)
     (command-execute 'TeX-save-document)
-    ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
-    ;; should have a flag to always kill.
-    ;(TeX-command  "LatexMk" #'TeX-master-file nil)
-    (TeX-command  "LaTeX" #'TeX-master-file nil))
+    (when (let ((b (buffer-name))
+                (m (TeX-master-file)))
+            (or (string-match ".*\\.tex" b)
+                ;(not (string= m b))
+                (not (string= m (replace-regexp-in-string "\\.[^\\.]*$" "" b)))))
+      ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
+      ;; should have a flag to always kill.
+      ;;(TeX-command  "LatexMk" #'TeX-master-file nil)
+      (TeX-command  "LaTeX" #'TeX-master-file nil)))
 
   ;; (define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
   (define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
