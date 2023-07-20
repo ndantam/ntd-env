@@ -56,6 +56,7 @@
 
 
 (global-set-key "\C-ca" 'ntd/asciify-region)
+(global-set-key "\C-cw" 'ntd/stylize-region)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;; version control ;;;

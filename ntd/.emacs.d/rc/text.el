@@ -25,7 +25,10 @@
           #'ntd/text-mode-hook)
 
 
-
+(defun ntd/alist-hash (alist)
+  (let ((hash (make-hash-table :test #'equal)))
+    (dolist (x alist) (puthash (car x) (cdr x) hash))
+    hash))
 
 (defun ntd/emoticon (&optional mouth eyes )
   (let ((eyes-str (alist-get eyes
@@ -105,11 +108,8 @@
          (?🙃 . "(:")                                   ; U+1F643, UPSIDE-DOWN FACE
 
          (?🤣 . " ROFL")                                ; U+1F923, ROLLING ON THE FLOOR LAUGHING
-         ))
-       ;; End Alist
-      (hash (make-hash-table)))
-  (dolist (x alist) (puthash (car x) (cdr x) hash))
-  (setq ntd/asciify-hash hash))
+         )))
+  (setq ntd/asciify-hash  (ntd/alist-hash  alist)))
 
 (defun ntd/strlen (thing)
   (etypecase thing
@@ -132,3 +132,33 @@
             (print (format "Could not asciify character: `%c' (%d)" c c))
             (setq is-ascii nil)))))
     is-ascii))
+
+
+(progn
+  (defvar ntd/style-alist
+    `(;; Contractions
+      ("isn't" . "is not")
+      ("wasn't" . "was not")
+      ("aren't" . "are not")
+      ("hasn't" . "has not")
+      ;; Style
+      ("depends upon" . "depends on")
+      ))
+
+  (defvar ntd/style-hash (ntd/alist-hash  ntd/style-alist))
+
+  (defvar ntd/style-re
+    (rx-to-string `(or ,@(mapcar #'car ntd/style-alist)))))
+
+(defun ntd/stylize-region (start end)
+  (interactive "r")
+  (save-excursion
+    (goto-char start)
+    (while (re-search-forward ntd/style-re end t)
+      (let* ((oldtext (match-string 0))
+             (newtext (gethash oldtext ntd/style-hash)))
+        (assert newtext)
+        ;; (print (format "Trying to styleize: `%s' -> `%s'" oldtext newtext))
+        (delete-char (- (length oldtext)))
+        (insert newtext)
+        (forward-char (length newtext))))))
