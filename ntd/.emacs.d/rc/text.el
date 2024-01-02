@@ -141,8 +141,19 @@
       ("wasn't" . "was not")
       ("aren't" . "are not")
       ("hasn't" . "has not")
-      ;; Style
+      ("doesn't" . "does not")
+      ;; Grammar
+      ("lidar" . "LIDAR")
+      ("boolean" . "Boolean")
+      ;; Style and brevity
       ("depends upon" . "depends on")
+      ("is dependent on" . "depends on")
+      ("based upon" . "based on")
+      ("must have" . "need") ;; plurality
+      ("find a solution to" . "solve")
+      ("in line with" . "consistent with")
+      ("In line with" . "Consistent with")
+      ("lead to" . "cause") ;; yield, produce
       ))
 
   (defvar ntd/style-hash (ntd/alist-hash  ntd/style-alist))
@@ -162,3 +173,11 @@
         (delete-char (- (length oldtext)))
         (insert newtext)
         (forward-char (length newtext))))))
+
+(defun ntd/texify-region (start end)
+  (interactive "r")
+  ;; quotes
+  (save-excursion
+    (goto-char start)
+    (while (re-search-forward "\"\\([^\"]*\\)\"" end t)
+      (replace-match "``\\1''"))))
