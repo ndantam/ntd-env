@@ -127,8 +127,7 @@
           (if-let ((newtext (gethash c ntd/asciify-hash)))
               (progn
                 (delete-char -1)
-                (insert newtext)
-                (forward-char (ntd/strlen newtext)))
+                (insert newtext))
             (print (format "Could not asciify character: `%c' (%d)" c c))
             (setq is-ascii nil)))))
     is-ascii))
