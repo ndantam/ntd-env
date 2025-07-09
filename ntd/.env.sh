@@ -16,6 +16,15 @@ export PATH=~/bin:~/.local/bin:$PATH
 export LD_LIBRARY_PATH=~/lib:/usr/local/lib:$LD_LIBRARY_PATH
 export NPROC=`nproc`
 
+# PYTHONPATH
+if sh -c "ls -d /usr/local/lib/python* 2> /dev/null  > /dev/null"; then
+    PYTHONPATH_TMP=$(sh -c "ls -d /usr/local/lib/python*" | sort -Vr | head -n 1)
+    if [ -n ${PYTHON_PATH_TMP} ] ; then
+        export PYTHONPATH="${PYTHONPATH}:${PYTHONPATH_TMP}/site-packages"
+    fi
+    unset PYTHONPATH_TMP
+fi
+
 #############
 ## ALIASES ##
 #############
