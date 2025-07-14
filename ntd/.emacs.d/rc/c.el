@@ -29,4 +29,13 @@
 ;;  clangd  ;;
 ;;;;;;;;;;;;;;
 
-(add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.clang\\(d\\|-tidy\\|-format\\)\\'" . yaml-mode))
+
+(with-eval-after-load 'eglot
+  (defun ntd/maybe-start-eglot ()
+    (let ((root (project-root (project-current))))
+      (when (or (file-exists-p (expand-file-name ".clangd" root))
+                (file-exists-p (expand-file-name "compile_commands.json" root)))
+      (eglot-ensure))))
+
+  (add-hook 'c-mode-common-hook #'ntd/maybe-start-eglot))

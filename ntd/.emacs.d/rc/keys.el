@@ -60,9 +60,15 @@
 ;;;;;;;;;;;
 
 ;; clang-format
+(defun ntd/clang-format-line ()
+  (interactive)
+  (clang-format-region (line-beginning-position)
+                       (line-end-position)))
+
 (defun ntd/clang-format-hook ()
   (local-set-key (kbd "C-c M-q") 'clang-format-buffer)
-  (local-set-key (kbd "M-q") 'clang-format-region))
+  (local-set-key (kbd "M-q") 'clang-format-region)
+  (local-set-key (kbd "TAB") 'ntd/clang-format-line))
 
 (add-hook 'c-mode-hook 'ntd/clang-format-hook)
 (add-hook 'c++-mode-hook 'ntd/clang-format-hook)
@@ -72,17 +78,20 @@
 ;;;;;;;;;;
 
 (defun ntd/flymake-keys ()
-  (local-set-key  (kbd "M-n")  'flymake-goto-next-error)
-  (local-set-key  (kbd "M-p")  'flymake-goto-prev-error)
-  (local-set-key  (kbd "C-c f b")  'flymake-show-buffer-diagnostics))
+  (local-set-key (kbd "M-n") 'flymake-goto-next-error)
+  (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
+  (local-set-key (kbd "C-c f b") 'flymake-show-buffer-diagnostics))
 (with-eval-after-load 'flymake
-  (add-hook 'flymake-mode-hook  'ntd/flymake-keys))
+  (add-hook 'flymake-mode-hook 'ntd/flymake-keys))
 
 (defun ntd/eglot-keys ()
-  (local-set-key  (kbd "C-c TAB")  'completion-at-point)
-  (local-set-key  (kbd "M-RET")  'eglot-code-actions))
+  (local-set-key (kbd "C-c TAB") 'completion-at-point)
+  (local-set-key (kbd "M-RET") 'eglot-code-actions)
+  (local-set-key (kbd "C-c M-q") 'eglot-format-buffer)
+  (local-set-key (kbd "M-q") 'eglot-format))
+
 (with-eval-after-load 'eglot
-  (add-hook 'eglot-mode-hook  'ntd/eglot-keys)
+  (add-hook 'eglot-mode-hook 'ntd/eglot-keys)
   (add-hook 'eglot--managed-mode-hook 'ntd/eglot-keys))
 
 ;;;;;;;;;;;;;;;;;;;;;;;

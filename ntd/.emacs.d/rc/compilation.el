@@ -9,9 +9,6 @@
 ;;  Compilation  ;;
 ;;;;;;;;;;;;;;;;;;;
 
-
-
-
 (defun ntd/get-closest-makefile-dir (d)
   (let ((d (expand-file-name d)))
     (cond
@@ -28,43 +25,64 @@
 (defvar ntd/base-compile-command
   (format "make -kj%d"
           (let ((n (string-to-number (shell-command-to-string "nproc"))))
-            (if (<= n 4)
-                (* n 2)
-              (/ (* 3 n )
-                 2)))))
+            (cond
+             ((<= n 4)
+              (* n 2))
+             ((<= n 16
+                  (/ (* 3 n )
+                     2)))
+             (t n)))))
 
 (defvar ntd/compile-command nil)
+;;(setq ntd/compile-command nil)
+
 (defun ntd/compile-command ()
-  (or ntd/compile-command
-      (let ((dir (ntd/get-closest-makefile-dir default-directory)))
-        (if dir
-            (format "%s -C %s" ntd/base-compile-command dir)
-          ntd/base-compile-command))))
+  (or
+   ;; already defined, but let compile-command override
+   (if ntd/compile-command
+       (if compile-command
+           compile-command
+         ntd/compile-command))
+   ;; Project
+   (let ((root (project-root (project-current))))
+     (when (file-exists-p (expand-file-name "Makefile" root))
+       ntd/base-compile-command))
+   ;; Lookup
+   (let ((dir (ntd/get-closest-makefile-dir default-directory)))
+     (if dir
+         (format "%s -C %s" ntd/base-compile-command dir)
+       ntd/base-compile-command))))
 
-(defun ntd/closest-makefile-hook ()
-  (let ((cmd (ntd/compile-command)))
-    (set (make-local-variable 'compile-command)
-         cmd)
-    (set (make-local-variable 'ntd/compile-command)
-         cmd)))
-
-(defun ntd/compile (cmd)
+(defun ntd/compile-manual (cmd)
   (interactive (list (read-from-minibuffer "Compile Command: "
                                            (ntd/compile-command))))
   (when buffer-file-name
     (save-buffer)
     (set (make-local-variable 'ntd/compile-command) cmd))
-  (compile cmd))
+      (project-compile)
+    (compile cmd))
+
+(defun ntd/compile-project ()
+  (interactive)
+  (let ((cmd (ntd/compile-command)))
+    (set (make-local-variable 'ntd/compile-command)
+         cmd)
+    (set (make-local-variable 'compile-command)
+         cmd)
+    (project-compile)))
+
+(defun ntd/compile ()
+  (interactive)
+  (when buffer-file-name
+    (save-buffer))
+  (if (project-current)
+      (ntd/compile-project)
+    (ntd/compile-manual nil)))
 
 (defun ntd/recompile ()
   (interactive)
   (when buffer-file-name
     (save-buffer))
-  (command-execute 'recompile))
-
-(add-hook 'c-mode-hook 'ntd/closest-makefile-hook)
-(add-hook 'c++-mode-hook 'ntd/closest-makefile-hook)
-(add-hook 'f90-mode-hook 'ntd/closest-makefile-hook)
-(add-hook 'f77-mode-hook 'ntd/closest-makefile-hook)
-(add-hook 'org-mode-hook 'ntd/closest-makefile-hook)
-(add-hook 'markdown-mode-hook 'ntd/closest-makefile-hook)
+  (if (project-current)
+      (project-recompile)
+      (command-execute 'recompile)))

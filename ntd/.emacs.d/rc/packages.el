@@ -19,3 +19,17 @@
                '("melpa" . "https://melpa.org/packages/")
                )
   )
+
+(with-eval-after-load 'package
+
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
+
+  (use-package yaml-mode :ensure t)
+
+  (use-package eglot)
+
+;; End of packages
+  )
