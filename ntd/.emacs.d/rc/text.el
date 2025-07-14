@@ -141,6 +141,7 @@
       ("aren't" . "are not")
       ("hasn't" . "has not")
       ("doesn't" . "does not")
+      ("don't" . "do not")
       ;; Grammar
       ("lidar" . "LIDAR")
       ("boolean" . "Boolean")
@@ -149,6 +150,11 @@
       ("is dependent on" . "depends on")
       ("based upon" . "based on")
       ("must have" . "need") ;; plurality
+
+      ("come up with" . "find")
+      ("be more than" . "exceed")
+      ("at the same time" . "simultaneously")
+
       ("find a solution to" . "solve")
       ("in line with" . "consistent with")
       ("In line with" . "Consistent with")

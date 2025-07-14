@@ -44,7 +44,7 @@
 
 ;; Hooks
 (defun ntd/LaTeX-mode-hook ()
-  (visual-line-mode nil)
+  (visual-line-mode 0)
   (reftex-mode)
   (auto-fill-mode 1)
   (flyspell-mode 1)
