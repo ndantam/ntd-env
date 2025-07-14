@@ -44,20 +44,46 @@
 (global-set-key "\C-cU" 'uncomment-region)
 ;(global-set-key "\C-cL" 'longlines-mode)
 
+(global-set-key "\C-cd" 'eldoc-print-current-symbol-info)
+
+;; expand
+(global-set-key "\M-\\" 'hippie-expand)
+
+;; Text
+(global-set-key "\C-ca" 'ntd/asciify-region)
+(global-set-key "\C-cw" 'ntd/stylize-region)
+(global-set-key "\C-cx" 'ntd/texify-region)
+(global-set-key (kbd "C-c C-;") #'flyspell-check-previous-highlighted-word)
+
+;;;;;;;;;;;
+;; C/C++ ;;
+;;;;;;;;;;;
+
 ;; clang-format
 (defun ntd/clang-format-hook ()
+  (local-set-key (kbd "C-c M-q") 'clang-format-buffer)
   (local-set-key (kbd "M-q") 'clang-format-region))
 
 (add-hook 'c-mode-hook 'ntd/clang-format-hook)
 (add-hook 'c++-mode-hook 'ntd/clang-format-hook)
 
-;; expand
-(global-set-key "\M-\\" 'hippie-expand)
+;;;;;;;;;;
+;;  LSP ;;
+;;;;;;;;;;
 
+(defun ntd/flymake-keys ()
+  (local-set-key  (kbd "M-n")  'flymake-goto-next-error)
+  (local-set-key  (kbd "M-p")  'flymake-goto-prev-error)
+  (local-set-key  (kbd "C-c f b")  'flymake-show-buffer-diagnostics))
+(with-eval-after-load 'flymake
+  (add-hook 'flymake-mode-hook  'ntd/flymake-keys))
 
-(global-set-key "\C-ca" 'ntd/asciify-region)
-(global-set-key "\C-cw" 'ntd/stylize-region)
-(global-set-key "\C-cx" 'ntd/texify-region)
+(defun ntd/eglot-keys ()
+  (local-set-key  (kbd "C-c TAB")  'completion-at-point)
+  (local-set-key  (kbd "M-RET")  'eglot-code-actions))
+(with-eval-after-load 'eglot
+  (add-hook 'eglot-mode-hook  'ntd/eglot-keys)
+  (add-hook 'eglot--managed-mode-hook 'ntd/eglot-keys))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;; version control ;;;
@@ -84,6 +110,10 @@
 (global-set-key "\C-co" 'other-window)
 (global-set-key "\C-cO" (lambda () (interactive) (other-window -1)))
 ;(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
+
+
+(global-set-key "\C-ct" #'toggle-truncate-lines)
+(global-set-key "\C-cv" #'visual-line-mode)
 
 ;; These seem unhelpful
 ;;(global-set-key "\C-ch" 'windmove-left)
@@ -121,10 +151,8 @@
                                   'fullboth)))))
 (global-set-key [f11] 'toggle-fullscreen)
 
-
 ;; Browser
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
-
 
 ;; reload file
 (global-set-key [f5] 'revert-buffer)
@@ -133,6 +161,9 @@
 (global-set-key "\C-cs" #'ntd/term-zsh)
 (global-set-key "\C-cr" #'ntd/term-ssh)
 
+;;;;;;;;;;;;;;;;;;;
+;;; Common Lisp ;;;
+;;;;;;;;;;;;;;;;;;;
 
 ;; Lisp
 (with-eval-after-load 'slime
@@ -147,8 +178,13 @@
 
   (global-set-key "\C-cLd" 'slime-disconnect))
 
-(global-set-key (kbd "C-c C-;") #'flyspell-check-previous-highlighted-word)
+;;;;;;;;;;;;;;;;;;
+;;; Emacs Lisp ;;;
+;;;;;;;;;;;;;;;;;;
 
+(defun ntd/elisp-keys ()
+  (local-set-key  (kbd "C-c C-c")  'eval-buffer))
+(add-hook 'emacs-lisp-mode-hook  'ntd/elisp-keys)
 
 ;;;;;;;;;;;;;;;
 ;;; Linting ;;;

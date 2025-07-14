@@ -23,3 +23,10 @@
                                    (inextern-lang . [0])))))
 
 (setq c-default-style "user")
+
+
+;;;;;;;;;;;;;;
+;;  clangd  ;;
+;;;;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
