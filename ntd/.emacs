@@ -121,11 +121,24 @@
 
 ;; backup locations
 
-
-
 (setq backup-directory-alist
       '(("." . "~/.emacs.d/bk")))
 
+
+(add-to-list 'auto-mode-alist '("\\.editorconfig\\'" . conf-mode))
+
+(defun ntd/make-frame (nextract display)
+  ;; Setup xauth
+  (unless (zerop (length nextract))
+    (let ((xauthority (getenv "XAUTHORITY")))
+      (unless (or (zerop (length xauthority)))
+        ;; ensure xauthority exists
+        (unless (file-exists-p xauthority)
+          (shell-command (format "touch '%s'" xauthority)))
+        ;; merge xauth
+        (shell-command (format "echo '%s' | xauth nmerge -" nextract)))))
+  ;; Create frame
+  (make-frame-on-display display))
 
 
 ;;;;;;;;;;;;;;

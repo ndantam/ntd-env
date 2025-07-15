@@ -13,14 +13,9 @@ if [ -z "$DISPLAY" ]; then
     exit 1
 fi
 
-### Merge the xauth entry for $DISPLAY into emacs's xauthority
-# scrub out localhost from display, or xauth doesn't list it
-SCRUBBED_DISPLAY=`echo $DISPLAY | sed -e 's/^localhost:/:/'`
-if [ -n "$SCRUBBED_DISPLAY" ]; then
-    CURRENT_XAUTH=`xauth list $SCRUBBED_DISPLAY`
-    emacsclient -e "(shell-command \"xauth add $CURRENT_XAUTH\")" > /dev/null
-fi
+### Extract xauthority and give to Emacs
+NEXTRACT=$(xauth nextract - "$DISPLAY" | sed ':a;N;$!ba;s/\n/\\n/g')
+S_DISPLAY=$(echo "$DISPLAY" | sed -e 's/"/\\\\"/')
+exec emacsclient -e "(ntd/make-frame \"$NEXTRACT\" \"$S_DISPLAY\")"
 
-### New emacs frame
-exec emacsclient -e "(make-frame-on-display  \"$DISPLAY\")"
 exit 1
