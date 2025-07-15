@@ -18,26 +18,23 @@
                             (switch-to-buffer buf))
                           (woman)))
 
-
-
-
 (global-set-key [f1] 'ntd/recompile)
 (global-set-key [f2] 'ntd/compile)
 ;(global-set-key (kbd "C-c C")  'compile)
 ;(global-set-key (kbd "C-c k")  'my-recompile)
-
-
 ;;(global-set-key [f1] 'my-recompile)
 
-(defun my-recompile-hook ()
+(defun ntd/recompile-hook ()
   (local-set-key (kbd "C-c C-c") 'ntd/recompile))
 
-(add-hook 'autoconf-mode-hook 'my-recompile-hook)
-(add-hook 'automake-mode-hook 'my-recompile-hook)
-(add-hook 'c-mode-hook 'my-recompile-hook)
-(add-hook 'c++-mode-hook 'my-recompile-hook)
+(dolist (x '(autoconf-mode-hook
+             automake-mode-hook
+             c-mode-hook
+             c++-mode-hook
+             dired-mode-hook))
+  (add-hook x 'ntd/recompile-hook))
 
-(global-set-key "\C-ctK" 'tramp-compile)
+;(global-set-key "\C-ctK" 'tramp-compile)
 
 ;; commenting
 (global-set-key "\C-cX" 'comment-region)
@@ -59,16 +56,10 @@
 ;; C/C++ ;;
 ;;;;;;;;;;;
 
-;; clang-format
-(defun ntd/clang-format-line ()
-  (interactive)
-  (clang-format-region (line-beginning-position)
-                       (line-end-position)))
-
 (defun ntd/clang-format-hook ()
-  (local-set-key (kbd "C-c M-q") 'clang-format-buffer)
-  (local-set-key (kbd "M-q") 'clang-format-region)
-  (local-set-key (kbd "TAB") 'ntd/clang-format-line))
+  (local-set-key (kbd "C-c M-q") 'ntd/c-format-buffer)
+  (local-set-key (kbd "M-q") 'ntd/c-format-region)
+  (local-set-key (kbd "TAB") 'ntd/c-tab))
 
 (add-hook 'c-mode-hook 'ntd/clang-format-hook)
 (add-hook 'c++-mode-hook 'ntd/clang-format-hook)
@@ -76,6 +67,16 @@
 ;;;;;;;;;;
 ;;  LSP ;;
 ;;;;;;;;;;
+
+(defun ntd/eglot-format-region ()
+  (interactive)
+  (eglot-format (region-beginning)
+                (region-end)))
+
+(defun ntd/eglot-format-line ()
+  (interactive)
+  (eglot-format (line-beginning-position)
+                 (line-end-position)))
 
 (defun ntd/flymake-keys ()
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
@@ -87,12 +88,13 @@
 (defun ntd/eglot-keys ()
   (local-set-key (kbd "C-c TAB") 'completion-at-point)
   (local-set-key (kbd "M-RET") 'eglot-code-actions)
-  (local-set-key (kbd "C-c M-q") 'eglot-format-buffer)
-  (local-set-key (kbd "M-q") 'eglot-format))
+  ;; (local-set-key (kbd "C-c M-q") 'eglot-format-buffer)
+  ;; (local-set-key (kbd "M-q") 'ntd/eglot-format-region)
+  )
 
 (with-eval-after-load 'eglot
-  (add-hook 'eglot-mode-hook 'ntd/eglot-keys)
   (add-hook 'eglot--managed-mode-hook 'ntd/eglot-keys))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;; version control ;;;
@@ -205,7 +207,6 @@
 ;;; AuCTeX ;;;
 ;;;;;;;;;;;;;;
 
-
 (with-eval-after-load 'latex
 
   ;; (defun ntd/tex-command-master ()
@@ -228,7 +229,9 @@
       ;; TODO: TeX-process-check asks if we want to kill latexmk.  It
       ;; should have a flag to always kill.
       ;;(TeX-command  "LatexMk" #'TeX-master-file nil)
-      (TeX-command  "LaTeX" #'TeX-master-file nil)))
+      ;;(TeX-command  "LaTeX" #'TeX-master-file nil)
+      (TeX-command-run-all nil)
+      ))
 
   ;; (define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
   (define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
@@ -241,7 +244,7 @@
     (TeX-pdf-tools-sync-view))
 
   (define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
-  (define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
+  ;;(define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
   ;;(define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
   (define-key LaTeX-mode-map (kbd "\C-cf") #'ntd/tex-view)
 )

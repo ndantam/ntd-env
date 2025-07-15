@@ -5,9 +5,9 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
-;;;;;;;;;;;;;;;;
-;;  PACKAGES  ;;
-;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;  Setup  ;;
+;;;;;;;;;;;;;
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
@@ -18,18 +18,26 @@
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/")
                )
-  )
 
-(with-eval-after-load 'package
+  ;; update packages list if we are on a new install
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  ;; Get use-package
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package)))
+
+;;;;;;;;;;;;;;;;
+;;  Packages  ;;
+;;;;;;;;;;;;;;;;
+(with-eval-after-load 'use-package
 
   (use-package editorconfig
     :ensure t
-    :config
-    (editorconfig-mode 1))
+    :config (editorconfig-mode 1))
 
   (use-package yaml-mode :ensure t)
-
-  (use-package eglot)
+  (use-package eglot :ensure t)
 
 ;; End of packages
   )

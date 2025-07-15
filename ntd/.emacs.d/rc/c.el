@@ -39,3 +39,56 @@
       (eglot-ensure))))
 
   (add-hook 'c-mode-common-hook #'ntd/maybe-start-eglot))
+
+;;;;;;;;;;;;;;;;;;
+;;  Formatting  ;;
+;;;;;;;;;;;;;;;;;;
+
+;; Notes: clang-format takes ~.05s vs ~.025s for eglot-format.  The
+;; order of hooks will use elgot-format when possible.
+
+(defun ntd/c-format (start end)
+  (cond
+   ;; Try Eglot
+   ((bound-and-true-p eglot--managed-mode)
+    (eglot-format start end))
+   ;; Try clang-format
+   ((fboundp 'clang-format-region)
+    (clang-format-region start end))
+   ;; Basic
+   (t
+    (c-indent-region start end))))
+
+(defun ntd/c-format-region ()
+  (interactive)
+  (ntd/c-format (region-beginning) (region-end)))
+
+(defun ntd/c-format-buffer ()
+  (interactive)
+  (cond
+   ;; Try Eglot
+   ((bound-and-true-p eglot--managed-mode)
+    (eglot-format-buffer))
+   ;; Try clang-format
+   ((fboundp 'clang-format-buffer)
+    (clang-format-buffer))
+   ;; Basic
+   (t
+    (c-indent-region (point-min) (point-max)))))
+
+(defun ntd/c-tab ()
+  (interactive)
+  (if (c-region-is-active-p)
+      (ntd/c-format (region-beginning) (region-end))
+    (cond
+     ;; Try Eglot
+     ((bound-and-true-p eglot--managed-mode)
+      (eglot-format (line-beginning-position)
+                    (line-end-position)))
+     ;; Try clang-format
+     ((fboundp 'clang-format-region)
+      (clang-format-region (line-beginning-position)
+                           (line-end-position)))
+     ;; Basic
+     (t
+      (c-indent-line-or-region)))))

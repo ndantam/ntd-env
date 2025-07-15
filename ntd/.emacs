@@ -29,6 +29,12 @@
 
 (setq visible-bell 1)
 
+(defmacro ntd/time (&rest body)
+  "Execute body and print timing information on."
+  `(let ((ntd/time-time (current-time)))
+     ,@body
+     (message "%.06f" (float-time (time-since ntd/time-time)))))
+
 ;;;;;;;;;;;;;;
 ;;  Daemon  ;;
 ;;;;;;;;;;;;;;
@@ -380,54 +386,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.rosinstall$" . yaml-mode))
 
-;;;;;;;;;;;;;;;;
-;;  SEMANTIC  ;;
-;;;;;;;;;;;;;;;;
-;; ;; (require 'ede)
-;; ;; (require 'ede-dired)
-;; ;; (load "/usr/share/emacs/site-lisp/ede/ede-dired.el")
-;; ;; (global-ede-mode 1)
-
-;(require 'cedet)
-;(require 'semantic-load)
-;(require 'semantic-ia)
-;; ;; (require 'semantic-gcc) ; use system include files
-
-(setq semanticdb-default-save-directory "~/.emacs.d/semanticdb")
-;; (setq semantic-load-turn-useful-things-on nil)
-;; ;;(semantic-load-enable-code-helpers)
-
-;; ;; (setq semantic-load-turn-everything-on t)
-;; ;; (require 'semantic-gcc) ; use system include files
-;; ;; (semantic-load-enable-guady-code-helpers)
-
-;; ;; TODO: make open-paren show summary
-;; (add-hook 'c-mode-common-hook
-;;          (lambda ()
-;;            ;(setq semantic-load-turn-useful-things-on t)
-;;            ;;(semantic-load-enable-code-helpers)
-;;            (setq semantic-idle-summary t)
-;;            (setq semantic-idle-scheduler-idle-time 0.1)
-;;            ;; (local-set-key "." 'semantic-complete-self-insert)
-;;            ;; (local-set-key ">" 'semantic-complete-self-insert))
-;;            (define-key c-mode-base-map (kbd "<C-tab>")
-;;                        'semantic-complete-analyze-inline)
-;;            ;; TODO: this
-;;            (define-key c-mode-base-map "\C-cd"
-;;                        'semantic-ia-show-doc)
-;;            ;(define-key c-mode-base-map "\C-cc"
-;;                        ;'semantic-ia-complete-symbol-menu)
-;;            (define-key c-mode-base-map (kbd "<C-return>")
-;;                        'semantic-ia-complete-symbol-menu)))
-
-
-
-;; ;; (semantic-idle-completions-mode nil)
-
-
-;; ;; TODO: write function to print types here
-;; (setq semantic-idle-summary-function 'semantic-format-tag-prototype)
-
 (setq semanticdb-project-roots
       (list "~/git/thebrain.golems.org/lib/somatic"
             "~/git/thebrain.golems.org/drivers/pcio"
@@ -435,18 +393,8 @@
             "~/git/thebrain.golems.org/drivers/lwa4"
             "~/git/thebrain.golems.org/lib/ach"))
 
-
-;;(semantic-add-system-include "/usr/include")
-
-;; (semantic-add-system-include "~/git/thebrain.golems.org/lib/ach/include")
-;; (semantic-add-system-include "~/git/thebrain.golems.org/lib/amino/include")
-;; (semantic-add-system-include "~/git/thebrain.golems.org/drivers/lwa4/include")
-
-;; ;; TODO: set search throttle properly
-;; (setq-mode-local c-mode semanticdb-find-default-throttle
-;;                  '(project unloaded system recursive))
-;; (setq-mode-local c++-mode semanticdb-find-default-throttle
-;;                  '(project unloaded system recursive))
+(setq split-height-threshold nil)
+(setq split-width-threshold 120)
 
 ;;;;;;;;;;;;;;;
 ;; RUN SHELL ;;
