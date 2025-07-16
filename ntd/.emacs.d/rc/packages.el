@@ -38,6 +38,7 @@
 
   (use-package yaml-mode :ensure t)
   (use-package eglot :ensure t)
+  (use-package py-autopep88 :ensure t)
 
-;; End of packages
+  ;; End of packages
   )

@@ -76,6 +76,13 @@
    (t
     (c-indent-region (point-min) (point-max)))))
 
+(defun ntd/c-tab-or-format (fun)
+  (let ((begin (line-beginning-position))
+        (end (line-end-position)))
+    (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties begin end))
+        (c-indent-line-or-region)
+      (funcall fun begin end))))
+
 (defun ntd/c-tab ()
   (interactive)
   (if (c-region-is-active-p)
@@ -83,12 +90,10 @@
     (cond
      ;; Try Eglot
      ((bound-and-true-p eglot--managed-mode)
-      (eglot-format (line-beginning-position)
-                    (line-end-position)))
+      (ntd/c-tab-or-format (function eglot-format)))
      ;; Try clang-format
      ((fboundp 'clang-format-region)
-      (clang-format-region (line-beginning-position)
-                           (line-end-position)))
+      (ntd/c-tab-or-format (function clang-format-region)))
      ;; Basic
      (t
       (c-indent-line-or-region)))))

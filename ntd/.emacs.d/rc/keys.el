@@ -64,6 +64,38 @@
 (add-hook 'c-mode-hook 'ntd/clang-format-hook)
 (add-hook 'c++-mode-hook 'ntd/clang-format-hook)
 
+;;;;;;;;;;;;
+;; Python ;;
+;;;;;;;;;;;;
+
+(defun ntd/python-format (begin end)
+  (interactive)
+  (cond
+   ;; Try Eglot
+   ((bound-and-true-p eglot--managed-mode)
+    (eglot-format begin end))
+   ;; Try py-autopep8
+   ((fboundp 'py-autopep8-region)
+    (py-autopep8-region begin end))))
+
+(defun ntd/python-format-region ()
+  (interactive)
+  (if (region-active-p)
+      (ntd/python-format (region-beginning) (region-end))
+    (ntd/python-format (line-beginning-position) (line-end-position))))
+
+(defun ntd/python-format-buffer ()
+  (interactive)
+  (cond
+   ((fboundp 'py-autopep8-buffer)
+    (py-autopep8-buffer))))
+
+(defun ntd/python-hook ()
+  (local-set-key (kbd "C-c M-q") 'ntd/python-format-buffer)
+  (local-set-key (kbd "M-q") 'ntd/python-format-region))
+
+(add-hook 'python-mode-hook 'ntd/python-hook)
+
 ;;;;;;;;;;
 ;;  LSP ;;
 ;;;;;;;;;;
@@ -85,9 +117,22 @@
 (with-eval-after-load 'flymake
   (add-hook 'flymake-mode-hook 'ntd/flymake-keys))
 
+(defun ntd/eglot-code-action-and-format (beg &optional end action-kind interactive)
+  (interactive
+   `(,@(eglot--code-action-bounds)
+     ,(and current-prefix-arg
+           (completing-read "[eglot] Action kind: "
+                            '("quickfix" "refactor.extract" "refactor.inline"
+                              "refactor.rewrite" "source.organizeImports")))
+     t))
+  (eglot-code-actions beg end action-kind interactive)
+  (eglot-format (line-beginning-position)
+                (line-end-position)))
+
 (defun ntd/eglot-keys ()
   (local-set-key (kbd "C-c TAB") 'completion-at-point)
-  (local-set-key (kbd "M-RET") 'eglot-code-actions)
+  (local-set-key (kbd "M-RET") 'ntd/eglot-code-action-and-format)
+   (local-set-key (kbd "C-c C-r") 'eglot-rename)
   ;; (local-set-key (kbd "C-c M-q") 'eglot-format-buffer)
   ;; (local-set-key (kbd "M-q") 'ntd/eglot-format-region)
   )
