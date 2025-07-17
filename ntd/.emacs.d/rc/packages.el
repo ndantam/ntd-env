@@ -25,7 +25,10 @@
 
   ;; Get use-package
   (unless (package-installed-p 'use-package)
-    (package-install 'use-package)))
+    (package-install 'use-package))
+
+  ;; Require use-package
+  (require 'use-package))
 
 ;;;;;;;;;;;;;;;;
 ;;  Packages  ;;
@@ -38,7 +41,7 @@
 
   (use-package yaml-mode :ensure t)
   (use-package eglot :ensure t)
-  (use-package py-autopep88 :ensure t)
+  (use-package py-autopep8 :ensure t)
 
   ;; End of packages
   )
