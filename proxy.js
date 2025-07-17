@@ -13,7 +13,9 @@ function FindProxyForURL (url, host) {
         'link.springer.com',
         'science.org',
         'nature.com',
-        'cambridge.org'
+        'cambridge.org',
+        // Proxy other stuff
+	'.gurobi.com'
     ];
 
     // No proxy on Mines IP addresses
