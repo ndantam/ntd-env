@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; .emacs
 ;; Emacs initialization file
 ;; Author: Neil Dantam
@@ -40,10 +41,10 @@
 ;; (add-to-list 'load-path
 ;;              "~/git/3rdparty/wanderlust/elmo/")
 
-(defun ntd-email-addr (a b c)
+(defun ntd/email-addr (a b c)
   (concatenate 'string a "@" b "." c))
 
-(setq user-mail-address (ntd-email-addr "ndantam" "mines" "edu"))
+(setq user-mail-address (ntd/email-addr "ndantam" "mines" "edu"))
 (setq wl-user-mail-address-list (list user-mail-address))
 
 (autoload 'wl "wl" "Wanderlust" t)

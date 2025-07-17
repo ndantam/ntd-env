@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;

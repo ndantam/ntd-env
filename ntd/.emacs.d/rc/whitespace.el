@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -19,7 +20,7 @@
 
 (add-hook 'before-save-hook 'ntd/delete-trailing-whitespace)
 
-(setq ntd-whitespace-cleanup-modes
+(setq ntd/whitespace-cleanup-modes
       '(org-mode
         latex-mode
         html-mode xml-mode
@@ -29,9 +30,9 @@
         markdown-mode
         lisp-mode emacs-lisp-mode))
 
-(defun ntd-whitespace-cleanup ()
+(defun ntd/whitespace-cleanup ()
   (interactive)
-  (when (find major-mode ntd-whitespace-cleanup-modes)
+  (when (find major-mode ntd/whitespace-cleanup-modes)
     (if whitespace-mode
         (whitespace-cleanup)
       (progn
@@ -40,7 +41,7 @@
         (whitespace-mode 0)))))
 
 (add-hook 'before-save-hook
-          'ntd-whitespace-cleanup)
+          'ntd/whitespace-cleanup)
 
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
 (defun unfill-paragraph (&optional region)

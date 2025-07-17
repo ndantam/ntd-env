@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -9,7 +10,7 @@
 ;;  FONT  ;;
 ;;;;;;;;;;;;
 
-(defun ntd-colors ()
+(defun ntd/colors ()
   (set-face-background 'region               "#333333")
   (set-face-foreground 'mode-line             "white")
   (set-face-background 'mode-line             "#333333")
@@ -21,9 +22,9 @@
 
   (add-to-list 'default-frame-alist '(background-mode . dark)))
 
-(ntd-colors)
+(ntd/colors)
 
-(defun mines-colors ()
+(defun ntd/mines-colors ()
   (let ((mines-navy-blue "#21314d")
         (mines-light-blue "#92a2bd")
         (mines-silver "#8b8d8e")
@@ -64,7 +65,7 @@
     (add-to-list 'default-frame-alist '(background-mode . light)))
   )
 
-;(mines-colors)
+;(ntd/mines-colors)
 
 
 (mouse-wheel-mode t)

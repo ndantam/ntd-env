@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; .emacs
 ;; Emacs initialization file
 ;; Author: Neil Dantam
@@ -50,6 +51,20 @@
   (mapc #'funcall ntd/kill-emacs-hooks)
   (kill-emacs))
 
+(defun ntd/make-frame (nextract display)
+  ;; Setup xauth
+  (unless (zerop (length nextract))
+    (let ((xauthority (getenv "XAUTHORITY")))
+      (unless (or (zerop (length xauthority)))
+        ;; ensure xauthority exists
+        (unless (file-exists-p xauthority)
+          (shell-command (format "touch '%s'" xauthority)))
+        ;; merge xauth
+        (shell-command (format "echo '%s' | xauth nmerge -" nextract)))))
+  ;; Create frame
+  (make-frame-on-display display))
+
+
 ;;;;;;;;;;;
 ;; LOADS ;;
 ;;;;;;;;;;;
@@ -84,7 +99,6 @@
   (loadit "text")
   (loadit "keys")
 
-  ;; (loadit "el-get") ; don't need this.
   (loadit "maximarc")
   )
 
@@ -126,20 +140,6 @@
 
 
 (add-to-list 'auto-mode-alist '("\\.editorconfig\\'" . conf-mode))
-
-(defun ntd/make-frame (nextract display)
-  ;; Setup xauth
-  (unless (zerop (length nextract))
-    (let ((xauthority (getenv "XAUTHORITY")))
-      (unless (or (zerop (length xauthority)))
-        ;; ensure xauthority exists
-        (unless (file-exists-p xauthority)
-          (shell-command (format "touch '%s'" xauthority)))
-        ;; merge xauth
-        (shell-command (format "echo '%s' | xauth nmerge -" nextract)))))
-  ;; Create frame
-  (make-frame-on-display display))
-
 
 ;;;;;;;;;;;;;;
 ;;  PYTHON  ;;
@@ -197,13 +197,6 @@
                    'nxml-mode))
 (push '("\\.mxsl$" . nxml-mode) auto-mode-alist )
 
-
-
-
-;;;;;;;;;;;
-;;  ADA  ;;
-;;;;;;;;;;;
-;;set 'ada-prj-default-project-file "~/src/ada/project.adp")
 
 ;;;;;;;;;;;;;;
 ;;  SCHEME  ;;

@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -192,9 +193,6 @@
 (global-set-key "\C-ceD" 'pgg-decrypt)
 (global-set-key "\C-cea" 'pgg-encrypt-region)
 (global-set-key "\C-ceA" 'pgg-encrypt)
-
-;; server (just use daemon mode)
-;;(global-set-key "\C-cS" 'server-start)
 
 ;; from the emacswiki
 (defun toggle-fullscreen (&optional f)

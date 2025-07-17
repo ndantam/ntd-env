@@ -1,4 +1,5 @@
-;; -*- mode: emacs-lisp -*-;;
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;;
 ;; Emacs initialization file
 ;; Author: Neil Dantam
 ;;
@@ -51,14 +52,14 @@
 
 
 (defun def-small-greek (key name)
-  (lexical-let ((code (ucs-code (concat "GREEK SMALL LETTER " (upcase name)))))
+  (let ((code (ucs-code (concat "GREEK SMALL LETTER " (upcase name)))))
     (global-set-key (concat "\C-cg" key)
                     (lambda ()
                       (interactive)
                       (insert (make-string 1 code))))))
 
 (defun def-capital-greek (key name)
-  (lexical-let ((code (ucs-code (concat "GREEK CAPITAL LETTER " (upcase name)))))
+  (let ((code (ucs-code (concat "GREEK CAPITAL LETTER " (upcase name)))))
     (global-set-key (concat "\C-cg" key)
                     (lambda ()
                       (interactive)
