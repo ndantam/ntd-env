@@ -118,22 +118,22 @@
 (with-eval-after-load 'flymake
   (add-hook 'flymake-mode-hook 'ntd/flymake-keys))
 
-(defun ntd/eglot-code-action-and-format (beg &optional end action-kind interactive)
-  (interactive
-   `(,@(eglot--code-action-bounds)
-     ,(and current-prefix-arg
-           (completing-read "[eglot] Action kind: "
-                            '("quickfix" "refactor.extract" "refactor.inline"
-                              "refactor.rewrite" "source.organizeImports")))
-     t))
-  (eglot-code-actions beg end action-kind interactive)
+(defun ntd/eglot-code-action-and-format ()
+  (interactive)
+  (command-execute 'eglot-code-actions)
   (eglot-format (line-beginning-position)
                 (line-end-position)))
+
+(defun ntd/eglot-next-action ()
+  (interactive)
+  (flymake-goto-next-error)
+  (ntd/eglot-code-action-and-format))
 
 (defun ntd/eglot-keys ()
   (local-set-key (kbd "C-c TAB") 'completion-at-point)
   (local-set-key (kbd "M-RET") 'ntd/eglot-code-action-and-format)
-   (local-set-key (kbd "C-c C-r") 'eglot-rename)
+  (local-set-key (kbd "C-c C-r") 'eglot-rename)
+  (local-set-key (kbd "M-N") 'ntd/eglot-next-action)
   ;; (local-set-key (kbd "C-c M-q") 'eglot-format-buffer)
   ;; (local-set-key (kbd "M-q") 'ntd/eglot-format-region)
   )
