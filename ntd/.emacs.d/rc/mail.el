@@ -42,7 +42,7 @@
 ;;              "~/git/3rdparty/wanderlust/elmo/")
 
 (defun ntd/email-addr (a b c)
-  (concatenate 'string a "@" b "." c))
+  (concat a "@" b "." c))
 
 (setq user-mail-address (ntd/email-addr "ndantam" "mines" "edu"))
 (setq wl-user-mail-address-list (list user-mail-address))

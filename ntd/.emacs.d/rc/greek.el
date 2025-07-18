@@ -12,14 +12,14 @@
 
 ;; Based on pretty-greek by of BenignoUria
 ;; ΣΤΥΦΧΨΩ
-(defun pretty-greek ()
+(defun ntd/pretty-greek ()
   (let ((greek '("alpha" "beta" "gamma" "delta"
                  "epsilon" "zeta" "eta" "theta"
                  "iota" "kappa" "lambda" "mu" "nu"
                  "xi" "omicron" "pi" "rho" "varsigma"
                  "sigma" "tau" "upsilon" "phi" "chi" "psi"
                  "omega")))
-    (loop for word in greek
+    (cl-loop for word in greek
                                         ;for code = 97 then (+ 1 code)
           for greek-char across "αβγδεζηθικλμνξοπρςστυφχψω"
           do  (progn
@@ -42,24 +42,24 @@
                                          ,greek-char)
                          nil)))))))))
 
-(define-minor-mode pretty-greek-mode
+(define-minor-mode ntd/pretty-greek-mode
   "Displays greek characters")
 
-(add-hook 'pretty-greek-mode-hook 'pretty-greek)
+(add-hook 'ntd/pretty-greek-mode-hook 'ntd/pretty-greek)
 
-(defun ucs-code (name)
+(defun ntd/ucs-code (name)
   (cdr (assoc name (ucs-names))))
 
 
-(defun def-small-greek (key name)
-  (let ((code (ucs-code (concat "GREEK SMALL LETTER " (upcase name)))))
+(defun ntd/def-small-greek (key name)
+  (let ((code (ntd/ucs-code (concat "GREEK SMALL LETTER " (upcase name)))))
     (global-set-key (concat "\C-cg" key)
                     (lambda ()
                       (interactive)
                       (insert (make-string 1 code))))))
 
-(defun def-capital-greek (key name)
-  (let ((code (ucs-code (concat "GREEK CAPITAL LETTER " (upcase name)))))
+(defun ntd/def-capital-greek (key name)
+  (let ((code (ntd/ucs-code (concat "GREEK CAPITAL LETTER " (upcase name)))))
     (global-set-key (concat "\C-cg" key)
                     (lambda ()
                       (interactive)
@@ -89,18 +89,18 @@
                 ("c" "chi")
                 ("q" "psi")
                 ("w" "omega"))))
-  (loop for (key name) in greeks
-        do (def-small-greek key name)))
+  (cl-LOOP for (key name) in greeks
+        do (ntd/def-small-greek key name)))
 
-(def-capital-greek "G" "gamma")
-(def-capital-greek "J" "theta")
-(def-capital-greek "L" "lambda")
-(def-capital-greek "X" "xi")
-(def-capital-greek "P" "pi")
-(def-capital-greek "S" "sigma")
-(def-capital-greek "F" "phi")
-(def-capital-greek "Q" "psi")
-(def-capital-greek "W" "omega")
+(ntd/def-capital-greek "G" "gamma")
+(ntd/def-capital-greek "J" "theta")
+(ntd/def-capital-greek "L" "lambda")
+(ntd/def-capital-greek "X" "xi")
+(ntd/def-capital-greek "P" "pi")
+(ntd/def-capital-greek "S" "sigma")
+(ntd/def-capital-greek "F" "phi")
+(ntd/def-capital-greek "Q" "psi")
+(ntd/def-capital-greek "W" "omega")
 
 
 ;(add-hook 'lisp-mode-hook 'pretty-greek-mode)

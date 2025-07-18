@@ -15,11 +15,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 8)
 
-(defun ntd/delete-trailing-whitespace ()
-  (delete-trailing-whitespace))
-
-(add-hook 'before-save-hook 'ntd/delete-trailing-whitespace)
-
 (setq ntd/whitespace-cleanup-modes
       '(org-mode
         latex-mode
@@ -32,13 +27,9 @@
 
 (defun ntd/whitespace-cleanup ()
   (interactive)
-  (when (find major-mode ntd/whitespace-cleanup-modes)
-    (if whitespace-mode
-        (whitespace-cleanup)
-      (progn
-        (whitespace-mode 1)
-        (whitespace-cleanup)
-        (whitespace-mode 0)))))
+  (if (cl-find major-mode ntd/whitespace-cleanup-modes)
+      (whitespace-cleanup)
+    (delete-trailing-whitespace)))
 
 (add-hook 'before-save-hook
           'ntd/whitespace-cleanup)

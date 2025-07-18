@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+emacsclient -e "(read-passwd \"Password for sudo: \")" | sed 's/^"//;s/"$//'

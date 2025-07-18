@@ -14,9 +14,7 @@
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
 
-(require 'cl)
-
-(labels ((try-add-dir (dir)
+(cl-labels ((try-add-dir (dir)
            (when (file-exists-p dir)
              (add-to-list 'load-path dir)))
          (try-add-site (dir)
@@ -69,8 +67,8 @@
 ;; LOADS ;;
 ;;;;;;;;;;;
 (pdf-tools-install)
-(labels ((try-load (prefix name)
-                   (when (file-exists-p prefix)
+(cl-labels ((try-load (prefix name)
+                      (when (file-exists-p prefix)
                      (load (concat prefix "/" name ".el"))))
          (loadit (name)
                  (or (try-load "~/.emacs.d/rc" name )

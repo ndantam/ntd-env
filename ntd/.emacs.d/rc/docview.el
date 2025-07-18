@@ -7,3 +7,5 @@
 ;; no warranty expressed or implied.
 
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
