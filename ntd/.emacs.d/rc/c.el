@@ -25,7 +25,6 @@
 
 (setq c-default-style "user")
 
-
 ;;;;;;;;;;;;;;
 ;;  clangd  ;;
 ;;;;;;;;;;;;;;
@@ -45,8 +44,7 @@
 ;;  Formatting  ;;
 ;;;;;;;;;;;;;;;;;;
 
-;; Notes: clang-format takes ~.05s vs ~.025s for eglot-format.  The
-;; order of hooks will use elgot-format when possible.
+;; Notes: clang-format takes ~.05s vs ~.025s for eglot-format.
 
 (defun ntd/c-format (start end)
   (cond

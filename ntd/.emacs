@@ -86,7 +86,7 @@
   (loadit "erc")
   (loadit "font")
   (loadit "fortran")
-  ;;(loadit "greek")
+  (loadit "greek")
   (loadit "magit")
   (loadit "org")
   (loadit "term")

@@ -42,6 +42,3 @@
         ;; This would override `fill-column' if it's an integer.
         (emacs-lisp-docstring-fill-column t))
     (fill-paragraph nil region)))
-
-
-(define-key global-map "\C-\M-Q" 'unfill-paragraph)

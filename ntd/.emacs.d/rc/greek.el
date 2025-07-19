@@ -48,7 +48,10 @@
 (add-hook 'ntd/pretty-greek-mode-hook 'ntd/pretty-greek)
 
 (defun ntd/ucs-code (name)
-  (cdr (assoc name (ucs-names))))
+  (let ((x (ucs-names)))
+    (cl-etypecase x
+      (hash-table (gethash name x))
+      (list (cdr (assoc name (ucs-names)))))))
 
 
 (defun ntd/def-small-greek (key name)
@@ -89,7 +92,7 @@
                 ("c" "chi")
                 ("q" "psi")
                 ("w" "omega"))))
-  (cl-LOOP for (key name) in greeks
+  (cl-loop for (key name) in greeks
         do (ntd/def-small-greek key name)))
 
 (ntd/def-capital-greek "G" "gamma")

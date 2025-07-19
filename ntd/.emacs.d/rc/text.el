@@ -34,6 +34,7 @@
 (defun ntd/emoticon (&optional mouth eyes )
   (let ((eyes-str (alist-get eyes
                              '((t          .  ":")
+                               (nil        .  ":")
                                (normal     .  ":")
                                (big        .  "=")
                                (smiling    .  "8")
@@ -46,6 +47,7 @@
                                )))
         (mouth-str (alist-get mouth
                               '((t         . ")")
+                                (nil       . ")")
                                 (smile     . ")")
                                 (grinning  . "D")
                                 (beaming   . "D")
@@ -146,6 +148,7 @@
       ;; Grammar
       ("lidar" . "LIDAR")
       ("boolean" . "Boolean")
+
       ;; Style and brevity
       ("depends upon" . "depends on")
       ("is dependent on" . "depends on")

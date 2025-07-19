@@ -38,52 +38,36 @@
 ;;(setq ntd/compile-command nil)
 
 (defun ntd/compile-command ()
-  (or
-   ;; already defined, but let compile-command override
-   (if ntd/compile-command
-       (if compile-command
-           compile-command
-         ntd/compile-command))
-   ;; Project
-   (let ((root (project-root (project-current))))
-     (when (file-exists-p (expand-file-name "Makefile" root))
-       ntd/base-compile-command))
-   ;; Lookup
-   (let ((dir (ntd/get-closest-makefile-dir default-directory)))
-     (if dir
-         (format "%s -C %s" ntd/base-compile-command dir)
-       ntd/base-compile-command))))
+  (let ((cmd
+         (or
+          ;; already defined, but let compile-command override
+          (if ntd/compile-command
+              (if compile-command
+                  compile-command
+                ntd/compile-command))
+          ;; Project
+          (let ((root (project-root (project-current))))
+            (when (file-exists-p (expand-file-name "Makefile" root))
+              ntd/base-compile-command))
+          ;; TODO: look for other build files
+          ;; Lookup
+          (let ((dir (ntd/get-closest-makefile-dir default-directory)))
+            (if dir
+                (format "%s -C %s" ntd/base-compile-command dir)
+              ntd/base-compile-command)))))
+    cmd))
 
-(defun ntd/compile-manual (cmd)
-  (interactive (list (read-from-minibuffer "Compile Command: "
-                                           (ntd/compile-command))))
-  (when buffer-file-name
-    (save-buffer)
-    (set (make-local-variable 'ntd/compile-command) cmd))
-      (project-compile)
-    (compile cmd))
-
-(defun ntd/compile-project ()
-  (interactive)
-  (let ((cmd (ntd/compile-command)))
-    (set (make-local-variable 'ntd/compile-command)
-         cmd)
-    (set (make-local-variable 'compile-command)
-         cmd)
-    (project-compile)))
-
-(defun ntd/compile ()
-  (interactive)
-  (when buffer-file-name
-    (save-buffer))
-  (if (project-current)
-      (ntd/compile-project)
-    (ntd/compile-manual nil)))
-
-(defun ntd/recompile ()
-  (interactive)
-  (when buffer-file-name
-    (save-buffer))
-  (if (project-current)
-      (project-recompile)
-      (command-execute 'recompile)))
+(defun ntd/compile (arg)
+  (interactive "P")
+  (when buffer-file-name (save-buffer))
+  (let ((recompile (and ntd/compile-command (null arg)))
+        (cmd (ntd/compile-command)))
+    ;; Save
+    (set (make-local-variable 'ntd/compile-command) cmd)
+    (set (make-local-variable 'compile-command) cmd)
+    ;; do it
+    (cond
+     (recompile (recompile))
+     ((project-current)
+      (project-compile))
+     (t (compile cmd)))))

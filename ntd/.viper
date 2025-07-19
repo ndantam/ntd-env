@@ -6,8 +6,8 @@
 
 (defun ntd/fix-viper-esc ()
   ;; Fix C-[ to do a viper escape
-  (if (equal viper-ESC-key [escape])
-      (define-key input-decode-map [?\e] [escape])))
+  (when (equal viper-ESC-key [escape])
+    (define-key input-decode-map [?\e] [escape])))
 
 ;; Maybe need this to work on the first frame
 (ntd/fix-viper-esc)

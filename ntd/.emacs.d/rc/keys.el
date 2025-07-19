@@ -6,51 +6,175 @@
 ;; This file is released into the public domain.  There is absolutely
 ;; no warranty expressed or implied.
 
+(defun ntd/woman ()
+  (interactive)
+  (if (one-window-p) (split-window))
+  (let ((buf (current-buffer)))
+    (other-window 1)
+    (switch-to-buffer buf))
+  (woman))
+
+(defmacro ntd/with-region (begin-end &rest body)
+  (cl-destructuring-bind (begin end) begin-end
+    `(let (,begin ,end)
+       ;; Bind
+       (if (region-active-p)
+           (setq ,begin (region-beginning)
+                 ,end (region-end))
+         (setq ,begin (line-beginning-position)
+               ,end (line-end-position)))
+       ;; Body
+       ,@body)))
+
+(defun ntd/comment ()
+  (interactive)
+  (ntd/with-region (b e)
+                   (comment-region b e)))
+
+(defun ntd/copy-comment ()
+  (interactive)
+  (ntd/with-region (b e)
+                   (kill-ring-save b e)
+                   (comment-region b e)))
+
+(defun ntd/uncomment ()
+  (interactive)
+  (ntd/with-region (b e)
+                   (uncomment-region b e)))
+
+(defun ntd/toggle-fullscreen (&optional f)
+  (interactive)
+  (let ((current-value (frame-parameter nil 'fullscreen)))
+    (set-frame-parameter nil 'fullscreen
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                           (progn (setq old-fullscreen current-value)
+                                  'fullboth)))))
+;;;;;;;;;;;;;;;;;;;
+;; Key Semantics ;;
+;;;;;;;;;;;;;;;;;;;
+
+(defmacro ntd/prefix-map (name key)
+  `(progn
+     (setq ,name (make-keymap))
+     (define-key global-map (kbd ,key) ,name)))
+
+;;; User keys
+;; a
+(global-unset-key (kbd "C-c a"))
+;; b
+(global-set-key (kbd "C-c b") #'browse-url-at-point)
+;; c
+(global-set-key "\C-cc" 'magit-status)
+;; d
+(global-set-key (kbd "C-c d") 'eldoc-print-current-symbol-info)
+;; e
+(ntd/prefix-map ntd/emacs-prefix-map "C-c e")
+;; f
+(global-unset-key (kbd "C-c f"))
+;; g
+(global-unset-key (kbd "C-c g"))
+;; h
+(global-unset-key (kbd "C-c h"))
+;; i
+(global-set-key (kbd "\C-c i") 'other-frame)
+(global-set-key (kbd "\C-c I") (lambda () (interactive) (other-frame -1)))
+;; j
+(global-unset-key (kbd "C-c j"))
+;; k
+(global-unset-key (kbd "C-c k"))
+(global-set-key (kbd "C-c k") 'ntd/compile)
+;; l
+(ntd/prefix-map ntd/lisp-prefix-map "C-c l")
+;; m
+(global-set-key (kbd "C-c m") 'ntd/woman)
+;; n
+(global-unset-key (kbd "C-c n"))
+;; o
+(global-set-key (kbd "C-c o") 'other-window)
+(global-set-key (kbd "C-c O") (lambda () (interactive) (other-window -1)))
+;; p
+(global-unset-key (kbd "C-c p"))
+;; q
+(global-unset-key (kbd "C-c q"))
+;; r
+(global-set-key (kbd "C-c r") #'ntd/term-ssh)
+;; s
+(global-set-key (kbd "C-c s") #'ntd/term-zsh)
+;; t
+(ntd/prefix-map ntd/text-prefix-map "C-c t")
+;; u
+(global-set-key (kbd "C-c u") 'ntd/uncomment)
+(global-set-key (kbd "C-c U") 'uncomment-region)
+;; v
+(global-unset-key (kbd "C-c v"))
+;; w
+(global-unset-key (kbd "C-c w"))
+;; x
+(global-set-key (kbd "C-c x") 'ntd/comment)
+(global-set-key (kbd "C-c X") 'ntd/copy-comment)
+;; y
+(global-unset-key (kbd "C-c y"))
+;; z
+(global-unset-key (kbd "C-c z"))
+
+;; f5
+(global-set-key [f5] 'revert-buffer)
+;; f6
+(global-unset-key [f6])
+;; f7
+(global-unset-key [f7])
+;; f8
+(global-unset-key [f8])
+;; f9
+(global-unset-key [f9])
+;; f10
+(global-unset-key [f10])
+;; f11
+(global-set-key [f11] 'ntd/toggle-fullscreen)
+;; f12
+(global-unset-key [f12])
+
+;; Other keys
+
+(setq ntd/key-format-region (kbd "M-q")
+      ntd/key-format-buffer (kbd "C-c M-q")
+      ntd/key-do-buffer (kbd "C-c C-c")
+      ntd/key-complete (kbd "C-c TAB")
+      )
 
 ;;;;;;;;;;;;;;;;;;;
 ;;  GLOBAL KEYS  ;;
 ;;;;;;;;;;;;;;;;;;;
 
-;; woman
-(global-set-key "\C-cm" (lambda () (interactive)
-                          (if (one-window-p) (split-window))
-                          (let ((buf (current-buffer)))
-                            (other-window 1)
-                            (switch-to-buffer buf))
-                          (woman)))
-
-(global-set-key [f1] 'ntd/recompile)
-(global-set-key [f2] 'ntd/compile)
-;(global-set-key (kbd "C-c C")  'compile)
-;(global-set-key (kbd "C-c k")  'my-recompile)
-;;(global-set-key [f1] 'my-recompile)
-
-(defun ntd/recompile-hook ()
-  (local-set-key (kbd "C-c C-c") 'ntd/recompile))
+(defun ntd/compile-hook ()
+  (local-set-key ntd/key-do-buffer 'ntd/compile))
 
 (dolist (x '(autoconf-mode-hook
              automake-mode-hook
              c-mode-hook
              c++-mode-hook
              dired-mode-hook))
-  (add-hook x 'ntd/recompile-hook))
+  (add-hook x 'ntd/compile-hook))
 
 ;(global-set-key "\C-ctK" 'tramp-compile)
-
-;; commenting
-(global-set-key "\C-cX" 'comment-region)
-(global-set-key "\C-cU" 'uncomment-region)
-;(global-set-key "\C-cL" 'longlines-mode)
-
-(global-set-key "\C-cd" 'eldoc-print-current-symbol-info)
 
 ;; expand
 (global-set-key "\M-\\" 'hippie-expand)
 
-;; Text
-(global-set-key "\C-ca" 'ntd/asciify-region)
-(global-set-key "\C-cw" 'ntd/stylize-region)
-(global-set-key "\C-cx" 'ntd/texify-region)
+;; Fill
+(define-key global-map "\C-\M-Q" 'unfill-paragraph)
+
+;;;;;;;;;;
+;; Text ;;
+;;;;;;;;;;
+
+(define-key ntd/text-prefix-map (kbd "a") 'ntd/asciify-region)
+(define-key ntd/text-prefix-map (kbd "s") 'ntd/stylize-region)
+(define-key ntd/text-prefix-map (kbd "t") 'ntd/texify-region)
+(define-key ntd/text-prefix-map (kbd "x")  #'toggle-truncate-lines)
+(define-key ntd/text-prefix-map (kbd "v")  #'visual-line-mode)
+
 (global-set-key (kbd "C-c C-;") #'flyspell-check-previous-highlighted-word)
 
 ;;;;;;;;;;;
@@ -58,8 +182,8 @@
 ;;;;;;;;;;;
 
 (defun ntd/clang-format-hook ()
-  (local-set-key (kbd "C-c M-q") 'ntd/c-format-buffer)
-  (local-set-key (kbd "M-q") 'ntd/c-format-region)
+  (local-set-key ntd/key-format-buffer 'ntd/c-format-buffer)
+  (local-set-key ntd/key-format-region 'ntd/c-format-region)
   (local-set-key (kbd "TAB") 'ntd/c-tab))
 
 (add-hook 'c-mode-hook 'ntd/clang-format-hook)
@@ -92,8 +216,8 @@
     (py-autopep8-buffer))))
 
 (defun ntd/python-hook ()
-  (local-set-key (kbd "C-c M-q") 'ntd/python-format-buffer)
-  (local-set-key (kbd "M-q") 'ntd/python-format-region))
+  (local-set-key ntd/key-format-buffer 'ntd/python-format-buffer)
+  (local-set-key ntd/key-format-region 'ntd/python-format-region))
 
 (add-hook 'python-mode-hook 'ntd/python-hook)
 
@@ -152,68 +276,44 @@
 ;; (global-set-key "\C-cvl" 'magit-display-log)
 ;; (global-set-key "\C-cvL"  'magit-log-long)
 
-(global-set-key "\C-cc" 'magit-status)
 
 ;;;;;;;;;;;;;;;
 ;;; Display ;;;
 ;;;;;;;;;;;;;;;
-
-;; toggle meubar
-(global-set-key "\C-cM" (lambda () (interactive)
-                          (if menu-bar-mode
-                              (menu-bar-mode -1)
-                            (menu-bar-mode 1))))
-;; Window switching
-(global-set-key "\C-co" 'other-window)
-(global-set-key "\C-cO" (lambda () (interactive) (other-window -1)))
-;(global-set-key "\C-cp" (lambda () (interactive) (other-window -1)))
-
-
-(global-set-key "\C-ct" #'toggle-truncate-lines)
-(global-set-key "\C-cv" #'visual-line-mode)
-
-;; These seem unhelpful
-;;(global-set-key "\C-ch" 'windmove-left)
-;;(global-set-key "\C-cl" 'windmove-right)
-;;(global-set-key "\C-ck" 'windmove-up)
-;;(global-set-key "\C-cj" 'windmove-down)
 
 ;; Tab Switching
 ;(global-set-key "\C-cu" 'tab-next)
 ;(global-set-key "\C-cU" (lambda () (interactive) (tab-next -1)))
 
 ;; Frame Switching
-(global-set-key "\C-ci" 'other-frame)
-(global-set-key "\C-cI" (lambda () (interactive) (other-frame -1)))
 
 ;; Encryption
-(global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)
-(global-set-key "\C-ceS" 'pgg-encrypt-symmetric)
-(global-set-key "\C-ced" 'pgg-decrypt-region)
-(global-set-key "\C-ceD" 'pgg-decrypt)
-(global-set-key "\C-cea" 'pgg-encrypt-region)
-(global-set-key "\C-ceA" 'pgg-encrypt)
+;; (global-set-key "\C-ces" 'pgg-encrypt-symmetric-region)
+;; (global-set-key "\C-ceS" 'pgg-encrypt-symmetric)
+;; (global-set-key "\C-ced" 'pgg-decrypt-region)
+;; (global-set-key "\C-ceD" 'pgg-decrypt)
+;; (global-set-key "\C-cea" 'pgg-encrypt-region)
+;; (global-set-key "\C-ceA" 'pgg-encrypt)
 
-;; from the emacswiki
-(defun toggle-fullscreen (&optional f)
-  (interactive)
-  (let ((current-value (frame-parameter nil 'fullscreen)))
-    (set-frame-parameter nil 'fullscreen
-                         (if (equal 'fullboth current-value)
-                             (if (boundp 'old-fullscreen) old-fullscreen nil)
-                           (progn (setq old-fullscreen current-value)
-                                  'fullboth)))))
-(global-set-key [f11] 'toggle-fullscreen)
+;;;;;;;;;;;;;
+;;; EMACS ;;;
+;;;;;;;;;;;;;
 
-;; Browser
-(global-set-key (kbd "C-c b") #'browse-url-at-point)
+(define-key ntd/emacs-prefix-map (kbd "f") 'ntd/toggle-fullscreen)
+(define-key ntd/emacs-prefix-map (kbd "i") 'revert-buffer)
+(define-key ntd/emacs-prefix-map (kbd "i") 'ielm)
+(define-key ntd/emacs-prefix-map (kbd "m") 'menu-bar-mode)
+(define-key ntd/emacs-prefix-map (kbd "t") 'tab-bar-mode) ; tabbar vs tab-bar
+(define-key ntd/emacs-prefix-map (kbd "t") 'tab-bar-mode) ; tabbar vs tab-bar
+(define-key ntd/emacs-prefix-map (kbd "h") 'windmove-left)
+(define-key ntd/emacs-prefix-map (kbd "l") 'windmove-right)
+(define-key ntd/emacs-prefix-map (kbd "k") 'windmove-up)
+(define-key ntd/emacs-prefix-map (kbd "j") 'windmove-down)
+;;(global-set-key "\C-ch"
+;;(global-set-key "\C-cl" 'windmove-right)
+;;(global-set-key "\C-ck" 'windmove-up)
+;;(global-set-key "\c-cj" 'windmove-down)
 
-;; reload file
-(global-set-key [f5] 'revert-buffer)
-
-;; Shells
-(global-set-key "\C-cs" #'ntd/term-zsh)
-(global-set-key "\C-cr" #'ntd/term-ssh)
 
 ;;;;;;;;;;;;;;;;;;;
 ;;; Common Lisp ;;;
@@ -221,30 +321,23 @@
 
 ;; Lisp
 (with-eval-after-load 'slime
-  (global-set-key "\C-cl" 'slime-selector)
-
-  (global-set-key "\C-cLs" 'slime)
-  (global-set-key "\C-cLq" 'slime-quit-lisp)
-
-  (global-set-key "\C-cLc" 'local-slime-connect)
-  (global-set-key "\C-cLl" 'slime-load-system)
-  (global-set-key "\C-cLr" 'slime-reload-system)
-
-  (global-set-key "\C-cLd" 'slime-disconnect))
+  (define-key ntd/lisp-prefix-map (kbd "l") 'slime-selector)
+  (define-key ntd/lisp-prefix-map (kbd "s") 'slime-scratch)
+  (define-key ntd/lisp-prefix-map (kbd "r") 'slime-repl)
+  (define-key ntd/lisp-prefix-map (kbd "RET") 'slime-repl)
+  (define-key ntd/lisp-prefix-map (kbd "DEL") 'slime-quit-lisp)
+  (define-key ntd/lisp-prefix-map (kbd "c") 'slime-connect)
+  (define-key ntd/lisp-prefix-map (kbd" SPC") 'slime-load-system)
+  (define-key ntd/lisp-prefix-map (kbd "C-SPC") 'slime-reload-system)
+  (define-key ntd/lisp-prefix-map (kbd "<delete>") 'slime-disconnect))
 
 ;;;;;;;;;;;;;;;;;;
 ;;; Emacs Lisp ;;;
 ;;;;;;;;;;;;;;;;;;
 
 (defun ntd/elisp-keys ()
-  (local-set-key  (kbd "C-c C-c")  'eval-buffer))
+  (local-set-key  ntd/key-do-buffer 'eval-buffer))
 (add-hook 'emacs-lisp-mode-hook  'ntd/elisp-keys)
-
-;;;;;;;;;;;;;;;
-;;; Linting ;;;
-;;;;;;;;;;;;;;;
-;; (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
-;; (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 ;;;;;;;;;;;;;;
 ;;; AuCTeX ;;;
@@ -276,9 +369,9 @@
       (TeX-command-run-all nil)
       ))
 
-  ;; (define-key tex-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
-  (define-key LaTeX-mode-map (kbd "\C-x\C-s") #'ntd/tex-mk)
-  (define-key LaTeX-mode-map (kbd "\C-c\C-s") #'save-buffer)
+  ;; (define-key tex-mode-map (kbd "C-x C-s") #'ntd/tex-mk)
+  (define-key LaTeX-mode-map (kbd "C-x C-s") #'ntd/tex-mk)
+  (define-key LaTeX-mode-map (kbd "C-c C-s") #'save-buffer)
 
   ;; Viewing
   (defun ntd/tex-view ()
@@ -286,10 +379,10 @@
     ;;(TeX-command "View" #'TeX-master-file)
     (TeX-pdf-tools-sync-view))
 
-  (define-key LaTeX-mode-map (kbd "\C-c\C-v") #'ntd/tex-view)
-  ;;(define-key LaTeX-mode-map (kbd "\C-cv") #'ntd/tex-view)
-  ;;(define-key LaTeX-mode-map (kbd "\C-cf") #'pdf-sync-forward-search)
-  (define-key LaTeX-mode-map (kbd "\C-cf") #'ntd/tex-view)
+  (define-key LaTeX-mode-map (kbd "C-c C-v") #'ntd/tex-view)
+  ;;(define-key LaTeX-mode-map (kbd "C-c v") #'ntd/tex-view)
+  ;;(define-key LaTeX-mode-map (kbd "C-c f") #'pdf-sync-forward-search)
+  (define-key LaTeX-mode-map (kbd "C-c f") #'ntd/tex-view)
 )
 
 ;;;;;;;;;;;
@@ -382,3 +475,38 @@
   (local-set-key (kbd "M-Q") #'ntd/fill-mail))
 
 (add-hook 'mime-edit-mode-hook  'ntd/mime-edit-keys)
+
+;;;;;;;;;;;;;
+;;; Viper ;;;
+;;;;;;;;;;;;;
+
+;; clobbers viper-scroll-down
+(define-key viper-vi-global-user-map (kbd "C-u") 'universal-argument)
+;; bind scrolling RET / C-ret
+(define-key viper-vi-global-user-map (kbd "RET") 'viper-scroll-up)
+(define-key viper-vi-global-user-map (kbd "SPC") 'viper-scroll-up)
+(define-key viper-vi-global-user-map (kbd "C-<return>") 'viper-scroll-down)
+
+;; Preserve the help map
+(define-key viper-vi-global-user-map (kbd "C-h") help-map)
+(define-key viper-insert-global-user-map (kbd "C-h") help-map)
+
+;; VI Unused Keys
+;; --------------
+;; g
+(define-key viper-vi-global-user-map (kbd "g") ntd/emacs-prefix-map)
+;; q
+;; _
+;; K
+;; C-RET
+;; C-!
+;; <insert>
+
+;; VI duped keys
+;; -------------
+;;
+;; SPC (l)
+;; (define-key viper-vi-global-user-map (kbd "SPC") 'magit-status)
+;; U (u)
+;; DEL,<backspage> (h)
+;; RET,<+>
