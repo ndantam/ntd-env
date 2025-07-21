@@ -42,7 +42,7 @@
   (ntd/with-region (b e)
                    (uncomment-region b e)))
 
-(defun ntd/toggle-fullscreen (&optional f)
+(defun ntd/toggle-fullscreen ()
   (interactive)
   (let ((current-value (frame-parameter nil 'fullscreen)))
     (set-frame-parameter nil 'fullscreen
@@ -335,8 +335,28 @@
 ;;; Emacs Lisp ;;;
 ;;;;;;;;;;;;;;;;;;
 
+(defun ntd/elisp-byte-compile-load ()
+    (interactive)
+    (when buffer-file-name (save-buffer))
+    (emacs-lisp-native-compile-and-load))
+
+(if (and (fboundp 'native-comp-available-p)
+         (funcall 'native-comp-available-p))
+    ;; native-compilation
+    (defun ntd/elisp-compile-load ()
+     (interactive)
+     (when buffer-file-name (save-buffer))
+     (emacs-lisp-native-compile-and-load))
+  ;; no native compilation, fall back to byte compiling
+  (defun ntd/elisp-compile-load ()
+    (interactive)
+    (ntd/elisp-byte-compile-load)))
+
 (defun ntd/elisp-keys ()
-  (local-set-key  ntd/key-do-buffer 'eval-buffer))
+  (local-set-key  ntd/key-do-buffer 'eval-buffer)
+  (local-set-key  (kbd "C-c C-k") 'ntd/elisp-compile-load)
+  (local-set-key  (kbd "C-c M-k") 'ntd/elisp-byte-compile-load))
+
 (add-hook 'emacs-lisp-mode-hook  'ntd/elisp-keys)
 
 ;;;;;;;;;;;;;;
@@ -486,6 +506,7 @@
 (define-key viper-vi-global-user-map (kbd "RET") 'viper-scroll-up)
 (define-key viper-vi-global-user-map (kbd "SPC") 'viper-scroll-up)
 (define-key viper-vi-global-user-map (kbd "C-<return>") 'viper-scroll-down)
+(define-key viper-vi-global-user-map (kbd "S-SPC") 'viper-scroll-down)
 
 ;; Preserve the help map
 (define-key viper-vi-global-user-map (kbd "C-h") help-map)
