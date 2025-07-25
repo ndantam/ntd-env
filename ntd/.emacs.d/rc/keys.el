@@ -302,6 +302,7 @@
 (define-key ntd/emacs-prefix-map (kbd "f") 'ntd/toggle-fullscreen)
 (define-key ntd/emacs-prefix-map (kbd "i") 'revert-buffer)
 (define-key ntd/emacs-prefix-map (kbd "i") 'ielm)
+(define-key ntd/emacs-prefix-map (kbd "RET") 'ielm)
 (define-key ntd/emacs-prefix-map (kbd "m") 'menu-bar-mode)
 (define-key ntd/emacs-prefix-map (kbd "t") 'tab-bar-mode) ; tabbar vs tab-bar
 (define-key ntd/emacs-prefix-map (kbd "t") 'tab-bar-mode) ; tabbar vs tab-bar
@@ -319,12 +320,17 @@
 ;;; Common Lisp ;;;
 ;;;;;;;;;;;;;;;;;;;
 
-;; Lisp
+(defun ntd/slime-repl ()
+  (interactive)
+  (require 'slime)
+  (if (funcall 'slime-connected-p)
+      (funcall 'slime-repl)
+    (slime)))
+
+(define-key ntd/lisp-prefix-map (kbd "RET") 'ntd/slime-repl)
 (with-eval-after-load 'slime
   (define-key ntd/lisp-prefix-map (kbd "l") 'slime-selector)
   (define-key ntd/lisp-prefix-map (kbd "s") 'slime-scratch)
-  (define-key ntd/lisp-prefix-map (kbd "r") 'slime-repl)
-  (define-key ntd/lisp-prefix-map (kbd "RET") 'slime-repl)
   (define-key ntd/lisp-prefix-map (kbd "DEL") 'slime-quit-lisp)
   (define-key ntd/lisp-prefix-map (kbd "c") 'slime-connect)
   (define-key ntd/lisp-prefix-map (kbd" SPC") 'slime-load-system)
@@ -531,3 +537,10 @@
 ;; U (u)
 ;; DEL,<backspage> (h)
 ;; RET,<+>
+
+;;;;;;;;;;;;;;;;;;
+;;; Workaround ;;;
+;;;;;;;;;;;;;;;;;;
+
+;; 2025-07-23: (view-hello-file) crashes emacs daemon
+(global-unset-key (kbd "C-h h "))

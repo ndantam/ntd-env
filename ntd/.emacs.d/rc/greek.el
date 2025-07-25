@@ -25,17 +25,15 @@
           do  (progn
                 (font-lock-add-keywords
                  nil
-                 `((,(concatenate 'string
-                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
-                                  word "\\)[a-zA-Z]")
+                 `((,(concat "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                             word "\\)[a-zA-Z]")
                     (0 (progn (decompose-region (match-beginning 2)
                                                 (match-end 2))
                               nil)))))
                 (font-lock-add-keywords
                  nil
-                 `((,(concatenate 'string
-                                  "\\(^\\|[^a-zA-Z0-9]\\)\\("
-                                  word "\\)[^a-zA-Z]")
+                 `((,(concat "\\(^\\|[^a-zA-Z0-9]\\)\\("
+                             word "\\)[^a-zA-Z]")
                     (0 (progn
                          (compose-region (match-beginning 2)
                                          (match-end 2)
