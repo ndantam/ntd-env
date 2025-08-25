@@ -21,9 +21,9 @@
                             (cond
                              ((<= n 4)
                               (* n 2))
-                             ((<= n 16
-                                  (/ (* 3 n )
-                                     2)))
+                             ((<= n 16)
+                              (/ (* 3 n )
+                                 2))
                              (t n))))
      nil)
     ("configure" "./configure " t)
