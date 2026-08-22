@@ -148,7 +148,9 @@ pdfcat() {
     gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=- $@
 }
 pdfcompress() {
-    F=`tempfile`
+    I="$1"
+    shift
+    F=`mktemp`
     gs \
         -dCompatibilityLevel=1.7 \
         -dDetectDuplicateImages=true \
@@ -159,10 +161,14 @@ pdfcompress() {
         -dPrinted=false \
         -dPDFSETTINGS=/prepress \
         -sDEVICE=pdfwrite \
-        -sOutputFile="$F" "$1"
-    if [ `stat --format="%s" "$1"` -gt `stat --format="%s" "$F"` ]; then \
-        mv "$F" "$1"
+        "$@" \
+        -sOutputFile="$F" "$I"
+    # return
+    if [ -n "$*" -o `stat --format="%s" "$I"` -gt `stat --format="%s" "$F"` ]; then \
+        echo moving
+        mv "$F" "$I"
     else
+        echo not moving
         rm "$F"
     fi
 }

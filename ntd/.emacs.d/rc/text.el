@@ -159,6 +159,16 @@
       ("be more than" . "exceed")
       ("at the same time" . "simultaneously")
 
+      ((seq bow "1" eow) . "one")
+      ((seq bow "2" eow) . "two")
+      ((seq bow "3" eow) . "three")
+      ((seq bow "4" eow) . "four")
+      ((seq bow "5" eow) . "five")
+      ((seq bow "6" eow) . "six")
+
+      (" - " . "---")
+      (" -- " . "---")
+
       ("find a solution to" . "solve")
       ("in line with" . "consistent with")
       ("In line with" . "Consistent with")
@@ -176,8 +186,11 @@
     (goto-char start)
     (while (re-search-forward ntd/style-re end t)
       (let* ((oldtext (match-string 0))
-             (newtext (gethash oldtext ntd/style-hash)))
-        (assert newtext)
+             (newtext ;;(gethash oldtext ntd/style-hash)
+              (cdr (cl-find-if (lambda (c) (string-match (rx-to-string (car c)) oldtext))
+                               ntd/style-alist))
+                      ))
+        (cl-assert newtext)
         ;; (print (format "Trying to styleize: `%s' -> `%s'" oldtext newtext))
         (delete-char (- (length oldtext)))
         (insert newtext)
@@ -188,5 +201,8 @@
   ;; quotes
   (save-excursion
     (goto-char start)
+    (replace-string "“" "``")
+    (goto-char start)
+    (replace-string "”" "''")
     (while (re-search-forward "\"\\([^\"]*\\)\"" end t)
       (replace-match "``\\1''"))))

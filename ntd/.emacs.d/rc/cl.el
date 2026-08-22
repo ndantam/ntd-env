@@ -16,10 +16,6 @@
 
 
 
-(defun local-slime-connect ()
-  (interactive)
-  (slime-connect "localhost" 4005))
-
 
 ;;;;;;;;;;;;
 ;; SLIME  ;;
@@ -29,40 +25,44 @@
 ;;   (when (file-exists-p file)
 ;;     (load file)))
 
-
-(autoload 'slime "slime" "slime" t)
-(autoload 'slime-connect "slime" "slime" t)
+;; (autoload 'slime "slime" "slime" t)
+;; (autoload 'slime-connect "slime" "slime" t)
 
 ;;(load-library "slime")
 ;;(load-library "slime-autodoc")
 ;;(setq slime-use-autodoc-mode t)
 
-(eval-after-load "slime"
-  '(progn
-     (require 'slime-fancy)
-     (require 'slime-autodoc)
-     (setq slime-net-coding-system 'utf-8-unix)
-     (setq slime-use-autodoc-mode t)
-     (slime-setup '(slime-fancy slime-asdf))
+(with-eval-after-load "slime"
+  ;; (defun local-slime-connect ()
+  ;;   (interactive)
+  ;;   (slime-connect "localhost" 4005))
 
-     (let ((path (concatenate 'string
-                              temporary-file-directory (user-login-name) "-cache/slime/")))
-       (make-directory path t)
-       (setq slime-compile-file-options `(:fasl-directory ,path)))))
+  ;; (require 'slime-autodoc)
+  ;; (setq slime-net-coding-system 'utf-8-unix)
+  ;; (setq slime-use-autodoc-mode t)
+  ;; (slime-setup '(slime-fancy slime-asdf))
+  ;;    (let ((path (concatenate 'string
+  ;;                             temporary-file-directory (user-login-name) "-cache/slime/")))
+  ;;      (make-directory path t)
+  ;;      (setq slime-compile-file-options `(:fasl-directory ,path)))
 
-(when (file-exists-p "/usr/share/doc/hyperspec/")
-  (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
+  (when (file-exists-p "/usr/share/doc/hyperspec/")
+    (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
 
-(setq slime-lisp-implementations
-      `((sbcl ,(cond
-                ((host-match "apollo")
-                 '("sbcl" "--dynamic-space-size" "8GB"))
-                (t '("sbcl"))))
-        (clisp ("/usr/bin/clisp"))
-        (ccl ("ccl"))
-        (ecl ("/usr/bin/ecl"))))
+  (setq slime-lisp-implementations
+        `((sbcl ("sbcl" "--dynamic-space-size" "4096"))
+          (clisp ("/usr/bin/clisp"))
+          (ccl ("ccl"))
+          (ecl ("/usr/bin/ecl"))))
 
-(setq slime-default-lisp 'sbcl)
+
+  ;; redefine to fix use of obsolete FIND-TAG-MARKER-RING
+  (require 'xref)
+  (defun slime-push-definition-stack ()
+    "Add point to find-tag-marker-stack."
+    (xref-push-marker-stack (point-marker)))
+
+  (setq slime-default-lisp 'sbcl))
 
 
 ;; (defun auto-slime-hook ()
