@@ -107,6 +107,9 @@
 ;; maybe speeds up wanderlust?
 (setq-default bidi-display-reordering nil)
 
+;; raise GC threshold
+(setq gc-cons-threshold (* 256 (expt 2 20))) ; 256MiB
+
 (setq confirm-kill-emacs 'yes-or-no-p)
 (desktop-save-mode 1)
 

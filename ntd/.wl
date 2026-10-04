@@ -29,32 +29,21 @@
       'wl-draft-kill
       'mail-send-hook))
 
-
 (require 'visual-fill-column)
 
 
 (defun ntd/from (name email-address)
   (concat  name " <" email-address ">"))
 
-(setq elmo-passwd-storage-type 'auth-source
-
-      ;; Mines IMAP Setup
-      elmo-imap4-default-server "outlook.office365.com"
-      elmo-imap4-default-user user-mail-address
-      elmo-imap4-default-authenticate-type 'login
-      elmo-imap4-default-port 993
-      elmo-imap4-default-stream-type 'ssl
+(setq wl-from (ntd/from "Neil T. Dantam" user-mail-address)
 
       ;; Mines SMTP Setup
-      wl-from (ntd/from "Neil T. Dantam" user-mail-address)
-      wl-smtp-posting-server "smtp.office365.com"
+      wl-smtp-posting-server nil
       wl-local-domain "mines.edu"
-      wl-smtp-connection-type 'starttls
-      wl-smtp-posting-port 587
-      wl-smtp-authenticate-type "login"
-      wl-smtp-posting-user user-mail-address
+      sendmail-program "msmtp"
+      smtpmail-async-p nil
+      wl-draft-send-mail-function 'wl-draft-send-mail-with-sendmail
       )
-
 
 ;; Misc
 (setq elmo-passwd-storage-type 'auth-source
@@ -90,22 +79,20 @@
       ;; wl-insert-message-id nil
       mime-edit-split-message nil
       ;; wl-draft-cite-date-format-string ;; TODO
-      wl-draft-send-mail-function 'sendmail-send-it
+      wl-auto-save-drafts-interval nil ;; it's broken
       )
 
 ;; Folder Setup
-(setq elmo-maildir-folder-path "~/.maildir"
-      ;;wl-draft-folder "..drafts"       ; wandlerlust's default is MH format
-      wl-draft-folder "%DRAFTS"       ; wandlerlust's default is MH format
+;;
+;; wandlerlust's default is MH format.  Need a `.` for maildirs.
+(setq elmo-maildir-folder-path "~/mail"
+      wl-draft-folder ".mines/Drafts"
       wl-trash-folder "..trash"
       wl-spam-folder  "..trash"
       wl-queue-folder "..queue"        ; we don't use this
       wl-fcc "..sent"                  ; sent msgs go to the "sent"-folder
       wl-fcc-force-as-read t           ; mark sent messages as read
       wl-default-spec "..")
-
-
-
 
 
 (setq wl-message-ignored-field-list '("^.*:")
@@ -215,7 +202,6 @@
 ;;  - Add the format=flowed tag
 ;;  - Automatically insert flowed spaces when filling paragraphs
 
-
 ;; See:
 ;; - https://emacs.stackexchange.com/questions/19296/retooling-fill-paragraph-to-append-trailing-spaces
 ;; - https://www.reddit.com/r/emacs/comments/7v2b3q/emacs_email_and_format_flowed/
@@ -234,7 +220,6 @@
       ;; skip the newline
       (when (< (point) (point-max))
         (forward-char)))))
-
 
 (defun ntd/asciify ()
   (interactive)
@@ -268,18 +253,55 @@
 
 (require 'messages-are-flowing)
 (defun ntd/mime-edit-hook ()
+  (interactive)
   (ntd/fix-quote-region (mail-text) nil)
   (ntd/asciify-region (mail-text) nil)
   (delete-trailing-whitespace (mail-text))
   (set (make-local-variable 'fill-column) ntd/mime-edit-columns)
   (use-hard-newlines nil t)
+
+  ;; Fill text like markdown
+  (setq-local fill-paragraph-function #'ntd/mail-fill-paragraph)
+  (setq-local paragraph-start
+              ;; Should match start of lines that start or separate paragraphs
+              (mapconcat #'identity
+                         '(
+                           "\f" ; starts with a literal line-feed
+                           "[ \t\f]*$" ; space-only line
+                           "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
+                           "[ \t]*[*+-][ \t]+" ; unordered list item
+                           "[ \t]*\\(?:[0-9]+\\|#\\)\\.[ \t]+" ; ordered list item
+                           "[ \t]*\\[\\S-*\\]:[ \t]+" ; link ref def
+                           "[ \t]*:[ \t]+" ; definition
+                           "^|" ; table or Pandoc line block
+                           )
+                         "\\|"))
+  (setq-local paragraph-separate
+              ;; Should match lines that separate paragraphs without being
+              ;; part of any paragraph:
+              (mapconcat #'identity
+                         '("[ \t\f]*$" ; space-only line
+                           "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
+                           ;; The following is not ideal, but the Fill customization
+                           ;; options really only handle paragraph-starting prefixes,
+                           ;; not paragraph-ending suffixes:
+                           ".*  $" ; line ending in two spaces
+                           "^#+"
+                           "^\\(?:   \\)?[-=]+[ \t]*$" ;; setext
+                           "[ \t]*\\[\\^\\S-*\\]:[ \t]*$") ; just the start of a footnote def
+                         "\\|"))
+  (setq-local adaptive-fill-function #'markdown-adaptive-fill-function)
+  (setq-local adaptive-fill-first-line-regexp "\\`[ \t]*[A-Z]?>[ \t]*?\\'")
+  (setq-local adaptive-fill-regexp "\\s-*")
+  (make-local-variable 'yank-handled-properties)
+  (add-to-list 'yank-handled-properties '(t . ntd/harden-newlines)))
+
+  ;; Messages are flowing
   (messages-are-flowing-use-and-mark-hard-newlines)
   (messages-are-flowing--mark-hard-newlines (mail-text) (point-max)))
 
 (add-hook 'mime-edit-mode-hook 'ntd/mime-edit-hook)
 (add-hook 'wl-mail-setup-hook 'ntd/mime-edit-hook)
-
-
 
 
 ;; Not working...
@@ -311,78 +333,15 @@
 
 (define-key wl-draft-mode-map (kbd "C-c <tab>") 'bbdb-complete-mail)
 
-
 ;; (defun bbdb-offer-save () (bbdb-save))
 ;; (defun bbdb-flush-all-caches () )
 
-;; (setq mime-view-type-subtype-score-alist
-;;   '(((text . plain) . 4)
-;;     ((text . enriched) . 3)
-;;     ((text . html) . 2)
-;;     ((text . richtext) . 1)))
-
-
-;; (setq wl-insert-message-id nil
-;;       wl-forward-subject-prefix "Fwd: "
-;;       ;;wl-folder-check-async t
-;;       wl-draft-always-delete-myself t
-;;       wl-use-scoring nil
-;;       wl-stay-folder-window t
-;;       wl-folder-window-width 35
-;;       wl-ask-range nil
-;;       wl-summary-width nil
-;;       mime-edit-split-message nil)
-;
 ; (setq wl-default-sync-range "update"
 ;;       wl-folder-sync-range-alist '(("^.*$" . "update")))
-
-;; ;;;;;;;;;;;;;;;;;;;
-;; ;; FOLDER CONFIG ;;
-;; ;;;;;;;;;;;;;;;;;;;
-
-;; ;; Everybody else uses maildir, so let's use it too
-;; ;;
-;; ;; Note: we need two dots (..) for maildir folders. First one tells
-;; ;; wanderlust this is a maildir, second one because that's how Dovecot
-;; ;; and Courier name maildir folders.
-;; (setq elmo-maildir-folder-path "~/.maildir"
-;;       wl-draft-folder "..drafts"       ; wandlerlust's default is MH format
-;;       wl-trash-folder "..trash"
-;;       wl-spam-folder  "..trash"
-;;       wl-queue-folder "..queue"        ; we don't use this
-;;       wl-fcc "..sent"                  ; sent msgs go to the "sent"-folder
-;;       wl-fcc-force-as-read t           ; mark sent messages as read
-;;       wl-default-spec "..")
-
-;; (setq wl-default-folder "..gt")
-
-;; ;; ignore  all fields
-;; (setq wl-message-ignored-field-list '("^.*:")
-;;       ;; ..but these five
-;;       wl-message-visible-field-list '("^From:"
-;;                                       "^Newsgroups:"
-;;                                       "^Subject:"
-;;                                       "^Date:"
-;;                                       "^To:"
-;;                                       "^Cc:"
-;;                                       "^User-Agent:")
-;;       wl-message-sort-field-list '("^From:"
-;;                                    "^Newsgroups:"
-;;                                    "^Subject:"
-;;                                    "^Date:"
-;;                                    "^To:"
-;;                                    "^Cc:"
-;;                                    "^User-Agent:"))
-
 
 ;; ;;;;;;;;;;;;;;
 ;; ;; Accounts ;;
 ;; ;;;;;;;;;;;;;;
-
-
-;; (defun ntd-from (user host tld)
-;;   (concatenate 'string "Neil T. Dantam <"
-;;                (ntd-email-addr user host tld) ">"))
 
 ;; (defun ntd-gmail-folder (name)
 ;;   (concatenate 'string

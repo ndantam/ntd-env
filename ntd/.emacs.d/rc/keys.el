@@ -502,6 +502,12 @@
 
 (add-hook 'mime-edit-mode-hook  'ntd/mime-edit-keys)
 
+
+(eval-after-load "wl-summary"
+  '(progn
+     (define-key wl-summary-mode-map "d" (lambda () (interactive) (message "Message deletion is disabled.")))
+     (define-key wl-summary-mode-map "D" (lambda () (interactive) (message "Force deletion is disabled.")))))
+
 ;;;;;;;;;;;;;
 ;;; Viper ;;;
 ;;;;;;;;;;;;;
