@@ -13,23 +13,17 @@
 
 (defun ntd/fix-quote-region (start end)
   (interactive "r")
-  (save-excursion
-    (goto-char start)
-    (while (re-search-forward "^\\(>+\\) +" end t)
-      (replace-match "\\1")
-      (beginning-of-line))
-    (goto-char start)
-    (while (re-search-forward "^\\(>+\\)" end t)
-      (replace-match "\\1 "))))
-
-
-;; (setq adaptive-fill-regexp
-;;       ;; Default:
-;;        (purecopy "[ \t]*\\([-–!|#%;>*·•‣⁃◦]+[ \t]*\\)*"))
-;;       ;; (rx (seq (regex "[ \t]*")
-;;       ;;          (| (* (seq (regex "[-–!|#%;>*·•‣⁃◦]+")
-;;       ;;                     (regex "[ \t]*")))
-;;       ;;             (regex "[[:alnum:] ]+>[ \t]*")))))
+  (when (and start end (integer-or-marker-p start) (integer-or-marker-p end))
+    (let ((end (copy-marker end t))
+          (start (copy-marker start t)))
+      (save-excursion
+        (goto-char start)
+        (while (re-search-forward "^\\(>+\\) +" end t)
+          (replace-match "\\1")
+          (beginning-of-line))
+        (goto-char start)
+        (while (re-search-forward "^\\(>+\\)" end t)
+          (replace-match "\\1 "))))))
 
 
 ;;;;;;;;;;;;;;;;;;
@@ -56,7 +50,6 @@
 
 (add-hook 'wl-summary-prepared-hook 'my-wl-summary-sort-hook)
 
-
 (defun ntd/fill-mail ()
   (interactive)
   (save-excursion
@@ -68,23 +61,179 @@
   (or (mail-mode-fill-paragraph justify)
       (markdown-fill-paragraph justify)))
 
+(let ((start-quote (rx (opt (or (* (regex "[ \t]*>"))
+                                  (seq alpha ">")))
+                         (regex "[ \t\f]*")))
+      (quoted-mail-header (rx (+ (regex "[ \t]*") ">")
+                              (regex "[ \t]*")
+                              (or "From" "Sent" "To" "Subject" "Cc" "Date")
+                              ":"))
+        ; (mdheader "[=\\-]+[ \t]*$")
+        (closing (rx (or (regex "[Tt]hanks")
+                         (seq (regex "[Bb]est +") (opt (or (regex "[Rr]egards")
+                                                           (regex "[Ww]ishes"))))
+                         (regex "[Ww]arm +[Rr]egards")
+                         (regex "[Cc]heers")
+                         )
+                     (regex ", *$")))
+        (sig (rx (or "-" "/")
+                 (+ alpha)))
+        )
+    (defvar ntd/mail-paragraph-start)
+    (setq ntd/mail-paragraph-start
+          ;; Should match start of lines that start or separate paragraphs
+          (concat
+           start-quote ; optional start quote
+           "\\(?:"
+           (mapconcat #'identity
+                      (list
+                       "\f" ; starts with a literal line-feed
+                       "[ \t\f]*$" ; space-only line
+                       ;; "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
+                       "[ \t]*[*+-][ \t]+" ; unordered list item
+                       "[ \t]*\\(?:[0-9]+\\|#\\)\\.[ \t]+" ; ordered list item
+                       "[ \t]*\\[\\S-*\\]:[ \t]+" ; link ref def
+                       "[ \t]*:[ \t]+" ; definition
+                       "|" ; table or Pandoc line block
+                       "#+" ; header
+                       quoted-mail-header
+                       closing
+                       sig
+                       )
+                      "\\|")
+           "\\)"))
+    (defvar ntd/mail-paragraph-separate)
+    (setq ntd/mail-paragraph-separate
+          ;; Should match lines that separate paragraphs without being
+          ;; part of any paragraph:
+          (concat
+           start-quote ; optional start quote
+           "\\(?:"
+           (mapconcat #'identity
+                      (list
+                       "[ \t\f]*$" ; space-only line
+                       ;; "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
+                       ;; The following is not ideal, but the Fill customization
+                       ;; options really only handle paragraph-starting prefixes,
+                       ;; not paragraph-ending suffixes:
+                       ".*  $" ; line ending in two spaces
+                       "\\(?:   \\)?[-=]+[ \t]*$" ;; setext
+                       "[ \t]*\\[\\^\\S-*\\]:[ \t]*$"
+                       ; mdheader
+                       ) ; just the start of a footnote def
+                      "\\|")
+           "\\)")))
+
+
+;;; RFC 3676 format=flowed support.
+;;; -------------------------------
+;;
+;;; Convert markdown-ish emails to format=flowed.  Hard newlines mark
+;;; no-flow lines.  Lines before paragraph-boundaries are also
+;;; no-flow.  Blocks beginning with a short-line are no-flow until the
+;;; next paragraph.
+
 (defun ntd/harden-newlines (start end &rest _)
-  "Mark all newlines in the yanked region as hard."
+  "Mark newlines at paragraph boundaries region as hard."
   (interactive "r")
   ;; Fixup when calling post-yank
   (unless start
-    (setq start end
-          end (point)))
+    (setq start (min end (point))
+          end (max end (point))))
+  ;; Based on USE-HARD-NEWLINES
   (when (and start end (integer-or-marker-p start) (integer-or-marker-p end))
-    (save-excursion
-      (goto-char start)
-      (let ((end-marker (copy-marker end)))
-        (while (search-forward "\n" end-marker t)
-          (let ((newline-pos (1- (point))))
-            (when (or (looking-at paragraph-start)
-                      (looking-at paragraph-separate))
-              (put-text-property newline-pos (point) 'hard t))))
-        (set-marker end-marker nil))))))
+    (let ((end (copy-marker end t))
+          (start (copy-marker start t)))
+      (save-excursion
+        (goto-char start)
+        (beginning-of-line)
+        (cl-flet ((harden-prev (pos)
+                    (when (< (point-min) pos)
+                      (set-hard-newline-properties (1- pos) pos))))
+          (while (< (point) end)
+            (let ((pos (point)))
+              (delete-trailing-whitespace (line-beginning-position) (line-end-position))
+              (cond
+               ;; paragraph-separate: newlines before and after are hard.
+               ((looking-at paragraph-separate)
+                (harden-prev pos)
+                (end-of-line)
+                (unless (eobp)
+                  (set-hard-newline-properties (point) (1+ (point)))))
+               ;; paragraph-start: newline before is hard.
+               ((looking-at paragraph-start)
+                (harden-prev pos)))
+              ;; Advance line
+              (forward-line)))
+          ;; Check next line
+          (when (and (not (eobp))
+                     (or (looking-at-p paragraph-separate)
+                         (looking-at-p paragraph-start)))
+            (harden-prev (point))))))))
 
+(defun ntd/flowable ()
+  "Check if current line is flowable"
+  (interactive)
+  (save-excursion
+    (let* ((end (line-end-position))
+           (beg (line-beginning-position)))
+      (beginning-of-line)
+      (not (or
+            (get-text-property end 'hard)                ; hard newline
+            (< (- end beg) (/ fill-column 2))            ; short line
+            (looking-at-p "[ \t>]*[[:alpha:]]+>[ \t>]*") ; named quote
+            (looking-at-p paragraph-separate)            ; paragraph separator
+            (progn (goto-char end)                       ; next line not new paragraph
+                   (when (< (point) (point-max))
+                     (forward-char)
+                     (or (looking-at-p paragraph-start)
+                         (looking-at-p paragraph-separate)))))))))
+
+(defun ntd/soft-flow ()
+  "Turn soft newlines \n\s for format=flowed"
+  (interactive)
+  ;; Note: mime-edit-translate-hooks get overwritten paragraph-start
+  ;; and paragraph-end.
+  (save-excursion
+    (mail-text)
+    (while (re-search-forward "[^ ]\n" nil t)
+      (backward-char)
+      (cond
+       ;; Check if flowable
+       ((ntd/flowable)
+        (insert " ")
+        (forward-line 1))
+       ;; Skip short-line blocks up to next paragraph
+       ((and (< (- (line-end-position) (line-beginning-position))
+                (/ fill-column 2))
+             (progn (beginning-of-line)
+                    (not (looking-at-p paragraph-separate))))
+        (forward-line 1)
+        (re-search-forward (concat "^" paragraph-start)
+                           nil t)
+        (beginning-of-line))
+       ;; Otherwise, advance line
+       (t (forward-line 1))))))
+
+(defun ntd/mail-adaptive-fill-function ()
+  "Return prefix for filling paragraph or nil if not determined."
+  ;; Based on markdown-adaptive-fill-function
+  (cond
+   ;; List item inside blockquote
+   ((looking-at "^[ \t]*>[ \t]*\\(\\(?:[0-9]+\\|#\\)\\.\\|[*+:-]\\)[ \t]+")
+    (replace-regexp-in-string
+     "[0-9\\.*+-]" " " (match-string-no-properties 0)))
+   ;; Blockquote
+   ;; "^[ \t]*\\(?1:[A-Z]?>\\)\\(?2:[ \t]*\\)\\(?3:.*\\)$"
+   ((looking-at markdown-regex-blockquote)
+    (buffer-substring-no-properties (match-beginning 0) (match-end 2)))
+   ;; List items
+   ((looking-at markdown-regex-list)
+    (match-string-no-properties 0))
+   ;; Footnote definition
+   ((looking-at-p markdown-regex-footnote-definition)
+    "    ") ; four spaces
+   ;; No match
+   (t nil)))
 
 ;; SEE ALSO: ~/.wl

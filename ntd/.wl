@@ -207,20 +207,6 @@
 ;; - https://www.reddit.com/r/emacs/comments/7v2b3q/emacs_email_and_format_flowed/
 ;; - https://www.emacswiki.org/emacs/WlFormatFlowed
 
-(defun ntd/soft-flow ()
-  "Turn soft newlines \n\s for format=flowed"
-  (interactive)
-  (save-excursion
-    (mail-text)
-    (while (re-search-forward "[^ ]\n" nil t)
-      (backward-char)
-      (unless (get-text-property (point) 'hard)
-        (insert " ")
-        (forward-char))
-      ;; skip the newline
-      (when (< (point) (point-max))
-        (forward-char)))))
-
 (defun ntd/asciify ()
   (interactive)
   (save-excursion
@@ -236,7 +222,9 @@
     ;; TODO: Refilling breaks in the temp buffer.
     ;; (ntd/fill-mail) ; Re-flow the text.  Asciification can replace on
                        ; character with many.
-    (ntd/soft-flow)    ; soft \n -> \n\s
+    (let ((paragraph-start ntd/mail-paragraph-start)
+          (paragraph-separate ntd/mail-paragraph-separate))
+      (ntd/soft-flow))    ; soft \n -> \n\s
     (save-excursion
       (mail-text)
       ;; UTF-8 isn't 7bit and quoted-printable is annoying... Use
@@ -262,39 +250,22 @@
 
   ;; Fill text like markdown
   (setq-local fill-paragraph-function #'ntd/mail-fill-paragraph)
-  (setq-local paragraph-start
-              ;; Should match start of lines that start or separate paragraphs
-              (mapconcat #'identity
-                         '(
-                           "\f" ; starts with a literal line-feed
-                           "[ \t\f]*$" ; space-only line
-                           "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
-                           "[ \t]*[*+-][ \t]+" ; unordered list item
-                           "[ \t]*\\(?:[0-9]+\\|#\\)\\.[ \t]+" ; ordered list item
-                           "[ \t]*\\[\\S-*\\]:[ \t]+" ; link ref def
-                           "[ \t]*:[ \t]+" ; definition
-                           "^|" ; table or Pandoc line block
-                           )
-                         "\\|"))
-  (setq-local paragraph-separate
-              ;; Should match lines that separate paragraphs without being
-              ;; part of any paragraph:
-              (mapconcat #'identity
-                         '("[ \t\f]*$" ; space-only line
-                           "\\(?:[ \t]*>\\)+[ \t\f]*$"; empty line in blockquote
-                           ;; The following is not ideal, but the Fill customization
-                           ;; options really only handle paragraph-starting prefixes,
-                           ;; not paragraph-ending suffixes:
-                           ".*  $" ; line ending in two spaces
-                           "^#+"
-                           "^\\(?:   \\)?[-=]+[ \t]*$" ;; setext
-                           "[ \t]*\\[\\^\\S-*\\]:[ \t]*$") ; just the start of a footnote def
-                         "\\|"))
-  (setq-local adaptive-fill-function #'markdown-adaptive-fill-function)
-  (setq-local adaptive-fill-first-line-regexp "\\`[ \t]*[A-Z]?>[ \t]*?\\'")
-  (setq-local adaptive-fill-regexp "\\s-*")
+  (setq-local paragraph-start ntd/mail-paragraph-start)
+  (setq-local paragraph-separate ntd/mail-paragraph-separate)
+  (setq-local adaptive-fill-function #'ntd/mail-adaptive-fill-function)
+
+  ;; Mail
+  (setq-local adaptive-fill-regexp
+              (concat "[ \t]*[-[:alnum:]]+>+[ \t]*\\|"
+                      adaptive-fill-regexp))
+  (setq-local adaptive-fill-first-line-regexp
+              (concat "[ \t]*[-[:alnum:]]*>+[ \t]*\\|"
+                      adaptive-fill-first-line-regexp))
+  ;; MD
+  ;; (setq-local adaptive-fill-first-line-regexp "\\`[ \t]*[A-Z]?>[ \t]*?\\'")
+  ;; (setq-local adaptive-fill-regexp "\\s-*")
   (make-local-variable 'yank-handled-properties)
-  (add-to-list 'yank-handled-properties '(t . ntd/harden-newlines)))
+  (add-to-list 'yank-handled-properties '(t . ntd/harden-newlines))
 
   ;; Messages are flowing
   (messages-are-flowing-use-and-mark-hard-newlines)

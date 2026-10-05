@@ -75,6 +75,7 @@
          (?\… . "...")
          (?\– . "--")   ; en dash
          (?\— . "---")  ; em dash
+         (?\  . " ")    ; weird space
 
          ;; Emoji -> emoticon
          ;; https://unicode.org/emoji/charts/full-emoji-list.html
@@ -121,19 +122,22 @@
 
 (defun ntd/asciify-region (start end)
   (interactive "r")
-  (let ((is-ascii t))
-    (save-excursion
-      (goto-char start)
-      (while (re-search-forward (rx nonascii) end t)
-        (let ((c (char-before)))
-          ;;(print (format "Trying to asciify character: `%c' (%d)" c c))
-          (if-let ((newtext (gethash c ntd/asciify-hash)))
-              (progn
-                (delete-char -1)
-                (insert newtext))
-            (print (format "Could not asciify character: `%c' (%d)" c c))
-            (setq is-ascii nil)))))
-    is-ascii))
+  (when (and start end (integer-or-marker-p start) (integer-or-marker-p end))
+    (let ((end (copy-marker end t))
+          (start (copy-marker start t)))
+      (let ((is-ascii t))
+        (save-excursion
+          (goto-char start)
+          (while (re-search-forward (rx nonascii) end t)
+            (let ((c (char-before)))
+              ;;(print (format "Trying to asciify character: `%c' (%d)" c c))
+              (if-let ((newtext (gethash c ntd/asciify-hash)))
+                  (progn
+                    (delete-char -1)
+                    (insert newtext))
+                (print (format "Could not asciify character: `%c' (%d)" c c))
+                (setq is-ascii nil)))))
+        is-ascii))))
 
 
 (progn
@@ -182,27 +186,33 @@
 
 (defun ntd/stylize-region (start end)
   (interactive "r")
-  (save-excursion
-    (goto-char start)
-    (while (re-search-forward ntd/style-re end t)
-      (let* ((oldtext (match-string 0))
-             (newtext ;;(gethash oldtext ntd/style-hash)
-              (cdr (cl-find-if (lambda (c) (string-match (rx-to-string (car c)) oldtext))
-                               ntd/style-alist))
-                      ))
-        (cl-assert newtext)
-        ;; (print (format "Trying to styleize: `%s' -> `%s'" oldtext newtext))
-        (delete-char (- (length oldtext)))
-        (insert newtext)
-        (forward-char (length newtext))))))
+  (when (and start end (integer-or-marker-p start) (integer-or-marker-p end))
+    (let ((end (copy-marker end t))
+          (start (copy-marker start t)))
+      (save-excursion
+        (goto-char start)
+        (while (re-search-forward ntd/style-re end t)
+          (let* ((oldtext (match-string 0))
+                 (newtext ;;(gethash oldtext ntd/style-hash)
+                  (cdr (cl-find-if (lambda (c) (string-match (rx-to-string (car c)) oldtext))
+                                   ntd/style-alist))
+                  ))
+            (cl-assert newtext)
+            ;; (print (format "Trying to styleize: `%s' -> `%s'" oldtext newtext))
+            (delete-char (- (length oldtext)))
+            (insert newtext)
+            (forward-char (length newtext))))))))
 
 (defun ntd/texify-region (start end)
   (interactive "r")
-  ;; quotes
-  (save-excursion
-    (goto-char start)
-    (replace-string "“" "``")
-    (goto-char start)
-    (replace-string "”" "''")
-    (while (re-search-forward "\"\\([^\"]*\\)\"" end t)
-      (replace-match "``\\1''"))))
+  (when (and start end (integer-or-marker-p start) (integer-or-marker-p end))
+    (let ((end (copy-marker end t))
+          (start (copy-marker start t)))
+      ;; quotes
+      (save-excursion
+        (goto-char start)
+        (replace-string "“" "``")
+        (goto-char start)
+        (replace-string "”" "''")
+        (while (re-search-forward "\"\\([^\"]*\\)\"" end t)
+          (replace-match "``\\1''"))))))
