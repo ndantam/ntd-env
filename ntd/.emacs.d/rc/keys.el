@@ -62,6 +62,7 @@
 ;;; User keys
 ;; a
 (global-unset-key (kbd "C-c a"))
+(ntd/prefix-map ntd/gptel-prefix-map "C-c a")
 ;; b
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
 ;; c
@@ -364,6 +365,19 @@
   (local-set-key  (kbd "C-c M-k") 'ntd/elisp-byte-compile-load))
 
 (add-hook 'emacs-lisp-mode-hook  'ntd/elisp-keys)
+
+;;;;;;;;;;;;;
+;;; GPTEl ;;;
+;;;;;;;;;;;;;;
+(define-key ntd/gptel-prefix-map (kbd "a") 'gptel-add)
+(define-key ntd/gptel-prefix-map (kbd "f") 'gptel-add-file)
+(define-key ntd/gptel-prefix-map (kbd "x") 'gptel-context-remove-all)
+(define-key ntd/gptel-prefix-map (kbd "SPC") 'gptel-menu)
+
+;(define-key ntd/gptel-prefix-map (kbd "RET") 'gptel-send)
+
+(define-key ntd/gptel-prefix-map (kbd "C") 'ntd/gptel-gh)
+(define-key ntd/gptel-prefix-map (kbd "G") 'ntd/gptel-gemini)
 
 ;;;;;;;;;;;;;;
 ;;; AuCTeX ;;;

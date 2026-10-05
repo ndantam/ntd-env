@@ -95,6 +95,7 @@
   (loadit "whitespace")
   (loadit "mail")
   (loadit "text")
+  (loadit "gptel")
   (loadit "keys")
 
   (loadit "maximarc")
