@@ -95,6 +95,7 @@
   (loadit "whitespace")
   (loadit "mail")
   (loadit "text")
+  (loadit "mu4e")
   (loadit "gptel")
   (loadit "keys")
 

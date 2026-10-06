@@ -25,8 +25,9 @@
 
 
 ;; initialization
-(bbdb-initialize 'wl)
-(bbdb-mua-auto-update-init 'wl)
+
+;(bbdb-initialize 'wl)
+;(bbdb-mua-auto-update-init 'wl)
 
 ;; (bbdb-mua-auto-update-init 'gnus 'message)
 ;; (bbdb-initialize 'gnus 'message)
@@ -50,16 +51,37 @@
 (setq bbdb-ignore-message-alist ;; don't ask about fake addresses
       ;; NOTE: there can be only one entry per header (such as To, From)
       ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-      `(( "From" . ,(rx (or (regex "no.?reply")
-                            "announce" "notification" "list" "announce" "DAEMON" "daemon"
+      `(( "From" . ,(rx (or (regex
+                             "no.?reply")
+                            "announce"
+                            "notify"
+                            "notification"
+                            "list"
+                            "DAEMON"
+                            "daemon"
                             "papercept.net"
-                            "facebookmail" "twitter" "github" "from" "From")))
+                            "facebookmail"
+                            "twitter"
+                            "github"
+                            "from"
+                            "From"
+                            (regex "@myworkday\.com")
+                            (regex "@example\.com")
+                            )))
+        ("Reply-To" . ,(rx (or
+                            "DO NOT REPLY"
+                             (regex "no.?reply")
+                            )))
         ( "To"   . "Recipient")))
 
 
 (setq bbdb-electric t                        ;; be disposable with SPC
       bbdb-pop-up-layout nil
-      bbdb-mail-avoid-redundancy t)
+      bbdb-mail-avoid-redundancy nil ; Force First Last <address@foo.bar>
+      ;; don't show silly popups
+      bbdb-mua-pop-up nil
+      bbdb-completion-display-record nil
+      )
 
 
 
