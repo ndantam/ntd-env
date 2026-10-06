@@ -1,0 +1,33 @@
+# 1. Remote IMAP Account Details
+IMAPAccount mines
+Host outlook.office365.com
+Port 993
+User ndantam@mines.edu
+# Use XOAUTH2 mechanisms for Modern Auth
+AuthMechs XOAUTH2
+# Execute an external script to output the current OAuth2 access token
+PassCmd "python3 /home/ntd/bin/mutt_oauth2.py /home/ntd/doc/private/mbsync-token-mines.gpg"
+TLSType IMAPS
+TLSVersions +1.2 +1.3
+
+# 2. Remote Store Definition
+IMAPStore mines-remote
+Account mines
+
+# 3. Local Maildir Store Definition
+MaildirStore mines-local
+Path /scratch/ntd/mail/mines/
+Inbox /scratch/ntd/mail/mines/INBOX
+SubFolders Verbatim
+
+# 4. Channel Connecting the Stores
+Channel mines-sync
+Far :mines-remote:
+Near :mines-local:
+SyncState *
+Patterns *
+Create Both
+Expunge None
+Sync All
+# Office 365 preserves internal timestamps on upload
+CopyArrivalDate yes
