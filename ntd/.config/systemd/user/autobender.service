@@ -9,7 +9,7 @@ ExecStartPre=/bin/sh -c \
     "while ! ssh -O check jumpbox.mines.edu;  \
         do sleep 0.1; \
     done"
-ExecStart=/usr/bin/ssh -T autobender "ssh -NT autofarnsworth"
+ExecStart=/usr/bin/autossh -M 0 -T autobender "ssh -NT autofarnsworth"
 
 [Install]
 WantedBy=default.target
