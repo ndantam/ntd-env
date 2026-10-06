@@ -9,11 +9,35 @@
 
 (require 'mu4e)
 
-;; these are actually the defaults
+;;;;;;;;;;;;;;;;;;;
+;;; Basic Setup ;;;
+;;;;;;;;;;;;;;;;;;;
+
 (setq mu4e-sent-folder   "/mines/Sent"       ;; folder for sent messages
       mu4e-drafts-folder "/mines/Drafts"     ;; unfinished messages
       mu4e-trash-folder  "/mines/Trash"     ;; trashed messages
       mu4e-refile-folder "/mines/Archive")   ;; saved messages
+
+(setq mu4e-maildir-shortcuts
+      '(("/mines/INBOX" . ?i)
+        ("/mines/Drafts" . ?d)
+        ("/mines/Sent" . ?s)
+        ("/mines/Trash" . ?t)))
+
+(setq mu4e-get-mail-command "mbsync mines-sync"
+      mu4e-update-interval nil)
+
+;; Sending mail
+(setq sendmail-program "msmtp"
+      smtpmail-async-p nil
+      message-send-mail-function 'message-send-mail-with-sendmail
+      message-sendmail-f-is-evil t
+      message-sendmail-extra-arguments '("--read-envelope-from"))
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;; Customization ;;;
+;;;;;;;;;;;;;;;;;;;;;
 
 (setq mu4e-bookmarks
       '(
@@ -38,54 +62,36 @@
                :query "flag:flagged"
                :key ?f)))
 
-(setq mu4e-maildir-shortcuts
-      '(
-        ("/mines/INBOX" . ?i)
-        ("/mines/Drafts" . ?d)
-        ("/mines/Sent" . ?s)
-        ("/mines/Trash" . ?t)
-        ))
-
-(setq mu4e-get-mail-command "mbsync mines-sync"
-      mu4e-update-interval nil)
-
-
-;; Sending mail
-(setq sendmail-program "msmtp"
-      smtpmail-async-p nil
-      wl-draft-send-mail-function 'wl-draft-send-mail-with-sendmail
-      )
-
-(setq sendmail-program "msmtp"
-      message-send-mail-function 'message-send-mail-with-sendmail
-      message-sendmail-f-is-evil t
-      message-sendmail-extra-arguments '("--read-envelope-from"))
-
-
-
-;;; Customization ;;;
-;;; ------------- ;;;
-
-(setq mu4e-split-view 'vertical)
-(setq mu4e-headers-visible-columns 80)
-
-;; does not sum to mu4e-headers-visible-columns-80, but somehow OK?
-(setq mu4e-headers-fields
+;;; Headers
+(setq mu4e-split-view 'vertical
+      mu4e-headers-visible-columns 80
+      mu4e-headers-auto-update t
+      ;; does not sum to mu4e-headers-visible-columns-80, but somehow OK?
+      mu4e-headers-fields
       '((:subject . 55)
         (:from . 16)
         (:human-date . 12)
-        (:flags . 6)
         ;; (:mailing-list . 10) ; hide
-        ))
+        (:flags . 6))
+      mu4e-headers-date-format "%Y-%m-%d"
+      mu4e-headers-time-format "%I:%M %p"
+      mu4e-headers-results-limit 4096
+      mu4e-headers-advance-after-mark nil)
 
-(setq mu4e-headers-date-format "%Y-%m-%d"
-      mu4e-headers-time-format "%I:%M %p")
+(defun ntd/mu4e-index-updated-hook ()
+  (when (eq major-mode 'mu4e-headers-mode)
+    (mu4e-headers-rerun-search)))
+
+(add-hook 'mu4e-index-updated-hook #'ntd/mu4e-index-updated-hook)
+
+
+;;; Message View
 
 ;; mu4e uses gnus to display messages.  Need to edit this variable to
 ;; actually get the header.
 (setq gnus-visible-headers
       (eval `(rx (or (regex "^User-Agent:")
-                     (regex "^X-Mailer:")
+                     ;(regex "^X-Mailer:")
                      (regex ,gnus-visible-headers)))))
 
 (add-to-list 'mu4e-header-info-custom
@@ -93,7 +99,9 @@
                     :shortname "UA"
                     :help "The User-Agent / Mailer used by the sender"
                     :function (lambda (msg)
-                                (or (mu4e-fetch-field msg "User-Agent") "?")))))
+                                (or (mu4e-fetch-field msg "User-Agent")
+                                    (mu4e-fetch-field msg "X-Mailer")
+                                    "?")))))
 
 (setq mu4e-view-fields
       '(:from
@@ -108,7 +116,8 @@
         :maildir
         ))
 
-(setq mu4e-headers-results-limit 4096)
+
+;;; Composition
 
 (defun ntd/mu4e-compose-mode-hook ()
   "Automatically add a Bcc header to self when composing."
@@ -118,8 +127,8 @@
 (add-hook 'mu4e-compose-mode-hook
           'ntd/mu4e-compose-mode-hook)
 
+(setq message-confirm-send t)
 
-(setq mu4e-headers-advance-after-mark nil)
 
 ;;; Simplify Rendering
 (add-to-list 'mm-discouraged-alternatives "text/html")

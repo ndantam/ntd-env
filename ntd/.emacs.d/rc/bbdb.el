@@ -51,26 +51,30 @@
 (setq bbdb-ignore-message-alist ;; don't ask about fake addresses
       ;; NOTE: there can be only one entry per header (such as To, From)
       ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-      `(( "From" . ,(rx (or (regex
-                             "no.?reply")
-                            "announce"
-                            "notify"
-                            "notification"
-                            "list"
+      `(( "From" . ,(rx (or "announce"
+                            (regex "[Bb]last")
+                            "Colorado School of Mines"
                             "DAEMON"
                             "daemon"
+                            "from"
+                            "From"
+                            "github"
+                            "list"
+                            (regex "no.?reply")
+                            "notify"
+                            "notification"
+                            "notice"
                             "papercept.net"
                             "facebookmail"
                             "twitter"
-                            "github"
-                            "from"
-                            "From"
                             (regex "@myworkday\.com")
                             (regex "@example\.com")
                             )))
         ("Reply-To" . ,(rx (or
                             "DO NOT REPLY"
                              (regex "no.?reply")
+                             (regex "^reply-")
+                             (regex " <reply-")
                             )))
         ( "To"   . "Recipient")))
 
