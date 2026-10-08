@@ -476,51 +476,56 @@
   (define-key pdf-history-minor-mode-map (kbd "M-<left>")  #'pdf-history-backward)
   (define-key pdf-history-minor-mode-map (kbd "M-<right>") #'pdf-history-forward))
 
+;;;;;;;;;;;;
+;;; mu4e ;;;
+;;;;;;;;;;;;
+
+(global-set-key [f6] (lambda () (interactive) (mu4e-update-mail-and-index nil)))
 
 ;;;;;;;;;;
 ;;; WL ;;;
 ;;;;;;;;;;
-(global-set-key [f6] 'wl-folder-check-all)
+;; (global-set-key [f6] 'wl-folder-check-all)
 
-(defun ntd/bbdb-popup ()
-  (local-set-key (kbd "C-c b") #'bbdb-mua-display-all-records))
+;; (defun ntd/bbdb-popup ()
+;;   (local-set-key (kbd "C-c b") #'bbdb-mua-display-all-records))
 
-(add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
-(add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
+;; (add-hook 'mime-view-mode-hook #'ntd/bbdb-popup)
+;; (add-hook 'wl-summary-mode-hook #'ntd/bbdb-popup)
 
-(defun ntd/mail-keys ()
-  (local-set-key (kbd "b") #'browse-url-at-point)
-  (local-set-key (kbd "j") #'next-line)
-  (local-set-key (kbd "k") #'previous-line))
+;; (defun ntd/mail-keys ()
+;;   (local-set-key (kbd "b") #'browse-url-at-point)
+;;   (local-set-key (kbd "j") #'next-line)
+;;   (local-set-key (kbd "k") #'previous-line))
 
-(add-hook 'mime-view-mode-hook #'ntd/mail-keys)
+;; (add-hook 'mime-view-mode-hook #'ntd/mail-keys)
 
-(defun ntd/wl-summary-keys ()
-  ;; Folders
-  (local-set-key (kbd "C-c f r")
-                 (lambda () (interactive) (ntd/wl-goto-petname "recent")))
-  (local-set-key (kbd "C-c f s")
-                 (lambda () (interactive) (ntd/wl-goto-petname "starred")))
-  (local-set-key (kbd "C-c f n")
-                 (lambda () (interactive) (ntd/wl-goto-petname "new")))
-  ;; Navigation
-  ;;(local-set-key (kbd "j") #'wl-summary-jump-to-current-message) bind?
-  (local-set-key (kbd "j") #'next-line)
-  (local-set-key (kbd "k") #'previous-line))
-
-
-(add-hook 'wl-summary-mode-hook #'ntd/wl-summary-keys)
-
-(defun ntd/mime-edit-keys ()
-  (local-set-key (kbd "M-Q") #'ntd/fill-mail))
-
-(add-hook 'mime-edit-mode-hook  'ntd/mime-edit-keys)
+;; (defun ntd/wl-summary-keys ()
+;;   ;; Folders
+;;   (local-set-key (kbd "C-c f r")
+;;                  (lambda () (interactive) (ntd/wl-goto-petname "recent")))
+;;   (local-set-key (kbd "C-c f s")
+;;                  (lambda () (interactive) (ntd/wl-goto-petname "starred")))
+;;   (local-set-key (kbd "C-c f n")
+;;                  (lambda () (interactive) (ntd/wl-goto-petname "new")))
+;;   ;; Navigation
+;;   ;;(local-set-key (kbd "j") #'wl-summary-jump-to-current-message) bind?
+;;   (local-set-key (kbd "j") #'next-line)
+;;   (local-set-key (kbd "k") #'previous-line))
 
 
-(eval-after-load "wl-summary"
-  '(progn
-     (define-key wl-summary-mode-map "d" (lambda () (interactive) (message "Message deletion is disabled.")))
-     (define-key wl-summary-mode-map "D" (lambda () (interactive) (message "Force deletion is disabled.")))))
+;; (add-hook 'wl-summary-mode-hook #'ntd/wl-summary-keys)
+
+;; (defun ntd/mime-edit-keys ()
+;;   (local-set-key (kbd "M-Q") #'ntd/fill-mail))
+
+;; (add-hook 'mime-edit-mode-hook  'ntd/mime-edit-keys)
+
+
+;; (eval-after-load "wl-summary"
+;;   '(progn
+;;      (define-key wl-summary-mode-map "d" (lambda () (interactive) (message "Message deletion is disabled.")))
+;;      (define-key wl-summary-mode-map "D" (lambda () (interactive) (message "Force deletion is disabled.")))))
 
 ;;;;;;;;;;;;;
 ;;; Viper ;;;
