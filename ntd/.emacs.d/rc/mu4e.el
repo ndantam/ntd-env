@@ -79,8 +79,11 @@
       mu4e-headers-advance-after-mark nil)
 
 (defun ntd/mu4e-index-updated-hook ()
-  (when (eq major-mode 'mu4e-headers-mode)
-    (mu4e-headers-rerun-search)))
+  (if-let ((headers-buffer (get-buffer "*mu4e-headers*")))
+      (progn
+        (pop-to-buffer headers-buffer)
+        (mu4e-headers-rerun-search))
+    (mu4e)))
 
 (add-hook 'mu4e-index-updated-hook #'ntd/mu4e-index-updated-hook)
 
